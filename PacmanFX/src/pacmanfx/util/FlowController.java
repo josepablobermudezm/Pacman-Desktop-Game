@@ -57,6 +57,10 @@ public class FlowController {
         return INSTANCE;
     }
 
+    public static Stage getMainStage() {
+        return mainStage;
+    }
+    
     @Override
     public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
@@ -111,7 +115,8 @@ public class FlowController {
         try {
             //this.mainStage.setResizable(false);
             //this.mainStage.getIcons().add(new Image("pacmanfx/resources/icono.png"));
-            this.mainStage.setScene(new Scene(FXMLLoader.load(PacmanFX.class.getResource("view/Menu.fxml"), this.idioma)));
+            this.mainStage.setScene(new Scene(FXMLLoader.load(PacmanFX.class.getResource("view/Inicio.fxml"), this.idioma)));
+            mainStage.initStyle(StageStyle.TRANSPARENT);
             this.mainStage.show();
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(FlowController.class.getName()).log(Level.SEVERE, "Error inicializando la vista base.", ex);
@@ -221,6 +226,10 @@ public class FlowController {
         this.loaders.clear();
     }
 
+    public void cerrar(Stage stage) {
+        stage.close();
+    }
+    
     public void salir() {
         this.mainStage.close();
     }

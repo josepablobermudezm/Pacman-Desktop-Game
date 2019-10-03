@@ -12,6 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import pacmanfx.util.FlowController;
 
 /**
  * FXML Controller class
@@ -23,19 +25,34 @@ public class MenuController extends Controller{
     @FXML
     private ImageView omg;
 
-     
-
     @Override
     public void initialize() {
         
-        
         Image imgLogo;
         try {
-            imgLogo = new Image("/pacmanfx/resources/fondo.jpg");
+            imgLogo = new Image("/pacmanfx/resources/Fondo.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
         
+    }
+
+    @FXML
+    private void Start(MouseEvent event) {
+        FlowController.getInstance().goMain();
+        this.getStage().close();
+    }
+
+    @FXML
+    private void Configuracion(MouseEvent event) {
+        FlowController.getInstance().goViewInStage("Configuracion", this.getStage());
+        //this.getStage().close();
+    }
+
+    @FXML
+    private void Salir(MouseEvent event) {
+        //FlowController.getMainStage().close();
+        FlowController.getInstance().cerrar(stage);
     }
     
 }

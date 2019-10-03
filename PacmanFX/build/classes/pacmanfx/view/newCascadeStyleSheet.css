@@ -1,0 +1,56 @@
+
+#Titulo{
+    -fx-text-fill: gray;
+    -fx-font-size : 35pt;
+    -jfx-focus-color: -fx-secondary;
+}
+
+.label{
+    -fx-text-fill: gray;
+    /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
+    -fx-font-size: 25pt;
+}
+.label:hover{
+    -fx-font-size : 27pt;
+    -fx-text-fill : white;
+}
+.root{
+    -fx-background-color: white;
+}
+
+.custom-jfx-radio-button-white{
+    -fx-text-fill: black;
+    -jfx-selected-color: #0d54d1;
+}
+
+.button{
+    -fx-background-color:#042a6b;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
+.button:hover {
+    -fx-background-color: #06388f;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
+.button .jfx-rippler{
+    -jfx-rippler-fill: #577fc2;
+}
+
+.button:disabled{
+    -fx-background-color: #cccccc;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: GREEN;
+    
+}
+
+.text-field{
+    -fx-prompt-text-fill: black;
+    -jfx-focus-color: black;
+    -jfx-unfocus-color: black;
+    /*-jfx-label-float: true;*/
+    -fx-text-fill: black;
+}
