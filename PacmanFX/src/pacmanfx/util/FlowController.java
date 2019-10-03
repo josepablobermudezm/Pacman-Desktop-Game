@@ -19,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 //import pacmanFX.;
 import pacmanfx.controller.Controller;
@@ -86,6 +87,26 @@ public class FlowController {
         return loader;
     }
 
+    public void goViewInWindowTransparent(String viewName) {
+        FXMLLoader loader = getLoader(viewName);
+        Controller controller = loader.getController();
+        Stage stage = new Stage();
+        controller.setStage(stage);
+        controller.initialize();
+        stage.initStyle(StageStyle.TRANSPARENT);
+        //stage.getIcons().add(new Image(ClinicaUna.class.getResourceAsStream("resources/pharmacy.png")));
+        stage.setTitle("Pacman");
+//        stage.setMinWidth(630);
+//        stage.setMinHeight(420);
+        stage.setOnHidden((WindowEvent event) -> {
+        });
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+    
     public void goMain() {
         try {
             //this.mainStage.setResizable(false);

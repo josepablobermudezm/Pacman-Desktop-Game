@@ -24,7 +24,7 @@ public class PacmanFX extends Application {
     public void start(Stage primaryStage) {
         
         FlowController.getInstance().InitializeFlow(primaryStage, null);
-        FlowController.getInstance().goMain();
+        FlowController.getInstance().goViewInWindowTransparent("Menu");
         
     }
 
