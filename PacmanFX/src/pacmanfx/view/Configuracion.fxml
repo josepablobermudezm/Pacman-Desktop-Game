@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="pacmanfx.controller.ConfiguracionController">
-    
-</AnchorPane>
+<BorderPane stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pacmanfx.controller.ConfiguracionController">
+   <center>
+      <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1280.0">
+         <children>
+            <ImageView fx:id="omg" fitHeight="600.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="lblVolver" layoutX="14.0" layoutY="468.0" onMouseClicked="#Volver" text="Volver" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
