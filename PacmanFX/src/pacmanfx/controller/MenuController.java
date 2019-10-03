@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
@@ -19,12 +21,21 @@ import javafx.scene.control.Label;
 public class MenuController extends Controller{
 
     @FXML
-    private Label menu;
+    private ImageView omg;
 
      
 
     @Override
     public void initialize() {
+        
+        
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/fondo.jpg");
+            omg.setImage(imgLogo);
+        } catch (Exception e) {
+        }
+        
     }
     
 }
