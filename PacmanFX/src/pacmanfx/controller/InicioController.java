@@ -31,8 +31,6 @@ public class InicioController extends Controller {
 
     @Override
     public void initialize() {
-        
-        //lbl1.setText("Hola ");
 
 
     }
