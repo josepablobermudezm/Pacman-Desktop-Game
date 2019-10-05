@@ -32,7 +32,7 @@ public class ConfiguracionController extends Controller{
     public void initialize() {
         Image imgLogo;
         try {
-            imgLogo = new Image("/pacmanfx/resources/fondo.jpg");
+            imgLogo = new Image("/pacmanfx/resources/Fondo.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
