@@ -32,7 +32,7 @@ public class ConfiguracionController extends Controller{
     public void initialize() {
         Image imgLogo;
         try {
-            imgLogo = new Image("/pacmanfx/resources/Fondo.jpg");
+            imgLogo = new Image("/pacmanfx/resources/fondo.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
@@ -40,9 +40,7 @@ public class ConfiguracionController extends Controller{
 
     @FXML
     private void Volver(MouseEvent event) {
-        FlowController.getInstance().initialize();
-        this.getStage().close();
-        FlowController.getInstance().goViewInWindowTransparent("Menu");
+        FlowController.getInstance().goView("Menu","Center",null);
     }
     
 }
