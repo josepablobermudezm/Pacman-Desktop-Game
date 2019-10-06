@@ -30,7 +30,7 @@ public class MenuController extends Controller{
         
         Image imgLogo;
         try {
-            imgLogo = new Image("/pacmanfx/resources/Fondo.jpg");
+            imgLogo = new Image("/pacmanfx/resources/fondo.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
@@ -39,7 +39,7 @@ public class MenuController extends Controller{
 
     @FXML
     private void Start(MouseEvent event) {
-        FlowController.getInstance().goMain();
+        FlowController.getInstance().goViewInWindow("Nivel1");
         this.getStage().close();
     }
 

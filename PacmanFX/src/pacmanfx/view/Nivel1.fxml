@@ -5,14 +5,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane onKeyPressed="#Movimiento" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pacmanfx.controller.Nivel1Controller">
    <center>
       <VBox>
          <children>
-            <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1280.0" styleClass="root" stylesheets="@newCascadeStyleSheet.css">
+            <AnchorPane id="AnchorPane" fx:id="root" prefHeight="600.0" prefWidth="1280.0" styleClass="root" stylesheets="@newCascadeStyleSheet.css">
                <children>
-                  <ImageView fx:id="pacman" fitHeight="73.0" fitWidth="75.0" layoutX="603.0" layoutY="264.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="pacman" fitHeight="30.0" fitWidth="30.0" layoutX="603.0" layoutY="264.0" onKeyReleased="#MoverPacman" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
          </children>

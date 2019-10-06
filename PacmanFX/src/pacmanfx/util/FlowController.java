@@ -169,10 +169,10 @@ public class FlowController {
     public void goViewInWindow(String viewName) {
         FXMLLoader loader = getLoader(viewName);
         Controller controller = loader.getController();
-        controller.initialize();
+        //controller.initialize();
         Stage stage = new Stage();
         //stage.getIcons().add(new Image("sistematransporte/resources/icono.png"));
-        stage.setTitle("Sistema Transporte");
+        stage.setTitle("PacMan");
         stage.setOnHidden((WindowEvent event) -> {
             controller.getStage().getScene().setRoot(new Pane());
             controller.setStage(null);
@@ -198,7 +198,7 @@ public class FlowController {
         controller.initialize();
         Stage stage = new Stage();
         //stage.getIcons().add(new Image("sistematransporte/resources/icono.png"));
-        stage.setTitle("Sistema Transporte");
+        stage.setTitle("PacMan");
         stage.setResizable(false);
         stage.setOnHidden((WindowEvent event) -> {
             controller.getStage().getScene().setRoot(new Pane());

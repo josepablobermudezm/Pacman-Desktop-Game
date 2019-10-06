@@ -22,8 +22,8 @@ public class PacmanFX extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        
-        FlowController.getInstance().InitializeFlow(primaryStage, null);
+        primaryStage.setResizable(true);
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInWindowTransparent("Menu");
         
     }
