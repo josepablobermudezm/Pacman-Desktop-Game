@@ -14,7 +14,7 @@ import javafx.scene.shape.Circle;
 /**
  *
  * @author JORDI RODRIGUEZ
- */
+ *//*
 public class Nodo extends Circle {
    
     private final List <Arista> aristas_Adyacentes = new ArrayList<>();
@@ -59,7 +59,7 @@ public class Nodo extends Circle {
     public String toString() {
         return "Nodo{" + "aristas_Adyacentes=" + aristas_Adyacentes + ", nodos_Adyacentes=" + nodos_Adyacentes + ", marca=" + marca + ", puntoMapa=" + puntoMapa + ", numNodo=" + numNodo + ", LongitudCamino=" + LongitudCamino + ", NodoAntecesorDisjktra=" + NodoAntecesorDisjktra + '}';
     }*/
-
+/*
     public Nodo(double centerX, double centerY, double radius) {
         super(centerX, centerY, radius);
         this.numNodo=0;
@@ -104,4 +104,4 @@ public class Nodo extends Circle {
     }
     
 
-}
+}*/
