@@ -14,7 +14,7 @@
     -fx-font-size : 27pt;
     -fx-text-fill : white;
 }
-.root{
+#root{
     -fx-background-color: black;
 }
 
