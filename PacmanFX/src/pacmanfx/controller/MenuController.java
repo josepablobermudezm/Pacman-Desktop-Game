@@ -39,7 +39,7 @@ public class MenuController extends Controller{
 
     @FXML
     private void Start(MouseEvent event) {
-        FlowController.getInstance().goViewInWindow("Nivel1");
+        FlowController.getInstance().goViewInWindowTransparent("Nivel1");
         this.getStage().close();
     }
 

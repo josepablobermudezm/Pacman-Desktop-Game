@@ -24,7 +24,7 @@ public class PacmanFX extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setResizable(true);
         FlowController.getInstance().initialize();
-        FlowController.getInstance().goViewInWindowTransparent("Menu");
+        FlowController.getInstance().goViewInWindowTransparent("Nivel1");
         
     }
 

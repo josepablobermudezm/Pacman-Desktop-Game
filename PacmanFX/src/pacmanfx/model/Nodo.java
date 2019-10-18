@@ -22,7 +22,7 @@ public class Nodo {
     public Nodo() {
     }
 
-    Nodo(Double posx, Double posy) {
+    public Nodo(Double posx, Double posy) {
         point2D = new Point2D(posx, posy);
     }
 
