@@ -8,100 +8,42 @@ package pacmanfx.model;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 
 /**
  *
- * @author JORDI RODRIGUEZ
- *//*
-public class Nodo extends Circle {
-   
-    private final List <Arista> aristas_Adyacentes = new ArrayList<>();
-    private final List <Nodo> nodos_Adyacentes = new ArrayList<>();
-    private boolean marca;
-    private Point2D puntoMapa; 
-    private Integer numNodo;
-    private Integer LongitudCamino;
-    private Nodo NodoAntecesorDisjktra;
-    public boolean isMarca() {
-        return marca;
-    }
+ * @author Jose Pablo Bermudez
+ */
+public class Nodo {
 
-    public void setMarca(boolean marca) {
-        this.marca = marca;
-    }
-
-    public Point2D getPuntoMapa() {
-        return puntoMapa;
-    }
-
-    public void setPuntoMapa(Point2D puntoMapa) {
-        this.puntoMapa = puntoMapa;
-    }
-    
-    public Nodo(double radius) {
-        super(radius);
-        this.numNodo=0;
-    }
-
-    public Nodo(double radius, Paint fill) {
-        super(radius, fill);
-        this.numNodo=0;
-    }
+    private final List<Arista> aristas_Adyacentes = new ArrayList<>();
+    private final List<Nodo> nodos_Adyacentes = new ArrayList<>();
+    private Point2D point2D;
 
     public Nodo() {
-        this.numNodo=0;
-        
     }
 
-   /* @Override
-    public String toString() {
-        return "Nodo{" + "aristas_Adyacentes=" + aristas_Adyacentes + ", nodos_Adyacentes=" + nodos_Adyacentes + ", marca=" + marca + ", puntoMapa=" + puntoMapa + ", numNodo=" + numNodo + ", LongitudCamino=" + LongitudCamino + ", NodoAntecesorDisjktra=" + NodoAntecesorDisjktra + '}';
-    }*/
-/*
-    public Nodo(double centerX, double centerY, double radius) {
-        super(centerX, centerY, radius);
-        this.numNodo=0;
+    Nodo(Double posx, Double posy) {
+        point2D = new Point2D(posx, posy);
     }
 
-    public Nodo(double centerX, double centerY, double radius, Paint fill,Integer num) {
-        super(centerX, centerY, radius, fill);
-        this.numNodo=num;
-        this.marca=false;
+    public Point2D getPoint2D() {
+        return point2D;
     }
 
-    public Integer getNumNodo() {
-        return numNodo;
+    public void setPoint2D(Point2D point2D) {
+        this.point2D = point2D;
     }
 
-    public void setNumNodo(Integer numNodo) {
-        this.numNodo = numNodo;
+    public void distancia() {
+        this.point2D.distance(point2D);
     }
 
-    public List<Arista> getAristasAdyacentes() {
+    public List<Arista> getAristas_Adyacentes() {
         return aristas_Adyacentes;
     }
-    
-    public List<Nodo> getNodosAdyacentes() {
+
+    public List<Nodo> getNodos_Adyacentes() {
         return nodos_Adyacentes;
     }
 
-    public Integer getLongitudCamino() {
-        return LongitudCamino;
-    }
-
-    public void setLongitudCamino(Integer LongitudCamino) {
-        this.LongitudCamino = LongitudCamino;
-    }
-
-    public Nodo getNodoAntecesorDisjktra() {
-        return NodoAntecesorDisjktra;
-    }
-
-    public void setNodoAntecesorDisjktra(Nodo NodoAntecesorDisjktra) {
-        this.NodoAntecesorDisjktra = NodoAntecesorDisjktra;
-    }
-    
-
-}*/
+}

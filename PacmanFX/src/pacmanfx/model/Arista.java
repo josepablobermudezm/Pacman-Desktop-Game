@@ -4,27 +4,71 @@
  * and open the template in the editor.
  */
 package pacmanfx.model;
-/*
+
 import java.util.List;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 
 /**
  *
- * @author JORDI RODRIGUEZ
+ * @author Jose Pablo Bermudez
  */
-/*
-public class Arista extends Line {
+public class Arista {
 
+    private Integer peso;
+    private Integer pesoOriginal;
     private Nodo origen;
     private Nodo destino;
-    private Integer peso;
-    private Boolean accidente;
-    private Boolean reparacion;
-    private Integer pesoOriginal;
+    private Integer pesoCambio;
+
+    public Arista() {
+    }
+
+    public Arista(Integer peso, Integer pesoOriginal, Nodo origen, Nodo destino, Integer pesoCambio) {
+        this.peso = peso;
+        this.pesoOriginal = pesoOriginal;
+        this.origen = origen;
+        this.destino = destino;
+        this.pesoCambio = pesoCambio;
+    }
+
+    /*public void agregarNodos(List<Nodo> nodos) {
+
+        Point2D inicio = new Point2D(0, 0);
+        Point2D fin = new Point2D(0, 0);
+        Nodo aux = new Nodo();
+        Nodo aux2 = new Nodo();
+        for (Nodo nodo : nodos) {
+            if (nodo.getCenterX() == getStartX() && nodo.getCenterY() == getStartY()) {
+                setOrigen(nodo);
+                nodo.getAristasAdyacentes().add(this);
+                inicio = nodo.getPuntoMapa();
+                aux = nodo;
+            } else if (nodo.getCenterX() == getEndX() && nodo.getCenterY() == getEndY()) {
+                setDestino(nodo);
+                nodo.getAristasAdyacentes().add(this);
+                fin = nodo.getPuntoMapa();
+                aux2 = nodo;
+            }
+        }
+        Double p = inicio.distance(fin);
+        this.peso = p.intValue();
+        this.pesoOriginal = this.peso;
+    }*/
+    Arista(Double posx, Double posy, Double posx2, Double posy2) {
+        //Creo los nodos origen y destino de la ariata 
+        this.origen = new Nodo(posx, posy);
+        this.destino = new Nodo(posx2, posy2);
+        Double p = origen.getPoint2D().distance(destino.getPoint2D());
+        this.pesoOriginal = p.intValue();
+        this.peso = p.intValue();
+    }
+
+    public Integer getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Integer peso) {
+        this.peso = peso;
+    }
 
     public Integer getPesoOriginal() {
         return pesoOriginal;
@@ -34,47 +78,8 @@ public class Arista extends Line {
         this.pesoOriginal = pesoOriginal;
     }
 
-    public Boolean getReparacion() {
-        return reparacion;
-    }
-
-    public void setReparacion(Boolean reparacion) {
-        this.reparacion = reparacion;
-    }
-
-    public Boolean getAccidente() {
-        return accidente;
-    }
-
-    public void setAccidente(Boolean accidente) {
-        this.accidente = accidente;
-    }
-
-    public EventHandler<MouseEvent> getClick() {
-        return click;
-    }
-
-    public void setClick(EventHandler<MouseEvent> click) {
-        this.click = click;
-    }
-
-    private CierreCosevi cierre;
-
     public Nodo getOrigen() {
         return origen;
-    }
-
-    public Arista() {
-        super();
-    }
-
-    public Arista(double startX, double startY, double endX, double endY) {
-        super(startX, startY, endX, endY);
-        this.setStrokeWidth(10.00);
-        this.setStroke(Color.TRANSPARENT);
-        this.setOnMouseClicked(click);
-        this.accidente = false;
-        this.reparacion = false;
     }
 
     public void setOrigen(Nodo origen) {
@@ -89,65 +94,29 @@ public class Arista extends Line {
         this.destino = destino;
     }
 
-    public Integer getPeso() {
-        return peso;
+    public Integer getPesoCambio() {
+        return pesoCambio;
     }
 
-    public void setPeso(Integer peso) {
-        this.peso = peso;
+    public void setPesoCambio(Integer pesoCambio) {
+        this.pesoCambio = pesoCambio;
     }
 
     public void agregarNodos(List<Nodo> nodos) {
 
-        Point2D inicio = new Point2D(0, 0);
-        Point2D fin = new Point2D(0, 0);
-        Nodo aux = new Nodo();
-        Nodo aux2 = new Nodo();
         for (Nodo nodo : nodos) {
-            if (nodo.getCenterX() == getStartX() && nodo.getCenterY() == getStartY()) {
+            if (nodo.getPoint2D().getX() == getOrigen().getPoint2D().getX()
+                    && nodo.getPoint2D().getY() == getOrigen().getPoint2D().getY()) {
+
                 setOrigen(nodo);
-                nodo.getAristasAdyacentes().add(this);
-                inicio = nodo.getPuntoMapa();
-                aux=nodo;
-            } else if (nodo.getCenterX() == getEndX() && nodo.getCenterY() == getEndY()) {
+                nodo.getAristas_Adyacentes().add(this);
+            } else if (nodo.getPoint2D().getX() == getDestino().getPoint2D().getX()
+                    && nodo.getPoint2D().getY() == getDestino().getPoint2D().getY()) {
                 setDestino(nodo);
-                nodo.getAristasAdyacentes().add(this);
-                fin = nodo.getPuntoMapa();
-                aux2=nodo;
+                nodo.getAristas_Adyacentes().add(this);
             }
         }
-        Double p = inicio.distance(fin);
-        this.peso = p.intValue();
-        this.pesoOriginal = this.peso;
+
     }
 
-    EventHandler<MouseEvent> click = (MouseEvent event) -> {
-        if (agregarAccidente) {
-            Accidente accidente = new Accidente();
-
-            Point2D pMedio = this.destino.getPuntoMapa().midpoint(this.origen.getPuntoMapa());
-
-            accidente.setLayoutX(pMedio.getX() - accidente.getFitHeight() / 2);
-            accidente.setLayoutY(pMedio.getY() - accidente.getFitWidth() / 2);
-
-            anchorPane.getChildren().add(accidente);
-            agregarAccidente = false;
-            PantPrincipalController.accidentes.add(this);
-            PantPrincipalController.imagenesAccidentes.add(accidente);
-            this.accidente = true;
-            PantPrincipalController.rutaNueva = true;
-        } else if (agregarReparacion) {
-            cierre = new CierreCosevi();
-            Point2D pMedio = this.destino.getPuntoMapa().midpoint(this.origen.getPuntoMapa());
-            cierre.setLayoutX(pMedio.getX() - cierre.getFitHeight() / 2);
-            cierre.setLayoutY(pMedio.getY() - cierre.getFitWidth() / 2);
-            anchorPane.getChildren().add(cierre);
-            agregarReparacion = false;
-            PantPrincipalController.imagenesCierres.add(cierre);
-            PantPrincipalController.cierresCosevi.add(cierre);
-            PantPrincipalController.rutaNueva = true;
-            this.reparacion = true;
-
-        }
-    };
-}*/
+}
