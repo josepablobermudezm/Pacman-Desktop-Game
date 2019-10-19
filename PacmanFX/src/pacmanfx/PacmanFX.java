@@ -5,6 +5,7 @@
  */
 package pacmanfx;
 
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,7 +25,7 @@ public class PacmanFX extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setResizable(true);
         FlowController.getInstance().initialize();
-        FlowController.getInstance().goViewInWindowTransparent("Nivel1");
+        FlowController.getInstance().goViewInWindowTransparent("Menu");
         
     }
 

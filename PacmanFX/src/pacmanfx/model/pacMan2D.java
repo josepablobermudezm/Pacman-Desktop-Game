@@ -5,9 +5,9 @@
  */
 package pacmanfx.model;
 
-import com.sun.javafx.geom.Arc2D;
-
-
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 
 /**
  *
@@ -16,19 +16,19 @@ import com.sun.javafx.geom.Arc2D;
 public class pacMan2D {
 
     private Nodo nodo = new Nodo();
-    private Arc2D pMan;
+    private Arc pMan;
 
     public pacMan2D() {
 
     }
-/*
+
+    /*
     Debe setear las aristas adyacentes constantemenente 
-    */
-
-
-    public pacMan2D(float x, float y, float w, float h, float angSt, float angExt, int closure) {
-        pMan = new Arc2D(x, y, w, h, angSt, angExt, closure);
-        
+     */
+    public pacMan2D(Double x, Double y, Double w, Double h, Double angSt, Double angExt) {
+        pMan = new Arc(x, y, h, w, angSt, angExt);
+        pMan.setFill(Paint.valueOf("YELLOW"));
+        pMan.setType(ArcType.ROUND);
     }
 
     public Nodo getNodo() {
@@ -39,14 +39,12 @@ public class pacMan2D {
         this.nodo = nodo;
     }
 
-    public Arc2D getpMan() {
+    public Arc getpMan() {
         return pMan;
     }
 
-    public void setpMan(Arc2D pMan) {
+    public void setpMan(Arc pMan) {
         this.pMan = pMan;
     }
-    
-    
 
 }
