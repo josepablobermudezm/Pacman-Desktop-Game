@@ -49,7 +49,7 @@ public class Nivel4Controller extends Controller implements Initializable {
             cont5 = 0, cont6 = 0, cont7 = 0, cont8 = 0, cont9 = 0, cont10 = 0;
     static boolean up = false, down = false, left = false, right = false, value = false, mapa2 = false, Nivel1 = true, Nivel2 = false, Nivel3 = false, Nivel4 = false,
             Nivel5 = false, Nivel6 = false, Nivel7 = false, Nivel8 = false, Nivel9 = false, Nivel10 = false;
-    String nivel = "Nivel 2";
+    String nivel = "Nivel 4";
 
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
@@ -87,19 +87,20 @@ public class Nivel4Controller extends Controller implements Initializable {
     @FXML
     private void Movimiento(KeyEvent event) {
     }
-    
     private Nodo nodoAux = null;
     private static boolean encontrado = false;
     private String movimiento = "";
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
+                movimiento = "DOWN";
                 down();
             } else {
                 movimiento = "DOWN";
             }
         } else if (event.getCode() == event.getCode().LEFT) {
             if (nodoAux == null) {
+                movimiento = "LEFT";
                 left();
             } else {
                 movimiento = "LEFT";
@@ -107,12 +108,14 @@ public class Nivel4Controller extends Controller implements Initializable {
 
         } else if (event.getCode() == event.getCode().UP) {
             if (nodoAux == null) {
+                movimiento = "UP";
                 up();
             } else {
                 movimiento = "UP";
             }
         } else if (event.getCode() == event.getCode().RIGHT) {
             if (nodoAux == null) {
+                movimiento = "RIGHT";
                 right();
             } else {
                 movimiento = "RIGHT";
@@ -293,16 +296,16 @@ public class Nivel4Controller extends Controller implements Initializable {
             timeline.play();
             timeline.setOnFinished((valor) -> {
                 nodoAux = null;
-                right();
+                movimiento();
             });
         }
     }
+    
     public void CrearMapa() {
 
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
-            System.out.println(dir);
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -417,12 +420,10 @@ public class Nivel4Controller extends Controller implements Initializable {
 
     @FXML
     private void mouse(MouseEvent event) {
-        root.getChildren().get(root.getChildren().size()-1).setOpacity(0);
+        root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
-        Circle circle = new Circle(event.getX(), event.getY(), 3,Paint.valueOf("RED"));
+        Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
         root.getChildren().add(circle);
     }
-
-    
 }

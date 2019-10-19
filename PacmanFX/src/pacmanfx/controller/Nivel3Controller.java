@@ -89,12 +89,14 @@ public class Nivel3Controller extends Controller implements Initializable {
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
+                movimiento = "DOWN";
                 down();
             } else {
                 movimiento = "DOWN";
             }
         } else if (event.getCode() == event.getCode().LEFT) {
             if (nodoAux == null) {
+                movimiento = "LEFT";
                 left();
             } else {
                 movimiento = "LEFT";
@@ -102,12 +104,14 @@ public class Nivel3Controller extends Controller implements Initializable {
 
         } else if (event.getCode() == event.getCode().UP) {
             if (nodoAux == null) {
+                movimiento = "UP";
                 up();
             } else {
                 movimiento = "UP";
             }
         } else if (event.getCode() == event.getCode().RIGHT) {
             if (nodoAux == null) {
+                movimiento = "RIGHT";
                 right();
             } else {
                 movimiento = "RIGHT";
@@ -288,7 +292,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             timeline.play();
             timeline.setOnFinished((valor) -> {
                 nodoAux = null;
-                right();
+                movimiento();
             });
         }
     }
