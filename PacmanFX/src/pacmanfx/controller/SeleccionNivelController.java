@@ -42,7 +42,7 @@ public class SeleccionNivelController extends Controller{
 
     @FXML
     private void Volver(MouseEvent event) {
-        FlowController.getInstance().goView("Menu","Center",null);
+        FlowController.getInstance().goViewInStage("Menu",this.getStage());
         //ERROR, no sé porque
     }
 
@@ -60,6 +60,8 @@ public class SeleccionNivelController extends Controller{
 
     @FXML
     private void Nivel3(MouseEvent event) {
+        FlowController.getInstance().goViewInWindowTransparent("Nivel3");
+        this.getStage().close();
     }
 
     @FXML
