@@ -32,6 +32,7 @@ import javafx.util.Duration;
 import pacmanfx.model.Arista;
 import pacmanfx.model.Nodo;
 import pacmanfx.model.pacMan2D;
+import pacmanfx.util.FlowController;
 
 /**
  * FXML Controller class
@@ -89,137 +90,213 @@ public class Nivel4Controller extends Controller implements Initializable {
     
     private Nodo nodoAux = null;
     private static boolean encontrado = false;
+    private String movimiento = "";
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
-            xAux = (int) pacman.getpMan().getCenterX() - 14;
-            yAux = (int) pacman.getpMan().getCenterY();
-            while (xAux < (int) pacman.getpMan().getCenterX() + 14 && nodoAux == null) {
-                while (yAux <645) {
-                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
-                    }
-                    if (nodoAux != null) {
-                        yAux = 646;
-                        break;
-                    }
-                    yAux++;
-                }
-                
-                if (nodoAux != null) {
-                    xAux = (int) pacman.getpMan().getCenterX() + 14 ;
-                    break;
-                }
-                yAux = (int) pacman.getpMan().getCenterY();
-                xAux++;
+            if (nodoAux == null) {
+                down();
+            } else {
+                movimiento = "DOWN";
             }
-            down();
-
-            aux = 40;
-            if (nodoAux != null) {
-                pacman.getpMan().setRotate(90);
-                Timeline timeline = new Timeline();
-
-                KeyValue kv = new KeyValue(pacman.getpMan().layoutXProperty(), -(nodoAux.getPoint2D().getX() - ((pacman.getpMan().getCenterX()) / 2)) - 20);
-
-                KeyValue kvy = new KeyValue(pacman.getpMan().layoutYProperty(), (nodoAux.getPoint2D().getY() - ((pacman.getpMan().getCenterY()) / 2)) + 20);
-                KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
-                KeyFrame kfy = new KeyFrame(Duration.millis(1000), kvy);
-                timeline.getKeyFrames().addAll(kfy);
-                timeline.play();
-                nodoAux = null;
+        } else if (event.getCode() == event.getCode().LEFT) {
+            if (nodoAux == null) {
+                left();
+            } else {
+                movimiento = "LEFT";
             }
+
+        } else if (event.getCode() == event.getCode().UP) {
+            if (nodoAux == null) {
+                up();
+            } else {
+                movimiento = "UP";
+            }
+        } else if (event.getCode() == event.getCode().RIGHT) {
+            if (nodoAux == null) {
+                right();
+            } else {
+                movimiento = "RIGHT";
+            }
+
+        } else if (event.getCode() == event.getCode().ESCAPE) {
+            FlowController.getInstance().initialize();
+            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
         }
-        if (event.getCode() == event.getCode().LEFT) {
-            left();
-            xAux = (int) pacman.getpMan().getCenterX();
-            yAux = (int) pacman.getpMan().getCenterY() - 14;
+    };
 
-            while (yAux < (int) pacman.getpMan().getCenterX() + 14 && nodoAux == null) {
-                while (xAux >= 0) {
-                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
-                    }
-                    if (nodoAux != null) {
-                        xAux = -1;
-                        break;
-                    }
-                    xAux--;
+    private void movimiento() {
+        switch (movimiento) {
+            case "UP":
+                up();
+                break;
+            case "DOWN":
+                down();
+                break;
+            case "LEFT":
+                left();
+                break;
+            case "RIGHT":
+                right();
+                break;
+        }
+    }
+
+    public void up() {
+
+        xAux = (int) pacman.getpMan().getCenterX() - 14;
+        yAux = (int) pacman.getpMan().getCenterY() - 13;
+        while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
+            while (yAux >= 0) {
+                if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
+                    nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
                 }
                 if (nodoAux != null) {
-                    xAux = (int) pacman.getpMan().getCenterX() + 14;
+                    yAux = -1;
                     break;
                 }
+                yAux--;
+            }
 
-                xAux = (int) pacman.getpMan().getCenterX();
+            if (nodoAux != null) {
+                xAux = (int) pacman.getpMan().getCenterX() + 14;
+                break;
+            }
+
+            yAux = (int) pacman.getpMan().getCenterY() - 13;
+            xAux++;
+        }
+        if (nodoAux != null) {
+            pacman.getpMan().setRotate(-90);
+            Timeline timeline = new Timeline();
+            KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
+            KeyFrame kfy = new KeyFrame(Duration.millis(1000), kvy);
+            timeline.getKeyFrames().add(kfy);
+            timeline.play();
+            timeline.setOnFinished((value) -> {
+                nodoAux = null;
+                movimiento();
+            });
+        }
+    }
+
+    public void down() {
+        xAux = (int) pacman.getpMan().getCenterX() - 14;
+        yAux = (int) pacman.getpMan().getCenterY() + 13;
+        while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
+            while (yAux < 645) {
+                if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
+                    nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                }
+                if (nodoAux != null) {
+                    yAux = 646;
+                    break;
+                }
                 yAux++;
             }
 
             if (nodoAux != null) {
-                pacman.getpMan().setRotate(-180);
-                Timeline timeline = new Timeline();
-
-                KeyValue kv = new KeyValue(pacman.getpMan().layoutXProperty(), -(nodoAux.getPoint2D().getX() - ((pacman.getpMan().getCenterX()) / 2)) - 20);
-
-                KeyValue kvy = new KeyValue(pacman.getpMan().layoutYProperty(), (nodoAux.getPoint2D().getY() - ((pacman.getpMan().getCenterY()) / 2)));
-                KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
-                KeyFrame kfy = new KeyFrame(Duration.millis(1000), kvy);
-                timeline.getKeyFrames().addAll(kf);
-                timeline.play();
-                nodoAux = null;
+                xAux = (int) pacman.getpMan().getCenterX() + 14;
+                break;
             }
-            aux = 37;
-
+            yAux = (int) pacman.getpMan().getCenterY() + 13;
+            xAux++;
         }
-        if (event.getCode() == event.getCode().UP) {
-            up();
-            pacman.getpMan().setRotate(-90);
-            aux = 38;
-
-        }
-        if (event.getCode() == event.getCode().RIGHT) {
-            right();
-            pacman.getpMan().setRotate(0);
-            aux = 39;
-        }
-
-        /*pacman.getpMan().setLayoutY(pacman.getpMan().getLayoutY());
-        pacman.getpMan().setLayoutX(pacman.getpMan().getLayoutX() +);*/
+        aux = 40;
         if (nodoAux != null) {
+            pacman.getpMan().setRotate(90);
             Timeline timeline = new Timeline();
-
-            KeyValue kv = new KeyValue(pacman.getpMan().layoutXProperty(), -(nodoAux.getPoint2D().getX() - ((pacman.getpMan().getCenterX()) / 2)) - 20);
-
-            KeyValue kvy = new KeyValue(pacman.getpMan().layoutYProperty(), (nodoAux.getPoint2D().getY() - ((pacman.getpMan().getCenterY()) / 2)));
-            KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
+            KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
             KeyFrame kfy = new KeyFrame(Duration.millis(1000), kvy);
-            timeline.getKeyFrames().addAll(kf);
+            timeline.getKeyFrames().add(kfy);
             timeline.play();
+            timeline.setOnFinished((valor) -> {
+                nodoAux = null;
+                movimiento();
+            });
+
         }
-
-    };
-    
-    
-    public void up() {
-        vely = -1.5;
-        velx = 0;
-    }
-
-    public void down() {
-        vely = 1.5;
-        velx = 0;
     }
 
     public void left() {
-        velx = -1.5;
+        xAux = (int) pacman.getpMan().getCenterX() - 13;
+        yAux = (int) pacman.getpMan().getCenterY() - 14;
 
-        vely = 0;
+        while (yAux < (int) pacman.getpMan().getCenterY() + 14) {
+            while (xAux >= 0) {
+                if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
+                    nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                }
+
+                if (nodoAux != null) {
+                    xAux = -1;
+                    break;
+                }
+                xAux--;
+            }
+            if (nodoAux != null) {
+                yAux = (int) pacman.getpMan().getCenterY() - 13;
+                break;
+            }
+
+            yAux++;
+            xAux = (int) pacman.getpMan().getCenterX() - 13;
+
+        }
+
+        if (nodoAux != null) {
+            pacman.getpMan().setRotate(-180);
+            Timeline timeline = new Timeline();
+            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
+            KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+            timeline.setOnFinished((valor) -> {
+                nodoAux = null;
+                movimiento();
+            });
+
+        }
     }
 
     public void right() {
-        velx = 1.5;
-        vely = 0;
-    }
+        xAux = (int) pacman.getpMan().getCenterX() + 13;
+        yAux = (int) pacman.getpMan().getCenterY() - 13;
 
+        while (yAux < (int) pacman.getpMan().getCenterY() + 13) {
+            while (xAux < 900) {
+                if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
+                    nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                }
+
+                if (nodoAux != null) {
+                    xAux = -1;
+                    break;
+                }
+                xAux++;
+            }
+            if (nodoAux != null) {
+                yAux = (int) pacman.getpMan().getCenterY() + 13;
+                break;
+            }
+
+            yAux++;
+            xAux = (int) pacman.getpMan().getCenterX() + 13;
+
+        }
+
+        if (nodoAux != null) {
+            pacman.getpMan().setRotate(0);
+            Timeline timeline = new Timeline();
+            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
+            KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+            timeline.setOnFinished((valor) -> {
+                nodoAux = null;
+                right();
+            });
+        }
+    }
     public void CrearMapa() {
 
         try {
@@ -287,7 +364,7 @@ public class Nivel4Controller extends Controller implements Initializable {
                 } else if (Mapa[i][j] == '@') {//pacman
 
                     //System.out.print("@");
-                    pacman = new pacMan2D((Double) x, (Double) y, 13.0, 15.0, (aux == 39) ? 30.0 : (aux == 37) ? 210.0 : (aux == 38) ? 120.0 : 300.0, 300.0);
+                    pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, (aux == 39) ? 30.0 : (aux == 37) ? 210.0 : (aux == 38) ? 120.0 : 300.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
 
