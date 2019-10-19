@@ -8,6 +8,7 @@ package pacmanfx.controller;
 import com.sun.prism.paint.Color;
 import java.awt.BasicStroke;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -129,12 +130,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             xAux = (int) pacman.getpMan().getCenterX() - 14;
             yAux = (int) pacman.getpMan().getCenterY();
             while (xAux < (int) pacman.getpMan().getCenterX() + 14 && nodoAux == null) {
-                System.out.println("Xd 2");
                 while (yAux <645) {
-                    System.out.println(yAux);
                     if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
                         nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
-                        System.out.println("Xd  3");
                     }
                     if (nodoAux != null) {
                         yAux = 646;
@@ -260,7 +258,10 @@ public class Nivel1Controller extends Controller implements Initializable {
     public void CrearMapa() {
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("src/pacmanfx/resources/Nodos.txt"));
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            System.out.println(dir);
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos.txt"));
             String line = null;
             Integer i = 0;
             while ((line = reader.readLine()) != null) {
@@ -280,7 +281,9 @@ public class Nivel1Controller extends Controller implements Initializable {
 
         }
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("src/pacmanfx/resources/Arista.txt"));
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista.txt"));
             String line = null;
 
             while ((line = reader.readLine()) != null) {
