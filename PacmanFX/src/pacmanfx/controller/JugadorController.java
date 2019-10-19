@@ -43,7 +43,8 @@ public class JugadorController extends Controller{
 
     @FXML
     private void Volver(MouseEvent event) {
-        FlowController.getInstance().goView("Menu","Center",null);
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("Menu", this.getStage());
     }
     
 }

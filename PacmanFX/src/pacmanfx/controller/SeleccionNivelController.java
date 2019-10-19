@@ -20,7 +20,7 @@ import pacmanfx.util.FlowController;
  *
  * @author Jose Pablo Bermudez
  */
-public class SeleccionNivelController extends Controller{
+public class SeleccionNivelController extends Controller {
 
     @FXML
     private ImageView omg;
@@ -29,8 +29,8 @@ public class SeleccionNivelController extends Controller{
 
     /**
      * Initializes the controller class.
-     */  
-     @Override
+     */
+    @Override
     public void initialize() {
         Image imgLogo;
         try {
@@ -42,26 +42,26 @@ public class SeleccionNivelController extends Controller{
 
     @FXML
     private void Volver(MouseEvent event) {
-        FlowController.getInstance().goViewInStage("Menu",this.getStage());
-        //ERROR, no sé porque
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("Menu", this.getStage());
     }
 
     @FXML
     private void Nivel1(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel1");
-        this.getStage().close();
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("Nivel1", this.getStage());
     }
 
     @FXML
     private void Nivel2(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel2");
-        this.getStage().close();
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("Nivel2", this.getStage());
     }
 
     @FXML
     private void Nivel3(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel3");
-        this.getStage().close();
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("Nivel3", this.getStage());
     }
 
     @FXML
@@ -92,5 +92,4 @@ public class SeleccionNivelController extends Controller{
     private void Nivel10(MouseEvent event) {
     }
 
-   
 }

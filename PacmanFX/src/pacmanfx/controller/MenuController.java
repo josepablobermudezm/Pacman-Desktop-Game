@@ -39,12 +39,14 @@ public class MenuController extends Controller{
 
     @FXML
     private void Start(MouseEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInStage("SeleccionNivel",this.getStage());
         //this.getStage().close();
     }
 
     @FXML
     private void Configuracion(MouseEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInStage("Configuracion", this.getStage());
         //this.getStage().close();
     }
@@ -52,11 +54,12 @@ public class MenuController extends Controller{
     @FXML
     private void Salir(MouseEvent event) {
         //FlowController.getMainStage().close();
-        FlowController.getInstance().cerrar(stage);
+        this.getStage().close();
     }
 
     @FXML
     private void jugador(MouseEvent event) {
+        FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInStage("Jugador", this.getStage());
     }
     
