@@ -261,6 +261,10 @@ public class Nivel1Controller extends Controller implements Initializable {
             File f = new File(".");
             String dir = f.getAbsolutePath();
             System.out.println(dir);
+            //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
+            /*File f = new File(".");
+            String dir = f.getAbsolutePath();
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos.txt"));
             String line = null;
             Integer i = 0;
@@ -281,6 +285,10 @@ public class Nivel1Controller extends Controller implements Initializable {
 
         }
         try {
+            //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
+            /*File f = new File(".");
+            String dir = f.getAbsolutePath();
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
             File f = new File(".");
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista.txt"));
