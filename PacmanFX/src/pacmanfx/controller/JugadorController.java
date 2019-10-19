@@ -20,44 +20,30 @@ import pacmanfx.util.FlowController;
  *
  * @author Jose Pablo Bermudez
  */
-public class MenuController extends Controller{
+public class JugadorController extends Controller{
 
     @FXML
     private ImageView omg;
+    @FXML
+    private Label lblVolver;
+
+    /**
+     * Initializes the controller class.
+     */
 
     @Override
     public void initialize() {
-        
         Image imgLogo;
         try {
-            imgLogo = new Image("/pacmanfx/resources/fondo4.jpg");
+            imgLogo = new Image("/pacmanfx/resources/fondo.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
-        
     }
 
     @FXML
-    private void Start(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel1");
-        this.getStage().close();
-    }
-
-    @FXML
-    private void Configuracion(MouseEvent event) {
-        FlowController.getInstance().goViewInStage("Configuracion", this.getStage());
-        //this.getStage().close();
-    }
-
-    @FXML
-    private void Salir(MouseEvent event) {
-        //FlowController.getMainStage().close();
-        FlowController.getInstance().cerrar(stage);
-    }
-
-    @FXML
-    private void jugador(MouseEvent event) {
-        FlowController.getInstance().goViewInStage("Jugador", this.getStage());
+    private void Volver(MouseEvent event) {
+        FlowController.getInstance().goView("Menu","Center",null);
     }
     
 }

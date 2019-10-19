@@ -4,12 +4,12 @@
     -jfx-focus-color: -fx-secondary;
 }
 
-.label{
+.lbl{
     -fx-text-fill: gray;
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 25pt;
 }
-.label:hover{
+.lbl:hover{
     -fx-font-size : 27pt;
     -fx-text-fill : white;
 }
