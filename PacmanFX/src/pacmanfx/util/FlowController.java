@@ -115,7 +115,7 @@ public class FlowController {
         try {
             //this.mainStage.setResizable(false);
             //this.mainStage.getIcons().add(new Image("pacmanfx/resources/icono.png"));
-            this.mainStage.setScene(new Scene(FXMLLoader.load(PacmanFX.class.getResource("view/Nivel1.fxml"), this.idioma)));
+            this.mainStage.setScene(new Scene(FXMLLoader.load(PacmanFX.class.getResource("view/Menu.fxml"), this.idioma)));
             mainStage.initStyle(StageStyle.TRANSPARENT);
             this.mainStage.show();
         } catch (IOException ex) {

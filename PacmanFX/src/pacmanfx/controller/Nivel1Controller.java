@@ -196,7 +196,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(0);
             aux = 39;
         }
-
+        if(event.getCode() == event.getCode().ESCAPE){
+            
+        }
         /*pacman.getpMan().setLayoutY(pacman.getpMan().getLayoutY());
         pacman.getpMan().setLayoutX(pacman.getpMan().getLayoutX() +);*/
         if (nodoAux != null) {

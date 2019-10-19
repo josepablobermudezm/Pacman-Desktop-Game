@@ -39,8 +39,8 @@ public class MenuController extends Controller{
 
     @FXML
     private void Start(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("SeleccionNivel");
-        this.getStage().close();
+        FlowController.getInstance().goViewInStage("SeleccionNivel",this.getStage());
+        //this.getStage().close();
     }
 
     @FXML

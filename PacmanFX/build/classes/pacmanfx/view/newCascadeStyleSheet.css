@@ -4,25 +4,31 @@
     -jfx-focus-color: -fx-secondary;
 }
 .Label{
+    -fx-font-family: "Decker";
+    /*-fx-font-family: "Arial Rounded MT Bold";*/
     -fx-text-fill: #384294;
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 25pt;
 }
 .lbl{
+    -fx-font-family: "Decker";
     -fx-text-fill: gray;
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 25pt;
 }
 .lbl:hover{
+    -fx-font-family: "Decker";
     -fx-font-size : 27pt;
     -fx-text-fill : white;
 }
 .lbl4{
+    -fx-font-family: "Decker";
     -fx-text-fill: #4955ba;
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 25pt;
 }
 .lbl4:hover{
+    -fx-font-family: "Decker";
     -fx-font-size : 25pt;
     -fx-text-fill : white;
 }
@@ -35,12 +41,13 @@
     -fx-border-width: 5;
 }
 .lbl3{
-    
+    -fx-font-family: "Decker";
     -fx-text-fill : white;
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 25pt;
 }
 .lbl3:hover{
+    -fx-font-family: "Decker";
     -fx-font-size : 27pt;
     -fx-text-fill : white;
 }
