@@ -15,7 +15,7 @@
                   <ImageView fx:id="omg" fitHeight="645.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true" />
                   <Label layoutX="14.0" layoutY="562.0" onMouseClicked="#Salir" styleClass="lbl" text="Salir" />
                   <Label layoutX="14.0" layoutY="514.0" onMouseClicked="#Configuracion" styleClass="lbl" text="Configuración" />
-                  <Label layoutX="14.0" layoutY="416.0" onMouseClicked="#Start" styleClass="lbl" text="Jugar" />
+                  <Label layoutX="14.0" layoutY="416.0" onMouseClicked="#Start" styleClass="lbl" text="Iniciar" />
                   <Label layoutX="14.0" layoutY="464.0" onMouseClicked="#jugador" styleClass="lbl" text="Jugador" />
                </children>
             </AnchorPane>

@@ -3,7 +3,11 @@
     -fx-font-size : 35pt;
     -jfx-focus-color: -fx-secondary;
 }
-
+.Label{
+    -fx-text-fill: #384294;
+    /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
+    -fx-font-size: 25pt;
+}
 .lbl{
     -fx-text-fill: gray;
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
@@ -13,12 +17,40 @@
     -fx-font-size : 27pt;
     -fx-text-fill : white;
 }
+.lbl4{
+    -fx-text-fill: #4955ba;
+    /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
+    -fx-font-size: 25pt;
+}
+.lbl4:hover{
+    -fx-font-size : 25pt;
+    -fx-text-fill : white;
+}
+.anchorp{
+    -fx-border-color: #4955ba;
+    -fx-border-width: 5;
+}
+.anchorp:hover{
+    -fx-border-color: white;
+    -fx-border-width: 5;
+}
+.lbl3{
+    
+    -fx-text-fill : white;
+    /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
+    -fx-font-size: 25pt;
+}
+.lbl3:hover{
+    -fx-font-size : 27pt;
+    -fx-text-fill : white;
+}
 #root{
     -fx-background-color: black;
 }
 #puntos{
     -fx-font-family: "Showcard Gothic";
     -fx-text-fill : white;
+    -fx-font-size : 25pt;
 }
 .custom-jfx-radio-button-white{
     -fx-text-fill: black;
