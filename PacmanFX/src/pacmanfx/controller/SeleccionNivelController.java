@@ -66,6 +66,8 @@ public class SeleccionNivelController extends Controller{
 
     @FXML
     private void Nivel4(MouseEvent event) {
+        FlowController.getInstance().goViewInWindowTransparent("Nivel4");
+        this.getStage().close();
     }
 
     @FXML
