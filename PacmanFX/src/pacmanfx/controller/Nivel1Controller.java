@@ -24,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -141,6 +142,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
         }
     };
+
     private void movimiento() {
         switch (movimiento) {
             case "UP":
@@ -186,7 +188,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(-90);
             Timeline timeline = new Timeline();
             KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
-            KeyFrame kfy = new KeyFrame(Duration.millis(1000), kvy);
+            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
             timeline.getKeyFrames().add(kfy);
             timeline.play();
             timeline.setOnFinished((value) -> {
@@ -223,7 +227,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(90);
             Timeline timeline = new Timeline();
             KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
-            KeyFrame kfy = new KeyFrame(Duration.millis(1000), kvy);
+            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
             timeline.getKeyFrames().add(kfy);
             timeline.play();
             timeline.setOnFinished((valor) -> {
@@ -264,7 +270,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(-180);
             Timeline timeline = new Timeline();
             KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
-            KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
+            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
             timeline.getKeyFrames().add(kf);
             timeline.play();
             timeline.setOnFinished((valor) -> {
@@ -305,7 +313,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(0);
             Timeline timeline = new Timeline();
             KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
-            KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
+            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
             timeline.getKeyFrames().add(kf);
             timeline.play();
             timeline.setOnFinished((valor) -> {
@@ -384,8 +394,16 @@ public class Nivel1Controller extends Controller implements Initializable {
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, (aux == 39) ? 30.0 : (aux == 37) ? 210.0 : (aux == 38) ? 120.0 : 300.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
+                    pacman.setNodo(new Nodo(x, y));
+                    pacman.getpMan().centerXProperty().addListener((observable) -> {
+                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
+                    });
 
-                    root.getChildren().add(pacman.getpMan());//*/
+                    pacman.getpMan().centerYProperty().addListener((observable) -> {
+                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
+                    });
+
+                    root.getChildren().add(pacman.getpMan());
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
                 } else if (Mapa[i][j] == ' ') {//espacio en blanco
                     Circle circle = new Circle(j * 31 + 12, i * 29 + 5, 3, Paint.valueOf("YELLOW"));

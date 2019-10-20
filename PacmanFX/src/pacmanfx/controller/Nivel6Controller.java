@@ -18,6 +18,7 @@ import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -62,7 +63,7 @@ public class Nivel6Controller extends Controller implements Initializable {
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
-    
+
     double x = 447, y = 406, velx = 0, vely = 0;
     int code = 39/*por default a la derecha*/, cont = 0, gameStatus = 0, MouseX = 0, MouseY = 0,
             xAux = 434, yAux = 392, jAux = 14, iAux = 14, aux = 39, aux2 = 0, cont1 = 0, cont2 = 0, cont4 = 0, vidas = 6, cont3 = 0, contPuntos = 0,
@@ -76,14 +77,12 @@ public class Nivel6Controller extends Controller implements Initializable {
     private pacMan2D pacman;
     @FXML
     private AnchorPane root;
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize() {
-
-
 
     }
     private Nodo nodoAux = null;
@@ -170,7 +169,9 @@ public class Nivel6Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(-90);
             Timeline timeline = new Timeline();
             KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
-            KeyFrame kfy = new KeyFrame(Duration.millis(1000), kvy);
+            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
             timeline.getKeyFrames().add(kfy);
             timeline.play();
             timeline.setOnFinished((value) -> {
@@ -207,7 +208,9 @@ public class Nivel6Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(90);
             Timeline timeline = new Timeline();
             KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
-            KeyFrame kfy = new KeyFrame(Duration.millis(1000), kvy);
+            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
             timeline.getKeyFrames().add(kfy);
             timeline.play();
             timeline.setOnFinished((valor) -> {
@@ -248,7 +251,9 @@ public class Nivel6Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(-180);
             Timeline timeline = new Timeline();
             KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
-            KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
+            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
             timeline.getKeyFrames().add(kf);
             timeline.play();
             timeline.setOnFinished((valor) -> {
@@ -289,7 +294,9 @@ public class Nivel6Controller extends Controller implements Initializable {
             pacman.getpMan().setRotate(0);
             Timeline timeline = new Timeline();
             KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
-            KeyFrame kf = new KeyFrame(Duration.millis(1000), kv);
+            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
             timeline.getKeyFrames().add(kf);
             timeline.play();
             timeline.setOnFinished((valor) -> {
@@ -352,7 +359,7 @@ public class Nivel6Controller extends Controller implements Initializable {
                 this.root.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
-            };
+            }
         } catch (IOException | NumberFormatException e) {
         }
 
@@ -368,6 +375,14 @@ public class Nivel6Controller extends Controller implements Initializable {
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, (aux == 39) ? 30.0 : (aux == 37) ? 210.0 : (aux == 38) ? 120.0 : 300.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
+                    pacman.setNodo(new Nodo(x, y));
+                    pacman.getpMan().centerXProperty().addListener((observable) -> {
+                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
+                    });
+
+                    pacman.getpMan().centerYProperty().addListener((observable) -> {
+                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
+                    });
 
                     root.getChildren().add(pacman.getpMan());//*/
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
