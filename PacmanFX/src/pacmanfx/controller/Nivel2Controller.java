@@ -366,7 +366,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                 this.root.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
-            };
+            }
         } catch (IOException | NumberFormatException e) {
         }
 
