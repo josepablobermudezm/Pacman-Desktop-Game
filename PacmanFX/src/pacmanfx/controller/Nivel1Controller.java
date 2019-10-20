@@ -7,6 +7,7 @@ package pacmanfx.controller;
 
 import com.sun.prism.paint.Color;
 import java.awt.BasicStroke;
+import java.awt.Point;
 import java.awt.Robot;
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -110,14 +112,14 @@ public class Nivel1Controller extends Controller implements Initializable {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
                 movimiento = "DOWN";
-                down();
+                down(false);
             } else {
                 movimiento = "DOWN";
             }
         } else if (event.getCode() == event.getCode().LEFT) {
             if (nodoAux == null) {
                 movimiento = "LEFT";
-                left();
+                left(false);
             } else {
                 movimiento = "LEFT";
             }
@@ -125,14 +127,14 @@ public class Nivel1Controller extends Controller implements Initializable {
         } else if (event.getCode() == event.getCode().UP) {
             if (nodoAux == null) {
                 movimiento = "UP";
-                up();
+                up(false);
             } else {
                 movimiento = "UP";
             }
         } else if (event.getCode() == event.getCode().RIGHT) {
             if (nodoAux == null) {
                 movimiento = "RIGHT";
-                right();
+                right(false);
             } else {
                 movimiento = "RIGHT";
             }
@@ -146,53 +148,100 @@ public class Nivel1Controller extends Controller implements Initializable {
     private void movimiento() {
         switch (movimiento) {
             case "UP":
-                up();
+                up(false);
                 break;
             case "DOWN":
-                down();
+                down(false);
                 break;
             case "LEFT":
-                left();
+                left(false);
                 break;
             case "RIGHT":
-                right();
+                right(false);
                 break;
         }
     }
 
-    public void up() {
+    private Double posY;
+    private Double posX;
 
-        xAux = (int) pacman.getpMan().getCenterX() - 14;
-        yAux = (int) pacman.getpMan().getCenterY() - 13;
-        while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
-            while (yAux >= 0) {
-                if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                    nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+    public void up(Boolean devolver) {
+        if (!devolver) {
+            xAux = (int) pacman.getpMan().getCenterX() - 14;
+            yAux = (int) pacman.getpMan().getCenterY() - 13;
+            while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
+                while (yAux >= 0) {
+                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
+                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                    }
+                    if (nodoAux != null) {
+                        yAux = -1;
+                        break;
+                    }
+                    yAux--;
                 }
+
                 if (nodoAux != null) {
-                    yAux = -1;
+                    xAux = (int) pacman.getpMan().getCenterX() + 14;
                     break;
                 }
-                yAux--;
-            }
 
+                yAux = (int) pacman.getpMan().getCenterY() - 13;
+                xAux++;
+            }
             if (nodoAux != null) {
-                xAux = (int) pacman.getpMan().getCenterX() + 14;
-                break;
-            }
+                pacman.getpMan().setRotate(-90);
+                Timeline timeline = new Timeline();
+                KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
+                Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
+                timeline.getKeyFrames().add(kfy);
+                //La posicion del PacMan antes de la animacion
+                posY = pacman.getpMan().getCenterY();
+                posX = pacman.getpMan().getCenterX();
+                timeline.play();
 
-            yAux = (int) pacman.getpMan().getCenterY() - 13;
-            xAux++;
-        }
-        if (nodoAux != null) {
+                String movimientoOr = "UP";
+
+                timeline.currentTimeProperty().addListener((observable) -> {
+                    if (!movimientoOr.equals(movimiento) && movimiento.equals("DOWN")) {
+                        Platform.runLater(() -> {
+                            timeline.stop();
+                            down(true);
+                        });
+                    }
+                });
+
+                timeline.setOnFinished((value) -> {
+                    nodoAux = null;
+                    movimiento();
+                });
+            }
+        } else {
             pacman.getpMan().setRotate(-90);
             Timeline timeline = new Timeline();
-            KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
-            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), posY);
+            Double distance = new Point2D(posX, posY).distance(pacman.getNodo().getPoint2D());
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
             timeline.getKeyFrames().add(kfy);
+            //La posicion del PacMan antes de la animacion
+            posY = pacman.getpMan().getCenterY();
+            posX = pacman.getpMan().getCenterX();
             timeline.play();
+
+            String movimientoOr = "UP";
+
+            timeline.currentTimeProperty().addListener((observable) -> {
+                if (!movimientoOr.equals(movimiento) && movimiento.equals("DOWN")) {
+                    Platform.runLater(() -> {
+                        timeline.stop();
+                        down(true);
+                    });
+                }
+            });
+
             timeline.setOnFinished((value) -> {
                 nodoAux = null;
                 movimiento();
@@ -200,124 +249,252 @@ public class Nivel1Controller extends Controller implements Initializable {
         }
     }
 
-    public void down() {
-        xAux = (int) pacman.getpMan().getCenterX() - 14;
-        yAux = (int) pacman.getpMan().getCenterY() + 13;
-        while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
-            while (yAux < 645) {
-                if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                    nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+    public void down(Boolean devolver) {
+        if (!devolver) {
+
+            xAux = (int) pacman.getpMan().getCenterX() - 14;
+            yAux = (int) pacman.getpMan().getCenterY() + 13;
+            while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
+                while (yAux < 645) {
+                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
+                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                    }
+                    if (nodoAux != null) {
+                        yAux = 646;
+                        break;
+                    }
+                    yAux++;
                 }
+
                 if (nodoAux != null) {
-                    yAux = 646;
+                    xAux = (int) pacman.getpMan().getCenterX() + 14;
                     break;
                 }
-                yAux++;
-            }
+                yAux = (int) pacman.getpMan().getCenterY() + 13;
+                xAux++;
 
-            if (nodoAux != null) {
-                xAux = (int) pacman.getpMan().getCenterX() + 14;
-                break;
             }
-            yAux = (int) pacman.getpMan().getCenterY() + 13;
-            xAux++;
-        }
-        aux = 40;
-        if (nodoAux != null) {
+            if (nodoAux != null) {
+                pacman.getpMan().setRotate(90);
+                Timeline timeline = new Timeline();
+                KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
+                Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
+                timeline.getKeyFrames().add(kfy);
+                //La posicion del PacMan antes de la animacion
+                posY = pacman.getpMan().getCenterY();
+                posX = pacman.getpMan().getCenterX();
+                timeline.play();
+                String movimientoOr = "DOWN";
+                timeline.currentTimeProperty().addListener((observable) -> {
+                    if (!movimientoOr.equals(movimiento) && movimiento.equals("UP")) {
+                        Platform.runLater(() -> {
+                            timeline.stop();
+                            up(true);
+                        });
+                    }
+                });
+
+                timeline.setOnFinished((valor) -> {
+                    nodoAux = null;
+                    movimiento();
+                });
+            }
+        } else {
             pacman.getpMan().setRotate(90);
             Timeline timeline = new Timeline();
-            KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
-            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), posY);
+            Double distance = new Point2D(posX, posY).distance(pacman.getNodo().getPoint2D());
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
             timeline.getKeyFrames().add(kfy);
+            //La posicion del PacMan antes de la animacion
+            posY = pacman.getpMan().getCenterY();
+            posX = pacman.getpMan().getCenterX();
             timeline.play();
+            String movimientoOr = "DOWN";
+            timeline.currentTimeProperty().addListener((observable) -> {
+                if (!movimientoOr.equals(movimiento) && movimiento.equals("UP")) {
+                    Platform.runLater(() -> {
+                        timeline.stop();
+                        up(true);
+                    });
+                }
+            });
             timeline.setOnFinished((valor) -> {
                 nodoAux = null;
                 movimiento();
             });
-
         }
     }
 
-    public void left() {
-        xAux = (int) pacman.getpMan().getCenterX() - 13;
-        yAux = (int) pacman.getpMan().getCenterY() - 14;
+    public void left(Boolean devolver) {
+        if (!devolver) {
+            xAux = (int) pacman.getpMan().getCenterX() - 13;
+            yAux = (int) pacman.getpMan().getCenterY() - 14;
 
-        while (yAux < (int) pacman.getpMan().getCenterY() + 14) {
-            while (xAux >= 0) {
-                if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                    nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+            while (yAux < (int) pacman.getpMan().getCenterY() + 14) {
+                while (xAux >= 0) {
+                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
+                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                    }
+
+                    if (nodoAux != null) {
+                        xAux = -1;
+                        break;
+                    }
+                    xAux--;
                 }
-
                 if (nodoAux != null) {
-                    xAux = -1;
+                    yAux = (int) pacman.getpMan().getCenterY() - 13;
                     break;
                 }
-                xAux--;
+
+                yAux++;
+                xAux = (int) pacman.getpMan().getCenterX() - 13;
+
             }
+
             if (nodoAux != null) {
-                yAux = (int) pacman.getpMan().getCenterY() - 13;
-                break;
+                pacman.getpMan().setRotate(-180);
+                Timeline timeline = new Timeline();
+                KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
+                Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
+                timeline.getKeyFrames().add(kf);
+                //La posicion del PacMan antes de la animacion
+                posY = pacman.getpMan().getCenterY();
+                posX = pacman.getpMan().getCenterX();
+                //Inicio de la animacion
+                timeline.play();
+                String movimientoOr = "LEFT";
+                //Durante el transcurso de la animacion
+                timeline.currentTimeProperty().addListener((observable) -> {
+                    if (!movimientoOr.equals(movimiento) && movimiento.equals("RIGHT")) {
+                        Platform.runLater(() -> {
+                            timeline.stop();
+                            right(true);
+                        });
+                    }
+                });
+                //Cuando se termina la animacion
+                timeline.setOnFinished((valor) -> {
+                    nodoAux = null;
+                    movimiento();
+                });
             }
-
-            yAux++;
-            xAux = (int) pacman.getpMan().getCenterX() - 13;
-
-        }
-
-        if (nodoAux != null) {
+        } else {
             pacman.getpMan().setRotate(-180);
             Timeline timeline = new Timeline();
-            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
-            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), posX);
+            Double distance = new Point2D(posX, posY).distance(pacman.getNodo().getPoint2D());
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
             timeline.getKeyFrames().add(kf);
+            //La posicion del PacMan antes de la animacion
+            posY = pacman.getpMan().getCenterY();
+            posX = pacman.getpMan().getCenterX();
+            String movimientoOr = "LEFT";
+            //Inicio de la animacion
             timeline.play();
+            //Durante el transcurso de la animacion
+            timeline.currentTimeProperty().addListener((observable) -> {
+                if (!movimientoOr.equals(movimiento) && movimiento.equals("RIGHT")) {
+                    Platform.runLater(() -> {
+                        timeline.stop();
+                        right(true);
+                    });
+                }
+            });
+            //Cuando se termina la animacion
             timeline.setOnFinished((valor) -> {
                 nodoAux = null;
                 movimiento();
             });
-
         }
     }
 
-    public void right() {
-        xAux = (int) pacman.getpMan().getCenterX() + 13;
-        yAux = (int) pacman.getpMan().getCenterY() - 13;
+    public void right(Boolean devolver) {
+        if (!devolver) {
+            xAux = (int) pacman.getpMan().getCenterX() + 13;
+            yAux = (int) pacman.getpMan().getCenterY() - 13;
 
-        while (yAux < (int) pacman.getpMan().getCenterY() + 13) {
-            while (xAux < 900) {
-                if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                    nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+            while (yAux < (int) pacman.getpMan().getCenterY() + 13) {
+                while (xAux < 900) {
+                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
+                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                    }
+
+                    if (nodoAux != null) {
+                        xAux = -1;
+                        break;
+                    }
+                    xAux++;
                 }
-
                 if (nodoAux != null) {
-                    xAux = -1;
+                    yAux = (int) pacman.getpMan().getCenterY() + 13;
                     break;
                 }
-                xAux++;
+
+                yAux++;
+                xAux = (int) pacman.getpMan().getCenterX() + 13;
+
             }
+
             if (nodoAux != null) {
-                yAux = (int) pacman.getpMan().getCenterY() + 13;
-                break;
+                pacman.getpMan().setRotate(0);
+                Timeline timeline = new Timeline();
+                KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
+                Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
+                timeline.getKeyFrames().add(kf);
+                //La posicion del PacMan antes de la animacion
+                posY = pacman.getpMan().getCenterY();
+                posX = pacman.getpMan().getCenterX();
+                timeline.play();
+                String movimientoOr = "RIGHT";
+                //Durante el transcurso de la animacion
+                timeline.currentTimeProperty().addListener((observable) -> {
+                    if (!movimientoOr.equals(movimiento) && movimiento.equals("LEFT")) {
+                        Platform.runLater(() -> {
+                            timeline.stop();
+                            left(true);
+                        });
+                    }
+                });
+
+                timeline.setOnFinished((valor) -> {
+                    nodoAux = null;
+                    movimiento();
+                });
+                
             }
-
-            yAux++;
-            xAux = (int) pacman.getpMan().getCenterX() + 13;
-
-        }
-
-        if (nodoAux != null) {
+        } else {
             pacman.getpMan().setRotate(0);
             Timeline timeline = new Timeline();
-            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
-            Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(),posX);
+            Double distance = new Point2D(posX, posY).distance(pacman.getNodo().getPoint2D());
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
             timeline.getKeyFrames().add(kf);
+            //La posicion del PacMan antes de la animacion
+            posY = pacman.getpMan().getCenterY();
+            posX = pacman.getpMan().getCenterX();
             timeline.play();
+            String movimientoOr = "RIGHT";
+            //Durante el transcurso de la animacion
+            timeline.currentTimeProperty().addListener((observable) -> {
+                if (!movimientoOr.equals(movimiento) && movimiento.equals("LEFT")) {
+                    Platform.runLater(() -> {
+                        timeline.stop();
+                        left(true);
+                    });
+                }
+            });
+
             timeline.setOnFinished((valor) -> {
                 nodoAux = null;
                 movimiento();
