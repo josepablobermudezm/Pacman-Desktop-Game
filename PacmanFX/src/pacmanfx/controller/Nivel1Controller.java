@@ -584,7 +584,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
                 } else if (Mapa[i][j] == ' ') {//espacio en blanco
                     Circle circle = new Circle(j * 31 + 12, i * 29 + 5, 3, Paint.valueOf("YELLOW"));
-                    root.getChildren().add(circle);//tamaño y posición del cada uno de los rectangulos
+                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                 }
                 if (Mapa[i][j] == 'X' && i == 9 && j == 14) {//pared
 

@@ -541,7 +541,7 @@ private Nodo nodoAux = null;
                 this.root.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
-            };
+            }
         } catch (IOException | NumberFormatException e) {
         }
 

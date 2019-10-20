@@ -48,7 +48,6 @@ public class Nivel7Controller extends Controller implements Initializable {
     /**
      * Initializes the controller class.
      */
-    
     double x = 447, y = 406, velx = 0, vely = 0;
     int code = 39/*por default a la derecha*/, cont = 0, gameStatus = 0, MouseX = 0, MouseY = 0,
             xAux = 434, yAux = 392, jAux = 14, iAux = 14, aux = 39, aux2 = 0, cont1 = 0, cont2 = 0, cont4 = 0, vidas = 6, cont3 = 0, contPuntos = 0,
@@ -80,8 +79,8 @@ public class Nivel7Controller extends Controller implements Initializable {
             {'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
-    
-   @FXML
+
+    @FXML
     private AnchorPane root;
     private BorderPane border;
 
@@ -98,7 +97,7 @@ public class Nivel7Controller extends Controller implements Initializable {
     private void Movimiento(KeyEvent event) {
 
     }
-private Nodo nodoAux = null;
+    private Nodo nodoAux = null;
     private static boolean encontrado = false;
     private String movimiento = "";
     private EventHandler<KeyEvent> moverPacman = event -> {
@@ -463,12 +462,12 @@ private Nodo nodoAux = null;
                     nodoAux = null;
                     movimiento();
                 });
-                
+
             }
         } else {
             pacman.getpMan().setRotate(0);
             Timeline timeline = new Timeline();
-            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(),posX);
+            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), posX);
             Double distance = new Point2D(posX, posY).distance(pacman.getNodo().getPoint2D());
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
@@ -494,11 +493,13 @@ private Nodo nodoAux = null;
             });
         }
     }
+
     public void CrearMapa() {
 
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
+            System.out.println(dir);
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -563,6 +564,14 @@ private Nodo nodoAux = null;
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, (aux == 39) ? 30.0 : (aux == 37) ? 210.0 : (aux == 38) ? 120.0 : 300.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
+                    pacman.setNodo(new Nodo(x, y));
+                    pacman.getpMan().centerXProperty().addListener((observable) -> {
+                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
+                    });
+
+                    pacman.getpMan().centerYProperty().addListener((observable) -> {
+                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
+                    });
 
                     root.getChildren().add(pacman.getpMan());//*/
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
