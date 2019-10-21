@@ -12,9 +12,9 @@ import javafx.scene.paint.Color;
 /**
  *
  * @author JORDI RODRIGUEZ
- *//*
+ */
 public class Dijkstra {
-
+/*
     Mapa grafo;
     ArrayList <Nodo> listaNodosAdyacentes;
     ArrayList <Arista> aux = new ArrayList <Arista>();
@@ -132,5 +132,5 @@ public class Dijkstra {
                 }
             });
         }
-    }
-}*/
+    }*/
+}
