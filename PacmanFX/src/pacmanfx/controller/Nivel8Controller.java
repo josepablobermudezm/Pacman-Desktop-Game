@@ -48,7 +48,6 @@ public class Nivel8Controller extends Controller implements Initializable {
     /**
      * Initializes the controller class.
      */
-    
     double x = 447, y = 406, velx = 0, vely = 0;
     int code = 39/*por default a la derecha*/, cont = 0, gameStatus = 0, MouseX = 0, MouseY = 0,
             xAux = 434, yAux = 392, jAux = 14, iAux = 14, aux = 39, aux2 = 0, cont1 = 0, cont2 = 0, cont4 = 0, vidas = 6, cont3 = 0, contPuntos = 0,
@@ -58,9 +57,10 @@ public class Nivel8Controller extends Controller implements Initializable {
     String nivel = "Nivel 8";
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
+    private ArrayList<Circle> puntos = new ArrayList();
     private pacMan2D pacman;
     char Mapa[][]
-           = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+            = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
             {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
@@ -80,8 +80,8 @@ public class Nivel8Controller extends Controller implements Initializable {
             {'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
-    
-   @FXML
+
+    @FXML
     private AnchorPane root;
     private BorderPane border;
 
@@ -98,12 +98,15 @@ public class Nivel8Controller extends Controller implements Initializable {
     private void Movimiento(KeyEvent event) {
 
     }
-private Nodo nodoAux = null;
+
+    private Nodo nodoAux = null;
     private static boolean encontrado = false;
     private String movimiento = "";
+
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
+
                 movimiento = "DOWN";
                 down(false);
             } else {
@@ -198,6 +201,8 @@ private Nodo nodoAux = null;
                 String movimientoOr = "UP";
 
                 timeline.currentTimeProperty().addListener((observable) -> {
+
+                    //contPuntos++;
                     if (!movimientoOr.equals(movimiento) && movimiento.equals("DOWN")) {
                         Platform.runLater(() -> {
                             timeline.stop();
@@ -210,6 +215,9 @@ private Nodo nodoAux = null;
                     nodoAux = null;
                     movimiento();
                 });
+            } else {
+                //Abro la boca del pacMan cuando no encuentro ningun nodo
+                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(-90);
@@ -293,6 +301,9 @@ private Nodo nodoAux = null;
                     nodoAux = null;
                     movimiento();
                 });
+            } else {
+                //Abro la boca del pacMan cuando no encuentro ningun nodo
+                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(90);
@@ -315,6 +326,7 @@ private Nodo nodoAux = null;
                     });
                 }
             });
+
             timeline.setOnFinished((valor) -> {
                 nodoAux = null;
                 movimiento();
@@ -377,6 +389,9 @@ private Nodo nodoAux = null;
                     nodoAux = null;
                     movimiento();
                 });
+            } else {
+                //Cuando el pacMan no encuentra un nodo para moverse
+                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(-180);
@@ -463,12 +478,14 @@ private Nodo nodoAux = null;
                     nodoAux = null;
                     movimiento();
                 });
-                
+            } else {
+                //Cuando el pacMan no encuentra un nodo para moverse
+                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(0);
             Timeline timeline = new Timeline();
-            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(),posX);
+            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), posX);
             Double distance = new Point2D(posX, posY).distance(pacman.getNodo().getPoint2D());
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
@@ -504,7 +521,7 @@ private Nodo nodoAux = null;
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos8.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos.txt"));
             String line = null;
             Integer i = 0;
             while ((line = reader.readLine()) != null) {
@@ -530,7 +547,7 @@ private Nodo nodoAux = null;
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
             File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista8.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista.txt"));
             String line = null;
 
             while ((line = reader.readLine()) != null) {
@@ -559,17 +576,34 @@ private Nodo nodoAux = null;
                     rec.setFill(Paint.valueOf("#2E3782"));
                     root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
-
-                    //System.out.print("@");
-                    pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, (aux == 39) ? 30.0 : (aux == 37) ? 210.0 : (aux == 38) ? 120.0 : 300.0, 300.0);
+                    pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
                     pacman.setNodo(new Nodo(x, y));
+                    //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerXProperty().addListener((observable) -> {
+                        cont++;
+                        //Cierro y abro el PacMan
+                        if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
+                            pacman.getpMan().setLength(360);
+                            cont = 0;
+                        } else if (pacman.getpMan().getLength() == 360.0 && cont == 10) {
+                            pacman.getpMan().setLength(300);
+                            cont = 0;
+                        }
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
-
+                    //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerYProperty().addListener((observable) -> {
+                        cont++;
+                        //Cierro y abro el PacMan
+                        if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
+                            pacman.getpMan().setLength(360);
+                            cont = 0;
+                        } else if (pacman.getpMan().getLength() == 360.0 && cont == 10) {
+                            pacman.getpMan().setLength(300);
+                            cont = 0;
+                        }
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
 
@@ -577,10 +611,10 @@ private Nodo nodoAux = null;
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
                 } else if (Mapa[i][j] == ' ') {//espacio en blanco
                     Circle circle = new Circle(j * 31 + 12, i * 29 + 5, 3, Paint.valueOf("YELLOW"));
-                    root.getChildren().add(circle);//tamaño y posición del cada uno de los rectangulos
+                    puntos.add(circle);
+                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                 }
                 if (Mapa[i][j] == 'X' && i == 9 && j == 14) {//pared
-
                     Rectangle rec1 = new Rectangle(j * 31, i * 28, 31, 28);
                     rec1.setFill(Paint.valueOf("BLACK"));
                     Rectangle rec = new Rectangle(j * 31, i * 28 + 10, 31, 4);
