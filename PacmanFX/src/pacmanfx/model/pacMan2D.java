@@ -40,6 +40,7 @@ public class pacMan2D {
     }
 
     public Arc getpMan() {
+        
         return pMan;
     }
 
