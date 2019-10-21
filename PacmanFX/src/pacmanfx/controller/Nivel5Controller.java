@@ -515,7 +515,7 @@ public class Nivel5Controller extends Controller implements Initializable {
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos5.txt"));
             String line = null;
             Integer i = 0;
             while ((line = reader.readLine()) != null) {
@@ -541,7 +541,7 @@ public class Nivel5Controller extends Controller implements Initializable {
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
             File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista5.txt"));
             String line = null;
 
             while ((line = reader.readLine()) != null) {
@@ -556,7 +556,7 @@ public class Nivel5Controller extends Controller implements Initializable {
                 Line linea = new Line(posx, posy, posx2, posy2);
                 linea.setStroke(Paint.valueOf("RED"));
                 linea.setStrokeWidth(3.00);
-                //this.root.getChildren().add(linea);
+                this.root.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
             }

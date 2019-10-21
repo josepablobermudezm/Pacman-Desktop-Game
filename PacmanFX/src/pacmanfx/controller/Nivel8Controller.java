@@ -521,7 +521,7 @@ public class Nivel8Controller extends Controller implements Initializable {
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos8.txt"));
             String line = null;
             Integer i = 0;
             while ((line = reader.readLine()) != null) {
@@ -532,7 +532,7 @@ public class Nivel8Controller extends Controller implements Initializable {
 
                 Nodo nodo = new Nodo(posx, posy);
                 Circle circle = new Circle(posx, posy, 4, Paint.valueOf("GREEN"));
-                this.root.getChildren().add(circle);
+//                this.root.getChildren().add(circle);
 
                 i++;
                 nodos.add(nodo);
@@ -547,7 +547,7 @@ public class Nivel8Controller extends Controller implements Initializable {
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
             File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista8.txt"));
             String line = null;
 
             while ((line = reader.readLine()) != null) {
