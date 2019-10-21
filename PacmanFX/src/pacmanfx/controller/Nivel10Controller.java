@@ -5,10 +5,6 @@
  */
 package pacmanfx.controller;
 
-import com.sun.prism.paint.Color;
-import java.awt.BasicStroke;
-import java.awt.Point;
-import java.awt.Robot;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -16,8 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -27,10 +21,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -42,8 +33,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import pacmanfx.model.Nodo;
+import pacmanfx.controller.Controller;
 import pacmanfx.model.Arista;
+import pacmanfx.model.Nodo;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
 
@@ -52,7 +44,7 @@ import pacmanfx.util.FlowController;
  *
  * @author Jose Pablo Bermudez
  */
-public class Nivel1Controller extends Controller implements Initializable {
+public class Nivel10Controller extends Controller implements Initializable {
 
     double x = 447, y = 406, velx = 0, vely = 0;
     int code = 39/*por default a la derecha*/, cont = 0, gameStatus = 0, MouseX = 0, MouseY = 0,
@@ -60,37 +52,36 @@ public class Nivel1Controller extends Controller implements Initializable {
             cont5 = 0, cont6 = 0, cont7 = 0, cont8 = 0, cont9 = 0, cont10 = 0;
     static boolean up = false, down = false, left = false, right = false, value = false, mapa2 = false, Nivel1 = true, Nivel2 = false, Nivel3 = false, Nivel4 = false,
             Nivel5 = false, Nivel6 = false, Nivel7 = false, Nivel8 = false, Nivel9 = false, Nivel10 = false;
-
     String nivel = "Nivel 1";
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
     private pacMan2D pacman;
-
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
-            {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
+            {'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X'},
+            {'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X'},
+            {'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X'},
+            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'/', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', '/'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', '*', '*', '*', '#', '*', '*', '*', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', '@', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', 'X'},
-            {'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X'},
+            {'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
+            {'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', 'X'},
+            {'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X'},
+            {'*', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', '*'},
+            {'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X'},
+            {'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X'},
+            {'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
+            {'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X'},
+            {'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '@', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
+            {'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
+            {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+            {'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X'},
+            {'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X'},
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
     //vector de char, para cambiar un nivel lo que se hace es cargar este vector sobre la matriz ya existente
-    private ArrayList<Circle> puntos = new ArrayList();
+
     @FXML
-    private AnchorPane root;
+    private AnchorPane root1;
+    @FXML
     private BorderPane border;
 
     @Override
@@ -110,11 +101,9 @@ public class Nivel1Controller extends Controller implements Initializable {
     private Nodo nodoAux = null;
     private static boolean encontrado = false;
     private String movimiento = "";
-
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
-
                 movimiento = "DOWN";
                 down(false);
             } else {
@@ -209,8 +198,6 @@ public class Nivel1Controller extends Controller implements Initializable {
                 String movimientoOr = "UP";
 
                 timeline.currentTimeProperty().addListener((observable) -> {
-
-                    //contPuntos++;
                     if (!movimientoOr.equals(movimiento) && movimiento.equals("DOWN")) {
                         Platform.runLater(() -> {
                             timeline.stop();
@@ -223,9 +210,6 @@ public class Nivel1Controller extends Controller implements Initializable {
                     nodoAux = null;
                     movimiento();
                 });
-            } else {
-                //Abro la boca del pacMan cuando no encuentro ningun nodo
-                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(-90);
@@ -309,9 +293,6 @@ public class Nivel1Controller extends Controller implements Initializable {
                     nodoAux = null;
                     movimiento();
                 });
-            } else {
-                //Abro la boca del pacMan cuando no encuentro ningun nodo
-                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(90);
@@ -334,7 +315,6 @@ public class Nivel1Controller extends Controller implements Initializable {
                     });
                 }
             });
-
             timeline.setOnFinished((valor) -> {
                 nodoAux = null;
                 movimiento();
@@ -397,9 +377,6 @@ public class Nivel1Controller extends Controller implements Initializable {
                     nodoAux = null;
                     movimiento();
                 });
-            } else {
-                //Cuando el pacMan no encuentra un nodo para moverse
-                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(-180);
@@ -486,14 +463,12 @@ public class Nivel1Controller extends Controller implements Initializable {
                     nodoAux = null;
                     movimiento();
                 });
-            } else {
-                //Cuando el pacMan no encuentra un nodo para moverse
-                pacman.getpMan().setLength(300);
+                
             }
         } else {
             pacman.getpMan().setRotate(0);
             Timeline timeline = new Timeline();
-            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), posX);
+            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(),posX);
             Double distance = new Point2D(posX, posY).distance(pacman.getNodo().getPoint2D());
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
@@ -529,7 +504,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos10.txt"));
             String line = null;
             Integer i = 0;
             while ((line = reader.readLine()) != null) {
@@ -540,7 +515,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
                 Nodo nodo = new Nodo(posx, posy);
                 Circle circle = new Circle(posx, posy, 4, Paint.valueOf("GREEN"));
-                //this.root.getChildren().add(circle);
+                this.root1.getChildren().add(circle);
 
                 i++;
                 nodos.add(nodo);
@@ -555,7 +530,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
             File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista10.txt"));
             String line = null;
 
             while ((line = reader.readLine()) != null) {
@@ -570,7 +545,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 Line linea = new Line(posx, posy, posx2, posy2);
                 linea.setStroke(Paint.valueOf("RED"));
                 linea.setStrokeWidth(3.00);
-                //this.root.getChildren().add(linea);
+                this.root1.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
             }
@@ -582,54 +557,36 @@ public class Nivel1Controller extends Controller implements Initializable {
                 if (Mapa[i][j] == 'X') {//pared
                     Rectangle rec = new Rectangle(j * 31, i * 28, 31, 28);
                     rec.setFill(Paint.valueOf("#2E3782"));
-                    root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
+                    root1.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
-                    pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
+
+                    //System.out.print("@");
+                    pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, (aux == 39) ? 30.0 : (aux == 37) ? 210.0 : (aux == 38) ? 120.0 : 300.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
                     pacman.setNodo(new Nodo(x, y));
-                    //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerXProperty().addListener((observable) -> {
-                        cont++;
-                        //Cierro y abro el PacMan
-                        if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
-                            pacman.getpMan().setLength(360);
-                            cont = 0;
-                        } else if (pacman.getpMan().getLength() == 360.0 && cont == 10) {
-                            pacman.getpMan().setLength(300);
-                            cont = 0;
-                        }
-                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
-                    });
-                    //Actualiza el nodo, y el point2D conforme se esta moviendo
-                    pacman.getpMan().centerYProperty().addListener((observable) -> {
-                        cont++;
-                        //Cierro y abro el PacMan
-                        if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
-                            pacman.getpMan().setLength(360);
-                            cont = 0;
-                        } else if (pacman.getpMan().getLength() == 360.0 && cont == 10) {
-                            pacman.getpMan().setLength(300);
-                            cont = 0;
-                        }
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
 
-                    root.getChildren().add(pacman.getpMan());
+                    pacman.getpMan().centerYProperty().addListener((observable) -> {
+                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
+                    });
+
+                    root1.getChildren().add(pacman.getpMan());
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
                 } else if (Mapa[i][j] == ' ') {//espacio en blanco
                     Circle circle = new Circle(j * 31 + 12, i * 29 + 5, 3, Paint.valueOf("YELLOW"));
-                    puntos.add(circle);
-                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                    root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                 }
-                
                 if (Mapa[i][j] == 'X' && i == 9 && j == 14) {//pared
+
                     Rectangle rec1 = new Rectangle(j * 31, i * 28, 31, 28);
                     rec1.setFill(Paint.valueOf("BLACK"));
                     Rectangle rec = new Rectangle(j * 31, i * 28 + 10, 31, 4);
                     rec.setFill(Paint.valueOf("WHITE"));
-                    root.getChildren().add(rec1);
-                    root.getChildren().add(rec);
+                    root1.getChildren().add(rec1);
+                    root1.getChildren().add(rec);
                 }
                 if (Mapa[i][j] == ' ') {
                     //   contPuntos++;
@@ -641,19 +598,19 @@ public class Nivel1Controller extends Controller implements Initializable {
         label.setLayoutX(10);
         label.setLayoutY(585);
         label.setId("puntos");
-        root.getChildren().add(label);
+        root1.getChildren().add(label);
         Label puntaje = new Label(String.valueOf(contPuntos));
         puntaje.setLayoutX(165);
         puntaje.setLayoutY(585);
         puntaje.setId("puntos");
         //Agregaar lo de puntaje
-        root.getChildren().add(puntaje);
+        root1.getChildren().add(puntaje);
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
             arc.setFill(Paint.valueOf("YELLOW"));
             arc.setType(ArcType.ROUND);
-            root.getChildren().add(arc);
+            root1.getChildren().add(arc);
             cont3 += 30;
         }
     }
@@ -666,10 +623,10 @@ public class Nivel1Controller extends Controller implements Initializable {
     @FXML
     private void mouse(MouseEvent event) {
 
-        /* root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
+        root1.getChildren().get(root1.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
-        root.getChildren().add(circle);*/
+        root1.getChildren().add(circle);
     }
 }
