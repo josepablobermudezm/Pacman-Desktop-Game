@@ -27,7 +27,7 @@ public class pacMan2D {
      */
     public pacMan2D(Double x, Double y, Double w, Double h, Double angSt, Double angExt) {
         pMan = new Arc(x, y, h, w, angSt, angExt);
-        pMan.setFill(Paint.valueOf("YELLOW"));
+        //pMan.setFill(Paint.valueOf("YELLOW"));
         pMan.setType(ArcType.ROUND);
     }
 
