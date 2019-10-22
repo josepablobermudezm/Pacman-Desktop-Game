@@ -103,9 +103,11 @@ public class Nivel10Controller extends Controller implements Initializable {
     private Nodo nodoAux = null;
     private static boolean encontrado = false;
     private String movimiento = "";
+
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
+
                 movimiento = "DOWN";
                 down(false);
             } else {
@@ -200,6 +202,8 @@ public class Nivel10Controller extends Controller implements Initializable {
                 String movimientoOr = "UP";
 
                 timeline.currentTimeProperty().addListener((observable) -> {
+
+                    //contPuntos++;
                     if (!movimientoOr.equals(movimiento) && movimiento.equals("DOWN")) {
                         Platform.runLater(() -> {
                             timeline.stop();
@@ -212,6 +216,9 @@ public class Nivel10Controller extends Controller implements Initializable {
                     nodoAux = null;
                     movimiento();
                 });
+            } else {
+                //Abro la boca del pacMan cuando no encuentro ningun nodo
+                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(-90);
@@ -246,7 +253,6 @@ public class Nivel10Controller extends Controller implements Initializable {
 
     public void down(Boolean devolver) {
         if (!devolver) {
-
             xAux = (int) pacman.getpMan().getCenterX() - 14;
             yAux = (int) pacman.getpMan().getCenterY() + 13;
             while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
@@ -295,6 +301,9 @@ public class Nivel10Controller extends Controller implements Initializable {
                     nodoAux = null;
                     movimiento();
                 });
+            } else {
+                //Abro la boca del pacMan cuando no encuentro ningun nodo
+                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(90);
@@ -317,6 +326,7 @@ public class Nivel10Controller extends Controller implements Initializable {
                     });
                 }
             });
+
             timeline.setOnFinished((valor) -> {
                 nodoAux = null;
                 movimiento();
@@ -379,6 +389,9 @@ public class Nivel10Controller extends Controller implements Initializable {
                     nodoAux = null;
                     movimiento();
                 });
+            } else {
+                //Cuando el pacMan no encuentra un nodo para moverse
+                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(-180);
@@ -465,12 +478,14 @@ public class Nivel10Controller extends Controller implements Initializable {
                     nodoAux = null;
                     movimiento();
                 });
-                
+            } else {
+                //Cuando el pacMan no encuentra un nodo para moverse
+                pacman.getpMan().setLength(300);
             }
         } else {
             pacman.getpMan().setRotate(0);
             Timeline timeline = new Timeline();
-            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(),posX);
+            KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), posX);
             Double distance = new Point2D(posX, posY).distance(pacman.getNodo().getPoint2D());
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
@@ -547,7 +562,7 @@ public class Nivel10Controller extends Controller implements Initializable {
                 Line linea = new Line(posx, posy, posx2, posy2);
                 linea.setStroke(Paint.valueOf("RED"));
                 linea.setStrokeWidth(3.00);
-                this.root1.getChildren().add(linea);
+             //   this.root1.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
             }
@@ -561,25 +576,41 @@ public class Nivel10Controller extends Controller implements Initializable {
                     rec.setFill(Paint.valueOf("#2E3782"));
                     root1.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
-
-                    //System.out.print("@");
-                    pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, (aux == 39) ? 30.0 : (aux == 37) ? 210.0 : (aux == 38) ? 120.0 : 300.0, 300.0);
+                    pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
                     pacman.setNodo(new Nodo(x, y));
+                    //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerXProperty().addListener((observable) -> {
+                        cont++;
+                        //Cierro y abro el PacMan
+                        if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
+                            pacman.getpMan().setLength(360);
+                            cont = 0;
+                        } else if (pacman.getpMan().getLength() == 360.0 && cont == 10) {
+                            pacman.getpMan().setLength(300);
+                            cont = 0;
+                        }
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
-
+                    //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerYProperty().addListener((observable) -> {
+                        cont++;
+                        //Cierro y abro el PacMan
+                        if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
+                            pacman.getpMan().setLength(360);
+                            cont = 0;
+                        } else if (pacman.getpMan().getLength() == 360.0 && cont == 10) {
+                            pacman.getpMan().setLength(300);
+                            cont = 0;
+                        }
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
 
                     root1.getChildren().add(pacman.getpMan());
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
-                } 
+                }
                 if (Mapa[i][j] == 'X' && i == 9 && j == 14) {//pared
-
                     Rectangle rec1 = new Rectangle(j * 31, i * 28, 31, 28);
                     rec1.setFill(Paint.valueOf("BLACK"));
                     Rectangle rec = new Rectangle(j * 31, i * 28 + 10, 31, 4);
@@ -617,49 +648,59 @@ public class Nivel10Controller extends Controller implements Initializable {
             root1.getChildren().add(arc);
             cont3 += 30;
         }
+
         aristas.stream().forEach((arista) -> {
+
             Double xOrigen = arista.getOrigen().getPoint2D().getX();
             Double xDestino = arista.getDestino().getPoint2D().getX();
             Double yOrigen = arista.getOrigen().getPoint2D().getY();
             Double yDestino = arista.getDestino().getPoint2D().getY();
-
             Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
             puntos.add(origen);
             root1.getChildren().add(origen);//
             Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("YELLOW"));
             puntos.add(destino);
             root1.getChildren().add(destino);//
-            
+
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
-
-                /*while (yDestino <= yOrigen) {
-                    Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
-                    puntos.add(circle);
-                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                yDestino += 29;
+                while (yDestino < yOrigen) {
+                    if (yDestino <= yOrigen - 13) {
+                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                        puntos.add(circle);
+                        root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                    }
                     yDestino += 29;
-                }*/
+                }
             } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
-
-                /*while (yOrigen <= yDestino) {
-                    Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("YELLOW"));
-                    puntos.add(circle);
-                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                yOrigen += 29;
+                while (yOrigen < yDestino) {
+                    if (yOrigen <= yDestino - 13) {
+                        Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("YELLOW"));
+                        puntos.add(circle);
+                        root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                    }
                     yOrigen += 29;
-                }*/
+                }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
-                /*while (xDestino <= xOrigen) {
-                    Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
-                    puntos.add(circle);
-                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                xDestino += 31;
+                while (xDestino < xOrigen) {
+                    if (xDestino <= xOrigen - 16) {
+                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                        puntos.add(circle);
+                        root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                    }
                     xDestino += 31;
-                }*/
+                }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
-                /*while (xOrigen <= xDestino) {
-                    Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("YELLOW"));
-                    puntos.add(circle);
-                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                while (xOrigen <= xDestino) {
+                    if (xOrigen <= xDestino - 16) {
+                        Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("YELLOW"));
+                        puntos.add(circle);
+                        root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                    }
                     xOrigen += 31;
-                }*/
+                }
             }
         });
     }
