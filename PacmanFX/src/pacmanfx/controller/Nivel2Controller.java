@@ -590,18 +590,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
-                    pacman.getpMan().centerYProperty().addListener((observable) -> {
-                        cont++;
-                        //Cierro y abro el PacMan
-                        if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
-                            pacman.getpMan().setLength(360);
-                            cont = 0;
-                        } else if (pacman.getpMan().getLength() == 360.0 && cont == 10) {
-                            pacman.getpMan().setLength(300);
-                            cont = 0;
-                        }
-                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
-                    });
+
                     pacman.getpMan().setFill(Paint.valueOf("YELLOW"));
                     pacman.getpMan().setStrokeType(StrokeType.INSIDE);
                     pacman.getpMan().setStroke(Paint.valueOf("BLACK"));
@@ -653,54 +642,47 @@ public class Nivel2Controller extends Controller implements Initializable {
             Double xDestino = arista.getDestino().getPoint2D().getX();
             Double yOrigen = arista.getOrigen().getPoint2D().getY();
             Double yDestino = arista.getDestino().getPoint2D().getY();
-            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#bdbd00"));
+            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("bdbd00"));
             puntos.add(origen);
             root.getChildren().add(origen);//
-            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#bdbd00"));
+            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("bdbd00"));
             puntos.add(destino);
             root.getChildren().add(destino);//
-            if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
-                yDestino += 29;
-                while (yDestino <= yOrigen) {
-                    Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#bdbd00"));
-                    puntos.add(circle);
-                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                }
-                yDestino += 29;
-            } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
-                yOrigen += 29;
-                while (yOrigen <= yDestino) {
-                    if (yOrigen <= yDestino - 13) {
-                    Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#bdbd00"));
-                    puntos.add(circle);
-                    root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
-                    yOrigen += 29;
-                }
-            } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
-                xDestino += 31;
-                while (xDestino <= xOrigen) {
-                   if (xDestino <= xOrigen - 16) {
-                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#bdbd00"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
-                    xDestino += 31;
-                }
+
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 yDestino += 29;
                 while (yDestino < yOrigen) {
                     if (yDestino <= yOrigen - 13) {
-                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#bdbd00"));
+                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("bdbd00"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
                     yDestino += 29;
                 }
-            }} else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
+            } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
+                yOrigen += 29;
+                while (yOrigen < yDestino) {
+                    if (yOrigen <= yDestino - 13) {
+                        Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("bdbd00"));
+                        puntos.add(circle);
+                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                    }
+                    yOrigen += 29;
+                }
+            } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
+                xDestino += 31;
+                while (xDestino < xOrigen) {
+                    if (xDestino <= xOrigen - 16) {
+                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("bdbd00"));
+                        puntos.add(circle);
+                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                    }
+                    xDestino += 31;
+                }
+            } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 while (xOrigen <= xDestino) {
                     if (xOrigen <= xDestino - 16) {
-                        Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#bdbd00"));
+                        Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("bdbd00"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -709,7 +691,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             }
         });
     }
-
+    //bdbd00
     @Override
 
     public void initialize(URL location, ResourceBundle resources) {
