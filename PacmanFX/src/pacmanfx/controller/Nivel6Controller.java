@@ -564,7 +564,7 @@ public class Nivel6Controller extends Controller implements Initializable {
                 if (Mapa[i][j] == 'X') {//pared
                     Rectangle rec = new Rectangle(j * 31, i * 28, 31, 28);
                     rec.setFill(Paint.valueOf("#2E3782"));
-                    root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
+                    //root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
@@ -625,6 +625,11 @@ public class Nivel6Controller extends Controller implements Initializable {
         puntaje.setId("puntos");
         //Agregaar lo de puntaje
         root.getChildren().add(puntaje);
+        Label label1 = new Label(nivel);
+        label1.setLayoutX(390);
+        label1.setLayoutY(585);
+        label1.setId("puntos");
+        root.getChildren().add(label1);
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
@@ -641,10 +646,10 @@ public class Nivel6Controller extends Controller implements Initializable {
             Double yDestino = arista.getDestino().getPoint2D().getY();
             Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
             puntos.add(origen);
-            root.getChildren().add(origen);//
+           // root.getChildren().add(origen);//
             Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("YELLOW"));
             puntos.add(destino);
-            root.getChildren().add(destino);//
+            //root.getChildren().add(destino);//
 
             /*if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 yDestino += 29;

@@ -32,7 +32,7 @@ public class JugadorController extends Controller{
     public void initialize() {
         Image imgLogo;
         try {
-            imgLogo = new Image("/pacmanfx/resources/fondo4.jpg");
+            imgLogo = new Image("/pacmanfx/resources/fondo8.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
