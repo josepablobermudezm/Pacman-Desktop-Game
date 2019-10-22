@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -81,6 +82,8 @@ public class Nivel6Controller extends Controller implements Initializable {
     private pacMan2D pacman;
     @FXML
     private AnchorPane root;
+    @FXML
+    private ImageView img;
 
     /**
      * Initializes the controller class.
@@ -645,7 +648,10 @@ public class Nivel6Controller extends Controller implements Initializable {
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
-                    
+                    pacman.getpMan().setFill(Paint.valueOf("#02235D"));
+                    pacman.getpMan().setStrokeType(StrokeType.INSIDE);
+                    pacman.getpMan().setStroke(Paint.valueOf("#BE2623"));
+                    pacman.getpMan().setStrokeWidth(2);
                     root.getChildren().add(pacman.getpMan());
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
                 }
@@ -683,7 +689,10 @@ public class Nivel6Controller extends Controller implements Initializable {
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
-            arc.setFill(Paint.valueOf("YELLOW"));
+            arc.setFill(Paint.valueOf("#02235D"));
+            arc.setStrokeType(StrokeType.INSIDE);
+            arc.setStroke(Paint.valueOf("#BE2623"));
+            arc.setStrokeWidth(2);
             arc.setType(ArcType.ROUND);
             root.getChildren().add(arc);
             cont3 += 30;
