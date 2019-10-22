@@ -597,6 +597,18 @@ public class Nivel1Controller extends Controller implements Initializable {
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
+                    pacman.getpMan().centerYProperty().addListener((observable) -> {
+                        cont++;
+                        //Cierro y abro el PacMan
+                        if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
+                            pacman.getpMan().setLength(360);
+                            cont = 0;
+                        } else if (pacman.getpMan().getLength() == 360.0 && cont == 10) {
+                            pacman.getpMan().setLength(300);
+                            cont = 0;
+                        }
+                        pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
+                    });
                     
                     pacman.getpMan().setFill(Paint.valueOf("GREEN"));
                     pacman.getpMan().setStrokeType(StrokeType.INSIDE);
