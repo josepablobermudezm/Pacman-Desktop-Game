@@ -652,7 +652,7 @@ public class Nivel5Controller extends Controller implements Initializable {
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
-                    //pacman.getpMan().setFill(Paint.valueOf("#02235D"));
+                    pacman.getpMan().setFill(Paint.valueOf("BLACK"));
                     pacman.getpMan().setStrokeType(StrokeType.INSIDE);
                     pacman.getpMan().setStroke(Paint.valueOf("#0CF25C"));
                     pacman.getpMan().setStrokeWidth(2);
@@ -693,7 +693,10 @@ public class Nivel5Controller extends Controller implements Initializable {
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
-            arc.setFill(Paint.valueOf("YELLOW"));
+            arc.setFill(Paint.valueOf("BLACK"));
+            arc.setStrokeType(StrokeType.INSIDE);
+            arc.setStroke(Paint.valueOf("#0CF25C"));
+            arc.setStrokeWidth(2);
             arc.setType(ArcType.ROUND);
             root.getChildren().add(arc);
             cont3 += 30;
