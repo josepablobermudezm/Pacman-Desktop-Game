@@ -533,7 +533,7 @@ public class Nivel7Controller extends Controller implements Initializable {
 
                 Nodo nodo = new Nodo(posx, posy);
                 Circle circle = new Circle(posx, posy, 4, Paint.valueOf("GREEN"));
-                //this.root.getChildren().add(circle);
+                this.root.getChildren().add(circle);
 
                 i++;
                 nodos.add(nodo);
