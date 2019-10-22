@@ -611,6 +611,7 @@ public class Nivel9Controller extends Controller implements Initializable {
             cont3 += 30;
         }
         
+        
         aristas.stream().forEach((arista) -> {
             Double xOrigen = arista.getOrigen().getPoint2D().getX();
             Double xDestino = arista.getDestino().getPoint2D().getX();
