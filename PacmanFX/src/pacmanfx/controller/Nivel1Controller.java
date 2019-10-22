@@ -590,6 +590,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                             pacman.getpMan().setLength(300);
                             cont = 0;
                         }
+                        
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
