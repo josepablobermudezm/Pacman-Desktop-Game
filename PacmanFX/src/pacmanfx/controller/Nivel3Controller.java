@@ -49,7 +49,8 @@ public class Nivel3Controller extends Controller implements Initializable {
 
     double x = 447, y = 405, velx = 0, vely = 0;
     int code = 39/*por default a la derecha*/, cont = 0, gameStatus = 0, MouseX = 0, MouseY = 0,
-            xAux = 434, yAux = 392, jAux = 14, iAux = 14, aux = 39, aux2 = 0, cont1 = 0, cont2 = 0, cont4 = 0, vidas = 6, cont3 = 0, contPuntos = 0,
+            xAux = 434, yAux = 392, jAux = 14, iAux = 14, aux = 39, aux2 = 0, cont1 = 0, cont2 = 0, cont4 = 0, vidas = 6, cont3 = 0;
+    Integer contPuntos = 0,
             cont5 = 0, cont6 = 0, cont7 = 0, cont8 = 0, cont9 = 0, cont10 = 0;
     static boolean up = false, down = false, left = false, right = false, value = false, mapa2 = false, Nivel1 = true, Nivel2 = false, Nivel3 = false, Nivel4 = false,
             Nivel5 = false, Nivel6 = false, Nivel7 = false, Nivel8 = false, Nivel9 = false, Nivel10 = false;
@@ -499,6 +500,13 @@ public class Nivel3Controller extends Controller implements Initializable {
         }
     }
 
+    private Label puntosJugador;
+    private static Circle circle;
+    private static Double xOrigen;
+    private static Double xDestino;
+    private static Double yOrigen;
+    private static Double yDestino;
+
     public void CrearMapa() {
 
         try {
@@ -578,10 +586,31 @@ public class Nivel3Controller extends Controller implements Initializable {
                             pacman.getpMan().setLength(300);
                             cont = 0;
                         }
+
+                        puntos.stream().forEach((punto) -> {
+                            Integer puntoX = (int) pacman.getpMan().getCenterX();
+                            //System.out.println(puntoX);
+                            while (puntoX < (int) pacman.getpMan().getCenterX() + 12) {
+                                if (puntoX == (int) punto.getCenterX() && (int) punto.getCenterY() == (int) pacman.getpMan().getCenterY()) {
+                                    root.getChildren().remove(punto);
+                                    contPuntos++;
+                                    Integer puntaje = contPuntos * 10;
+                                    puntosJugador.setText(puntaje.toString());
+                                    circle = punto;
+                                    break;
+                                }
+                                puntoX++;
+                            }
+
+                        });
+                        puntos.remove(circle);
+                        circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
+
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerYProperty().addListener((observable) -> {
+
                         cont++;
                         //Cierro y abro el PacMan
                         if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
@@ -591,6 +620,24 @@ public class Nivel3Controller extends Controller implements Initializable {
                             pacman.getpMan().setLength(300);
                             cont = 0;
                         }
+
+                        puntos.stream().forEach((punto) -> {
+                            Double puntoY = pacman.getpMan().getCenterY();
+                            while (puntoY.intValue() < (int) pacman.getpMan().getCenterY() + 12) {
+                                if (puntoY.intValue() == (int) punto.getCenterY() && (int) punto.getCenterX() == (int) pacman.getpMan().getCenterX()) {
+                                    root.getChildren().remove(punto);
+                                    contPuntos++;
+                                    Integer puntaje = contPuntos * 10;
+                                    puntosJugador.setText(puntaje.toString());
+                                    circle = punto;
+                                    break;
+                                }
+                                puntoY++;
+                            }
+
+                        });
+                        puntos.remove(circle);
+                        circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
 
@@ -617,6 +664,7 @@ public class Nivel3Controller extends Controller implements Initializable {
         label.setId("puntos");
         root.getChildren().add(label);
         Label puntaje = new Label(String.valueOf(contPuntos));
+        puntosJugador = puntaje;
         puntaje.setLayoutX(165);
         puntaje.setLayoutY(585);
         puntaje.setId("puntos");
@@ -635,24 +683,25 @@ public class Nivel3Controller extends Controller implements Initializable {
             root.getChildren().add(arc);
             cont3 += 30;
         }
-        aristas.stream().forEach((arista) -> {
 
-            Double xOrigen = arista.getOrigen().getPoint2D().getX();
-            Double xDestino = arista.getDestino().getPoint2D().getX();
-            Double yOrigen = arista.getOrigen().getPoint2D().getY();
-            Double yDestino = arista.getDestino().getPoint2D().getY();
+        aristas.stream().forEach((arista) -> {
+            xOrigen = arista.getOrigen().getPoint2D().getX();
+            xDestino = arista.getDestino().getPoint2D().getX();
+            yOrigen = arista.getOrigen().getPoint2D().getY();
+            yDestino = arista.getDestino().getPoint2D().getY();
+
             Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
             puntos.add(origen);
             root.getChildren().add(origen);//
             Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("YELLOW"));
             puntos.add(destino);
-            root.getChildren().add(destino);//
+            root.getChildren().add(destino);// 
 
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 yDestino += 29;
                 while (yDestino < yOrigen) {
                     if (yDestino <= yOrigen - 13) {
-                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -662,7 +711,7 @@ public class Nivel3Controller extends Controller implements Initializable {
                 yOrigen += 29;
                 while (yOrigen < yDestino) {
                     if (yOrigen <= yDestino - 13) {
-                        Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("YELLOW"));
+                        circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("YELLOW"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -672,7 +721,7 @@ public class Nivel3Controller extends Controller implements Initializable {
                 xDestino += 31;
                 while (xDestino < xOrigen) {
                     if (xDestino <= xOrigen - 16) {
-                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -681,7 +730,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 while (xOrigen <= xDestino) {
                     if (xOrigen <= xDestino - 16) {
-                        Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("YELLOW"));
+                        circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("YELLOW"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -689,6 +738,22 @@ public class Nivel3Controller extends Controller implements Initializable {
                 }
             }
         });
+        //Elimina las puntos repetidos en el mapa 
+        ArrayList<Circle> pAux = new ArrayList();
+        puntos.stream().forEach((t) -> {
+            puntos.stream().forEach((c) -> {
+                if (c != t) {
+                    if (c.getCenterX() == t.getCenterX() && c.getCenterY() == t.getCenterY()) {
+                        if (!pAux.contains(c)) {
+                            pAux.add(t);
+                        }
+                    }
+                }
+            });
+        });
+        
+        puntos.removeAll(pAux);
+        root.getChildren().removeAll(pAux);
     }
 
     @Override
@@ -698,11 +763,11 @@ public class Nivel3Controller extends Controller implements Initializable {
 
     @FXML
     private void mouse(MouseEvent event) {
-        root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
+        /*root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
-        root.getChildren().add(circle);
+        //root.getChildren().add(circle);*/
     }
 
     @Override
