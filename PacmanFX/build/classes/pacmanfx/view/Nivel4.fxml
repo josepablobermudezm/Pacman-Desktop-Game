@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-
 
 <BorderPane onKeyPressed="#Movimiento" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pacmanfx.controller.Nivel4Controller">
    <center>
       <VBox>
          <children>
-            <AnchorPane id="AnchorPane" fx:id="root" onMouseClicked="#mouse" prefHeight="645.0" prefWidth="900.0" style="-fx-background-color: black;" styleClass="root" stylesheets="@newCascadeStyleSheet.css" />
+            <AnchorPane id="AnchorPane" fx:id="root" onMouseClicked="#mouse" prefHeight="645.0" prefWidth="900.0" style="-fx-background-color: black;" styleClass="root" stylesheets="@newCascadeStyleSheet.css">
+               <children>
+                  <ImageView fx:id="img" fitHeight="650.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/FondoNivel4%20(1).jpg" />
+                     </image>
+                  </ImageView>
+               </children></AnchorPane>
          </children>
       </VBox>
    </center>
