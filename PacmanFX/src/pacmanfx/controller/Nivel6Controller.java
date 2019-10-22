@@ -31,6 +31,7 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import pacmanfx.model.Arista;
 import pacmanfx.model.Nodo;
@@ -563,6 +564,9 @@ public class Nivel6Controller extends Controller implements Initializable {
             for (int j = 0; j < 29; j++) {
                 if (Mapa[i][j] == 'X') {//pared
                     Rectangle rec = new Rectangle(j * 31, i * 28, 31, 28);
+                    rec.setStrokeType(StrokeType.OUTSIDE);
+                    rec.setStroke(Paint.valueOf("BLACK"));
+                    rec.setStrokeWidth(0.1);
                     rec.setFill(Paint.valueOf("#2E3782"));
                     root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman

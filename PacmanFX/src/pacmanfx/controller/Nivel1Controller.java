@@ -576,6 +576,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             for (int j = 0; j < 29; j++) {
                 if (Mapa[i][j] == 'X') {//pared
                     Rectangle rec = new Rectangle(j * 31, i * 28, 31, 28);
+                    rec.setStrokeType(StrokeType.OUTSIDE);
+                    rec.setStroke(Paint.valueOf("BLACK"));
+                    rec.setStrokeWidth(0.1);
                     rec.setFill(Paint.valueOf("#430763"));
                     root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
