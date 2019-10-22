@@ -579,7 +579,7 @@ public class Nivel5Controller extends Controller implements Initializable {
                     rec.setStrokeType(StrokeType.OUTSIDE);
                     rec.setStroke(Paint.valueOf("BLACK"));
                     rec.setStrokeWidth(0.1);
-                    rec.setFill(Paint.valueOf("#2E3782"));
+                    rec.setFill(Paint.valueOf("#302F41"));
                     root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
@@ -652,6 +652,10 @@ public class Nivel5Controller extends Controller implements Initializable {
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
+                    //pacman.getpMan().setFill(Paint.valueOf("#02235D"));
+                    pacman.getpMan().setStrokeType(StrokeType.INSIDE);
+                    pacman.getpMan().setStroke(Paint.valueOf("#0CF25C"));
+                    pacman.getpMan().setStrokeWidth(2);
                     root.getChildren().add(pacman.getpMan());
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
                 }
