@@ -564,7 +564,7 @@ public class Nivel6Controller extends Controller implements Initializable {
                 if (Mapa[i][j] == 'X') {//pared
                     Rectangle rec = new Rectangle(j * 31, i * 28, 31, 28);
                     rec.setFill(Paint.valueOf("#2E3782"));
-                    //root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
+                    root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
