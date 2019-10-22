@@ -562,7 +562,7 @@ public class Nivel8Controller extends Controller implements Initializable {
                 Line linea = new Line(posx, posy, posx2, posy2);
                 linea.setStroke(Paint.valueOf("RED"));
                 linea.setStrokeWidth(3.00);
-                this.root.getChildren().add(linea);
+                //this.root.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
             }
