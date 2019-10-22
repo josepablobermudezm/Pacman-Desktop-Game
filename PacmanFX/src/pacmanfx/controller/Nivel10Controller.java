@@ -33,6 +33,7 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import pacmanfx.controller.Controller;
 import pacmanfx.model.Arista;
@@ -47,7 +48,7 @@ import pacmanfx.util.FlowController;
  */
 public class Nivel10Controller extends Controller implements Initializable {
 
-    double x = 447, y = 406, velx = 0, vely = 0;
+    double x = 447, y = 411, velx = 0, vely = 0;
     int code = 39/*por default a la derecha*/, cont = 0, gameStatus = 0, MouseX = 0, MouseY = 0,
             xAux = 434, yAux = 392, jAux = 14, iAux = 14, aux = 39, aux2 = 0, cont1 = 0, cont2 = 0, cont4 = 0, vidas = 6, cont3 = 0, contPuntos = 0,
             cont5 = 0, cont6 = 0, cont7 = 0, cont8 = 0, cont9 = 0, cont10 = 0;
@@ -562,7 +563,7 @@ public class Nivel10Controller extends Controller implements Initializable {
                 Line linea = new Line(posx, posy, posx2, posy2);
                 linea.setStroke(Paint.valueOf("RED"));
                 linea.setStrokeWidth(3.00);
-             //   this.root1.getChildren().add(linea);
+                //   this.root1.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
             }
@@ -573,7 +574,7 @@ public class Nivel10Controller extends Controller implements Initializable {
             for (int j = 0; j < 29; j++) {
                 if (Mapa[i][j] == 'X') {//pared
                     Rectangle rec = new Rectangle(j * 31, i * 28, 31, 28);
-                    rec.setFill(Paint.valueOf("#2E3782"));
+                    rec.setFill(Paint.valueOf("#40525c"));
                     root1.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
@@ -606,7 +607,10 @@ public class Nivel10Controller extends Controller implements Initializable {
                         }
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
-
+                    pacman.getpMan().setFill(Paint.valueOf("#ffffff"));
+                    pacman.getpMan().setStrokeType(StrokeType.INSIDE);
+                    pacman.getpMan().setStroke(Paint.valueOf("#A72910"));
+                    pacman.getpMan().setStrokeWidth(2);
                     root1.getChildren().add(pacman.getpMan());
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
                 }
@@ -643,7 +647,10 @@ public class Nivel10Controller extends Controller implements Initializable {
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
-            arc.setFill(Paint.valueOf("YELLOW"));
+            arc.setFill(Paint.valueOf("#ffffff"));
+            arc.setStrokeType(StrokeType.INSIDE);
+            arc.setStroke(Paint.valueOf("#A72910"));
+            arc.setStrokeWidth(2);
             arc.setType(ArcType.ROUND);
             root1.getChildren().add(arc);
             cont3 += 30;
@@ -655,10 +662,10 @@ public class Nivel10Controller extends Controller implements Initializable {
             Double xDestino = arista.getDestino().getPoint2D().getX();
             Double yOrigen = arista.getOrigen().getPoint2D().getY();
             Double yDestino = arista.getDestino().getPoint2D().getY();
-            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
             puntos.add(origen);
             root1.getChildren().add(origen);//
-            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("YELLOW"));
+            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#ffffff"));
             puntos.add(destino);
             root1.getChildren().add(destino);//
 
@@ -666,7 +673,7 @@ public class Nivel10Controller extends Controller implements Initializable {
                 yDestino += 29;
                 while (yDestino < yOrigen) {
                     if (yDestino <= yOrigen - 13) {
-                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
                         puntos.add(circle);
                         root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -676,7 +683,7 @@ public class Nivel10Controller extends Controller implements Initializable {
                 yOrigen += 29;
                 while (yOrigen < yDestino) {
                     if (yOrigen <= yDestino - 13) {
-                        Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("YELLOW"));
+                        Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#ffffff"));
                         puntos.add(circle);
                         root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -686,7 +693,7 @@ public class Nivel10Controller extends Controller implements Initializable {
                 xDestino += 31;
                 while (xDestino < xOrigen) {
                     if (xDestino <= xOrigen - 16) {
-                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                        Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
                         puntos.add(circle);
                         root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -695,7 +702,7 @@ public class Nivel10Controller extends Controller implements Initializable {
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 while (xOrigen <= xDestino) {
                     if (xOrigen <= xDestino - 16) {
-                        Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("YELLOW"));
+                        Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#ffffff"));
                         puntos.add(circle);
                         root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
