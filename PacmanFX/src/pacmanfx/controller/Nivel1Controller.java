@@ -609,7 +609,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                         }
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
-                    
+
                     pacman.getpMan().setFill(Paint.valueOf("GREEN"));
                     pacman.getpMan().setStrokeType(StrokeType.INSIDE);
                     pacman.getpMan().setStroke(Paint.valueOf("#00ab55"));
@@ -650,7 +650,10 @@ public class Nivel1Controller extends Controller implements Initializable {
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
-            arc.setFill(Paint.valueOf("#127041"));
+            arc.setFill(Paint.valueOf("GREEN"));
+            arc.setStrokeType(StrokeType.INSIDE);
+            arc.setStroke(Paint.valueOf("#00ab55"));
+            arc.setStrokeWidth(2);
             arc.setType(ArcType.ROUND);
             root.getChildren().add(arc);
             cont3 += 30;
@@ -712,6 +715,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         });
     }
 //127041
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();

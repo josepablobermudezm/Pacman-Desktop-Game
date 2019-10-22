@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -86,6 +87,8 @@ public class Nivel7Controller extends Controller implements Initializable {
     @FXML
     private AnchorPane root;
     private BorderPane border;
+    @FXML
+    private ImageView img;
 
     @Override
     public void initialize() {

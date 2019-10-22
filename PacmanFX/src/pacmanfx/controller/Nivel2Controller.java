@@ -643,6 +643,9 @@ public class Nivel2Controller extends Controller implements Initializable {
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
             arc.setFill(Paint.valueOf("YELLOW"));
+            arc.setStrokeType(StrokeType.INSIDE);
+            arc.setStroke(Paint.valueOf("BLACK"));
+            arc.setStrokeWidth(2);
             arc.setType(ArcType.ROUND);
             root.getChildren().add(arc);
             cont3 += 30;
@@ -702,6 +705,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             }
         });
     }
+
     //bdbd00
     @Override
 
