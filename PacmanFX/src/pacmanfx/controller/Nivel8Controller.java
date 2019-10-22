@@ -636,6 +636,11 @@ public class Nivel8Controller extends Controller implements Initializable {
         puntaje.setId("puntos");
         //Agregaar lo de puntaje
         root.getChildren().add(puntaje);
+        Label label1 = new Label(nivel);
+        label1.setLayoutX(390);
+        label1.setLayoutY(585);
+        label1.setId("puntos");
+        root.getChildren().add(label1);
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);

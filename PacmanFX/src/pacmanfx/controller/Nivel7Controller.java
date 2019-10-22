@@ -55,7 +55,7 @@ public class Nivel7Controller extends Controller implements Initializable {
             cont5 = 0, cont6 = 0, cont7 = 0, cont8 = 0, cont9 = 0, cont10 = 0;
     static boolean up = false, down = false, left = false, right = false, value = false, mapa2 = false, Nivel1 = true, Nivel2 = false, Nivel3 = false, Nivel4 = false,
             Nivel5 = false, Nivel6 = false, Nivel7 = false, Nivel8 = false, Nivel9 = false, Nivel10 = false;
-    String nivel = "Nivel 1";
+    String nivel = "Nivel 7";
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
     private ArrayList<Circle> puntos = new ArrayList();
@@ -636,6 +636,11 @@ public class Nivel7Controller extends Controller implements Initializable {
         puntaje.setId("puntos");
         //Agregaar lo de puntaje
         root.getChildren().add(puntaje);
+        Label label1 = new Label(nivel);
+        label1.setLayoutX(390);
+        label1.setLayoutY(585);
+        label1.setId("puntos");
+        root.getChildren().add(label1);
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
