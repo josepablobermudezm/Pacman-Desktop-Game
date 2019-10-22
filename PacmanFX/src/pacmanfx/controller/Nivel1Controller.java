@@ -23,6 +23,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -33,6 +35,7 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import pacmanfx.model.Nodo;
 import pacmanfx.model.Arista;
@@ -84,10 +87,11 @@ public class Nivel1Controller extends Controller implements Initializable {
     @FXML
     private AnchorPane root;
     private BorderPane border;
+    @FXML
+    private ImageView img;
 
     @Override
     public void initialize() {
-
     }
 
     private void pasar(ActionEvent event) {
@@ -559,9 +563,9 @@ public class Nivel1Controller extends Controller implements Initializable {
 
                 Arista arista = new Arista(posx, posy, posx2, posy2);
                 Line linea = new Line(posx, posy, posx2, posy2);
-                linea.setStroke(Paint.valueOf("RED"));
-                linea.setStrokeWidth(3.00);
-                this.root.getChildren().add(linea);
+                //linea.setStroke(Paint.valueOf("RED"));
+                //linea.setStrokeWidth(3.00);
+                //this.root.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
             }
@@ -572,7 +576,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             for (int j = 0; j < 29; j++) {
                 if (Mapa[i][j] == 'X') {//pared
                     Rectangle rec = new Rectangle(j * 31, i * 28, 31, 28);
-                    rec.setFill(Paint.valueOf("#2E3782"));
+                    rec.setFill(Paint.valueOf("#430763"));
                     root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
@@ -605,7 +609,10 @@ public class Nivel1Controller extends Controller implements Initializable {
                         }
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
-
+                    pacman.getpMan().setFill(Paint.valueOf("GREEN"));
+                    pacman.getpMan().setStrokeType(StrokeType.INSIDE);
+                    pacman.getpMan().setStroke(Paint.valueOf("#00ab55"));
+                    pacman.getpMan().setStrokeWidth(2);
                     root.getChildren().add(pacman.getpMan());
                     //x, y son las posiciones del pacman, van a ir cambiando dependiendo de que tecla se use
                 }
@@ -642,7 +649,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
-            arc.setFill(Paint.valueOf("YELLOW"));
+            arc.setFill(Paint.valueOf("#127041"));
             arc.setType(ArcType.ROUND);
             root.getChildren().add(arc);
             cont3 += 30;
@@ -653,43 +660,43 @@ public class Nivel1Controller extends Controller implements Initializable {
             Double yOrigen = arista.getOrigen().getPoint2D().getY();
             Double yDestino = arista.getDestino().getPoint2D().getY();
 
-            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#127041"));
             puntos.add(origen);
             root.getChildren().add(origen);//
-            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("YELLOW"));
+            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#127041"));
             puntos.add(destino);
             root.getChildren().add(destino);//
             
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
 
-                /*while (yDestino <= yOrigen) {
-                    Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                while (yDestino <= yOrigen) {
+                    Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#127041"));
                     puntos.add(circle);
                     root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     yDestino += 29;
-                }*/
+                }
             } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
 
-                /*while (yOrigen <= yDestino) {
-                    Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("YELLOW"));
+                while (yOrigen <= yDestino) {
+                    Circle circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#127041"));
                     puntos.add(circle);
                     root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     yOrigen += 29;
-                }*/
+                }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
-                /*while (xDestino <= xOrigen) {
-                    Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                while (xDestino <= xOrigen) {
+                    Circle circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#127041"));
                     puntos.add(circle);
                     root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     xDestino += 31;
-                }*/
+                }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
-                /*while (xOrigen <= xDestino) {
-                    Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("YELLOW"));
+                while (xOrigen <= xDestino) {
+                    Circle circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#127041"));
                     puntos.add(circle);
                     root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     xOrigen += 31;
-                }*/
+                }
             }
         });
     }
