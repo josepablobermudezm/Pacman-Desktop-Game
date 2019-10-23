@@ -59,6 +59,28 @@
     -fx-text-fill : white;
     -fx-font-size : 25pt;
 }
+/*game over*/
+.lblPac1{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : white;
+    -fx-font-size : 25pt;
+}
+.lblPac{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : white;
+    -fx-font-size : 25pt;
+}
+.lblPac:hover{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : #4955ba;
+    -fx-font-size : 25pt;
+}
+.gameover{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : RED;
+    -fx-font-size : 60pt;
+}
+
 .custom-jfx-radio-button-white{
     -fx-text-fill: black;
     -jfx-selected-color: #0d54d1;
