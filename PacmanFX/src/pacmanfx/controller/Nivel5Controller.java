@@ -716,10 +716,10 @@ public class Nivel5Controller extends Controller implements Initializable {
             xDestino = arista.getDestino().getPoint2D().getX();
             yOrigen = arista.getOrigen().getPoint2D().getY();
             yDestino = arista.getDestino().getPoint2D().getY();
-            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
             puntos.add(origen);
             root.getChildren().add(origen);//
-            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("YELLOW"));
+            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#0CF25C"));
             puntos.add(destino);
             root.getChildren().add(destino);//
 
@@ -727,7 +727,7 @@ public class Nivel5Controller extends Controller implements Initializable {
                 yDestino += 29;
                 while (yDestino < yOrigen) {
                     if (yDestino <= yOrigen - 13) {
-                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -737,7 +737,7 @@ public class Nivel5Controller extends Controller implements Initializable {
                 yOrigen += 29;
                 while (yOrigen < yDestino) {
                     if (yOrigen <= yDestino - 13) {
-                        circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("YELLOW"));
+                        circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#0CF25C"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -747,7 +747,7 @@ public class Nivel5Controller extends Controller implements Initializable {
                 xDestino += 31;
                 while (xDestino < xOrigen) {
                     if (xDestino <= xOrigen - 16) {
-                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("YELLOW"));
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -756,7 +756,7 @@ public class Nivel5Controller extends Controller implements Initializable {
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 while (xOrigen <= xDestino) {
                     if (xOrigen <= xDestino - 16) {
-                        circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("YELLOW"));
+                        circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#0CF25C"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
