@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -87,7 +88,12 @@ public class Nivel4Controller extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/FondoNivel4.jpg");
+            img.setImage(imgLogo);
+        } catch (Exception e) {
+        }
     }
 
     @FXML
@@ -522,7 +528,7 @@ public class Nivel4Controller extends Controller implements Initializable {
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Nodos4.txt"));*/
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos4.txt"));
             String line = null;
             Integer i = 0;
@@ -546,7 +552,7 @@ public class Nivel4Controller extends Controller implements Initializable {
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista4.txt"));*/
             File f = new File(".");
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista4.txt"));
@@ -775,6 +781,12 @@ public class Nivel4Controller extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/FondoNivel4.jpg");
+            img.setImage(imgLogo);
+        } catch (Exception e) {
+        }
     }
 
     @FXML

@@ -92,6 +92,12 @@ public class Nivel1Controller extends Controller implements Initializable {
 
     @Override
     public void initialize() {
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/FondoNivel1.jpg");
+            img.setImage(imgLogo);
+        } catch (Exception e) {
+        }
     }
 
     private void pasar(ActionEvent event) {
@@ -785,6 +791,12 @@ public class Nivel1Controller extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/FondoNivel1.jpg");
+            img.setImage(imgLogo);
+        } catch (Exception e) {
+        }
     }
 
     @FXML
