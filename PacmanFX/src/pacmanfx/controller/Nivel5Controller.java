@@ -36,7 +36,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import pacmanfx.model.Arista;
+import pacmanfx.model.CyanGhost;
 import pacmanfx.model.Nodo;
+import pacmanfx.model.OrangeGhost;
+import pacmanfx.model.PinkGhost;
+import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
 
@@ -62,6 +66,10 @@ public class Nivel5Controller extends Controller implements Initializable {
     private ArrayList<Arista> aristas = new ArrayList();
     private ArrayList<Circle> puntos = new ArrayList();
     private pacMan2D pacman;
+    RedGhost redGhost = new RedGhost();
+    CyanGhost cyanGhost = new CyanGhost();
+    OrangeGhost orangeGhost = new OrangeGhost();
+    PinkGhost pinkGhost = new PinkGhost();
 
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
@@ -76,7 +84,7 @@ public class Nivel5Controller extends Controller implements Initializable {
             {'*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'},
             {'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-            {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
+            {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', '@', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
@@ -780,6 +788,12 @@ public class Nivel5Controller extends Controller implements Initializable {
 
         puntos.removeAll(pAux);
         root.getChildren().removeAll(pAux);
+        
+        //aquí se crean los fantasmas
+        root.getChildren().add(redGhost);
+        root.getChildren().add(cyanGhost);
+        root.getChildren().add(orangeGhost);
+        root.getChildren().add(pinkGhost);
     }
 
     @Override

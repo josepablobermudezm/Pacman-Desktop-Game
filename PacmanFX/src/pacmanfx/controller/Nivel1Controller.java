@@ -41,6 +41,7 @@ import pacmanfx.model.Nodo;
 import pacmanfx.model.Arista;
 import pacmanfx.model.CyanGhost;
 import pacmanfx.model.OrangeGhost;
+import pacmanfx.model.PinkGhost;
 import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
@@ -66,6 +67,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     RedGhost redGhost = new RedGhost();
     CyanGhost cyanGhost = new CyanGhost();
     OrangeGhost orangeGhost = new OrangeGhost();
+    PinkGhost pinkGhost = new PinkGhost();
 
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
@@ -796,6 +798,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         root.getChildren().add(redGhost);
         root.getChildren().add(cyanGhost);
         root.getChildren().add(orangeGhost);
+        root.getChildren().add(pinkGhost);
     }
 
 //127041

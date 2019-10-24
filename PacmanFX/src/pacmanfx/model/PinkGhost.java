@@ -5,10 +5,28 @@
  */
 package pacmanfx.model;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 /**
  *
  * @author JORDI RODRIGUEZ
  */
-public class PinkGhost{
-     private Nodo nodo = new Nodo();
+public class PinkGhost extends ImageView {
+
+    private Nodo nodo = new Nodo(449.0,240.0);
+    Image imgLogo;
+        
+    public PinkGhost() {
+        super();
+        this.setLayoutX(512.0);
+        this.setLayoutY(288.0);
+        this.setId("PinkGhost");
+        this.setFitHeight(30);
+        this.setFitWidth(30);
+        this.setImage(new Image("/pacmanfx/resources/pink-ghost.png"));
+    }
+
+    public void GenerarRuta(Nodo ini, Nodo fin) {
+    }
 }
