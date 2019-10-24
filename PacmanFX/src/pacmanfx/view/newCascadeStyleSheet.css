@@ -16,6 +16,12 @@
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 25pt;
 }
+.lblSmall{
+    -fx-font-family: "Decker";
+    -fx-text-fill: gray;
+    /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
+    -fx-font-size: 11pt;
+}
 .lbl:hover{
     -fx-font-family: "Decker";
     -fx-font-size : 27pt;
@@ -88,6 +94,12 @@
 
 .button{
     -fx-background-color:#042a6b;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
+.button:pressed {
+    -fx-background-color: #5f83c2;
     -jfx-button-type: RAISED;/*raised and flat*/
     -fx-text-fill: WHITE;
     -jfx-rippler-fill: RED;
