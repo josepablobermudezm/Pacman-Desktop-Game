@@ -42,6 +42,8 @@ import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import pacmanfx.model.Arista;
 import pacmanfx.model.CyanGhost;
+import pacmanfx.model.Dijkstra;
+import pacmanfx.model.Grafo;
 import pacmanfx.model.Nodo;
 import pacmanfx.model.OrangeGhost;
 import pacmanfx.model.PinkGhost;
@@ -818,10 +820,25 @@ public class Nivel3Controller extends Controller implements Initializable {
         root.getChildren().add(pinkGhost);
     }
 
+    Nodo inicio;
+    Nodo nFinal;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
         Image imgLogo;
+        
+        nodos.stream().forEach((t) -> {
+            if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
+                inicio = t;
+            } else if (t.getPoint2D().getX() == 822.0 && t.getPoint2D().getY() == 515.0) {
+                nFinal = t;
+            }
+        });
+        Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+        dijkstra.ejecutar(inicio);
+        ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
+        
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel3.jpg");
             img.setImage(imgLogo);
@@ -857,11 +874,11 @@ public class Nivel3Controller extends Controller implements Initializable {
 
     @FXML
     private void mouse(MouseEvent event) {
-        /*root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
+        root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
-        //root.getChildren().add(circle);*/
+        root.getChildren().add(circle);
     }
 
     @Override

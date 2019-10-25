@@ -193,10 +193,112 @@ public class EstadisticasController extends Controller implements Initializable 
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas5.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                ContNivel5 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas6.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                ContNivel6 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas7.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                ContNivel7 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas8.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                ContNivel8 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas9.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                ContNivel9 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas10.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                ContNivel10 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         lblNivel1.setText(String.valueOf(ContNivel1));
         lblNivel2.setText(String.valueOf(ContNivel2));
         lblNivel3.setText(String.valueOf(ContNivel3));
         lblNivel4.setText(String.valueOf(ContNivel4));
+        lblNivel5.setText(String.valueOf(ContNivel5));
+        lblNivel6.setText(String.valueOf(ContNivel6));
+        lblNivel7.setText(String.valueOf(ContNivel7));
+        lblNivel8.setText(String.valueOf(ContNivel8));
+        lblNivel9.setText(String.valueOf(ContNivel9));
+        lblNivel10.setText(String.valueOf(ContNivel10));
         lblTotalPuntos.setText(String.valueOf(PuntosTotales + aux));
         lblPuntosPartida.setText(String.valueOf(aux1));
     }

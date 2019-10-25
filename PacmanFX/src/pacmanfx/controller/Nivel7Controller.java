@@ -843,6 +843,32 @@ public class Nivel7Controller extends Controller implements Initializable {
             img.setImage(imgLogo);
         } catch (Exception e) {
         }
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas7.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces + 1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\Partidas7.txt";
+                Files.write(Paths.get(path), content.getBytes());
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

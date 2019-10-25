@@ -14,14 +14,14 @@ import javafx.scene.paint.Color;
  * @author JORDI RODRIGUEZ
  */
 public class Dijkstra {
-/*
-    Mapa grafo;
-    ArrayList <Nodo> listaNodosAdyacentes;
-    ArrayList <Arista> aux = new ArrayList <Arista>();
 
-    public Dijkstra(Mapa grafo) {
+    Grafo grafo;
+    ArrayList <Nodo> listaNodosAdyacentes;
+    ArrayList <Arista> aux = new ArrayList <>();
+
+    public Dijkstra(Grafo grafo) {
         this.grafo = grafo;
-        listaNodosAdyacentes = new ArrayList <Nodo>();
+        listaNodosAdyacentes = new ArrayList <>();
     }
 
     public Dijkstra() {
@@ -39,9 +39,9 @@ public class Dijkstra {
 
     private void llenarConAdyacentes(Nodo nodo) {
         if (nodo != null) {
-            List<Arista> listaAux = nodo.getAristasAdyacentes();
+            List<Arista> listaAux = nodo.getAristas_Adyacentes();
             if (listaAux != null) {
-                for (Arista enlace : listaAux) {
+                listaAux.forEach((enlace) -> {
                     Nodo aux2;
                     if (nodo.equals(enlace.getOrigen())) {
                         aux2 = enlace.getDestino();
@@ -49,22 +49,22 @@ public class Dijkstra {
                         aux2 = enlace.getOrigen();
                     }
 
-                    if (!aux2.isMarca()&&!enlace.getAccidente()&&!enlace.getReparacion()) {
-
-                        if (isContenido(aux2)) {
-                            int longitud = nodo.getLongitudCamino() + enlace.getPeso();
-                            if (aux2.getLongitudCamino() > longitud) {
-                                aux2.setLongitudCamino(longitud);
-                                aux2.setNodoAntecesorDisjktra(nodo);
-                            }
-                        } else {
-                            aux2.setLongitudCamino(nodo.getLongitudCamino() + enlace.getPeso());
-                            aux2.setNodoAntecesorDisjktra(nodo);
-                            listaNodosAdyacentes.add(aux2);
-                        }
-
+                    if (!aux2.isMarca()) {
+                    
+                    if (isContenido(aux2)) {
+                    int longitud = nodo.getLongitud() + enlace.getPeso();
+                    if (aux2.getLongitud() > longitud) {
+                    aux2.setLongitud(longitud);
+                    aux2.setNodoAntecesorDisjktra(nodo);
                     }
-                }
+                    } else {
+                    aux2.setLongitud(nodo.getLongitud() + enlace.getPeso());
+                    aux2.setNodoAntecesorDisjktra(nodo);
+                    listaNodosAdyacentes.add(aux2);
+                    }
+                    
+                    }
+                });
             }
         }
         
@@ -72,19 +72,17 @@ public class Dijkstra {
 
     public Nodo buscarMenor() {
         Nodo aux = new Nodo();
-        aux.setLongitudCamino(9999999);
-
+        aux.setLongitud(9999999);
         for (Nodo nodo : listaNodosAdyacentes) {
-            if (nodo.getLongitudCamino() < aux.getLongitudCamino()) {
+            if (nodo.getLongitud() < aux.getLongitud()) {
                 aux = nodo;
             }
         }
-
         return aux;
     }
 
     public ArrayList ejecutar(Nodo nodoInicio) {
-        nodoInicio.setLongitudCamino(0);
+        nodoInicio.setLongitud(0);
         if (nodoInicio != null) {
             listaNodosAdyacentes = new ArrayList<>();
             listaNodosAdyacentes.add(nodoInicio);
@@ -105,7 +103,7 @@ public class Dijkstra {
     private void rutaCorta(Nodo nodoFinal) {
         aux.clear();
         Nodo nAux = nodoFinal;
-        for (int i = 0; i < PantPrincipalController.accidentes.size(); i++) {
+        /*for (int i = 0; i < PantPrincipalController.accidentes.size(); i++) {
             Arista accidente = PantPrincipalController.accidentes.get(i);
             for (Arista arista : aux) {
                 if(arista.equals(accidente)){
@@ -113,7 +111,7 @@ public class Dijkstra {
                 }
                 
             }
-        }
+        }*/
         while (nAux.getNodoAntecesorDisjktra() != null) {
             aux.add(grafo.getArista(nAux,
                     nAux.getNodoAntecesorDisjktra()));
@@ -122,15 +120,20 @@ public class Dijkstra {
 
     }
 
-    public void marcarRutaCorta(Nodo nodoFinal, Color color) {      
+    public ArrayList <Arista> marcarRutaCorta(Nodo nodoFinal) {      
         if (nodoFinal != null) {
             rutaCorta(nodoFinal);
             aux.stream().forEach((t) -> {
-                if (t != null) {
+                /*if (t != null) {
                     t.setStroke(color);
                     t.setStrokeWidth(5);
-                }
+                }*/
             });
+         
+            return aux;
+        }else{
+            System.out.println("XD 2");
+            return null;
         }
-    }*/
+    }
 }
