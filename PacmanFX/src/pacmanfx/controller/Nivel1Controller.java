@@ -677,6 +677,8 @@ public class Nivel1Controller extends Controller implements Initializable {
 
                         });
                         puntos.remove(circle);
+                        //Cuando se quita los puntos de la pantalla
+                        
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
@@ -710,6 +712,9 @@ public class Nivel1Controller extends Controller implements Initializable {
 
                         });
                         puntos.remove(circle);
+                        //Cuando se quita los puntos de la pantalla
+                        
+                        
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
@@ -891,6 +896,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         CrearMapa();
         Hilo = new hiloTiempo();
         Hilo.correrHilo();
+       
         Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel1.jpg");
