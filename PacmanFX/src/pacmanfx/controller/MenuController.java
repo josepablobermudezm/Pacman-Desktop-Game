@@ -7,10 +7,15 @@ package pacmanfx.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -29,10 +34,12 @@ import pacmanfx.util.FlowController;
  *
  * @author Jose Pablo Bermudez
  */
-public class MenuController extends Controller {
+public class MenuController extends Controller implements Initializable {
 
     @FXML
     private ImageView omg;
+    static public int PuntosTotales = 0;
+    static public int MayorCantidadDePuntosPartida = 0;
 
     @Override
     public void initialize() {
@@ -48,6 +55,7 @@ public class MenuController extends Controller {
 
     @FXML
     private void Start(MouseEvent event) {
+        //verifico que ya haya puesto el nombre
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -66,7 +74,6 @@ public class MenuController extends Controller {
             }
         } catch (IOException | NumberFormatException e) {
         }
-
         //this.getStage().close();
     }
 
@@ -80,6 +87,31 @@ public class MenuController extends Controller {
     @FXML
     private void Salir(MouseEvent event) {
         //FlowController.getMainStage().close();
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\TotalPuntosGanados.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                PuntosTotales += Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            String content = String.valueOf(PuntosTotales);
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String path = dir + "\\src\\pacmanfx\\resources\\TotalPuntosGanados.txt";
+            Files.write(Paths.get(path), content.getBytes());
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.getStage().close();
     }
 
@@ -87,6 +119,17 @@ public class MenuController extends Controller {
     private void jugador(MouseEvent event) {
         FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInStage("Jugador", this.getStage());
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/fondo4.jpg");
+            omg.setImage(imgLogo);
+        } catch (Exception e) {
+        }
+
     }
 
 }

@@ -7,12 +7,17 @@ package pacmanfx.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -156,6 +161,35 @@ public class Nivel7Controller extends Controller implements Initializable {
         } else if (event.getCode() == event.getCode().ESCAPE) {
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
+            MenuController.PuntosTotales += contPuntos;
+            int PuntosPorNivel = 0;
+            try {
+                File f = new File(".");
+                String dir = f.getAbsolutePath();
+                String fileName = dir + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                File file = new File(fileName);
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    PuntosPorNivel = Integer.parseInt(line);
+                }
+                if (contPuntos > PuntosPorNivel) {
+                    try {
+                        String content = String.valueOf(contPuntos);
+                        File f1 = new File(".");
+                        String dir1 = f1.getAbsolutePath();
+                        String path = dir1 + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                        Files.write(Paths.get(path), content.getBytes());
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     };
 
