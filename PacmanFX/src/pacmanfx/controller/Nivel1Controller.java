@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -52,6 +53,8 @@ import pacmanfx.model.PinkGhost;
 import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
+import pacmanfx.util.hiloTiempo;
+import pacmanfx.util.hiloTiempo;
 
 /**
  * FXML Controller class
@@ -71,11 +74,11 @@ public class Nivel1Controller extends Controller implements Initializable {
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
     private pacMan2D pacman;
-    RedGhost redGhost = new RedGhost();
-    CyanGhost cyanGhost = new CyanGhost();
-    OrangeGhost orangeGhost = new OrangeGhost();
-    PinkGhost pinkGhost = new PinkGhost();
-
+    private RedGhost redGhost = new RedGhost();
+    private CyanGhost cyanGhost = new CyanGhost();
+    private OrangeGhost orangeGhost = new OrangeGhost();
+    private PinkGhost pinkGhost = new PinkGhost();
+    private hiloTiempo Hilo; 
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
@@ -161,6 +164,8 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
 
         } else if (event.getCode() == event.getCode().ESCAPE) {
+            hiloTiempo.finalizado = true;
+            
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
             MenuController.PuntosTotales += contPuntos;
@@ -884,6 +889,8 @@ public class Nivel1Controller extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
+        Hilo = new hiloTiempo();
+        Hilo.correrHilo();
         Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel1.jpg");
@@ -916,7 +923,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+      
     }
 
     @FXML
