@@ -132,6 +132,8 @@ public class JugadorController extends Controller {
 
     @FXML
     private void Estadisticas(MouseEvent event) {
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("Estadisticas", this.getStage());
     }
 
 }
