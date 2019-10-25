@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
  */
 public class OrangeGhost extends ImageView{
     private Nodo nodo = new Nodo(449.0,298.0);
+    //en la parte de los nodos lo que se está guardando es la posición del Layout no la del nodo
     Image imgLogo;
     
     public OrangeGhost(){

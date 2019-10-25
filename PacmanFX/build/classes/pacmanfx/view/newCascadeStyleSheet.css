@@ -99,7 +99,7 @@
     -jfx-rippler-fill: RED;
 }
 .button:pressed {
-    -fx-background-color: #5f83c2;
+    -fx-background-color: white;
     -jfx-button-type: RAISED;/*raised and flat*/
     -fx-text-fill: WHITE;
     -jfx-rippler-fill: RED;

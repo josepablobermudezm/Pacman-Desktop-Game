@@ -66,12 +66,11 @@ public class Nivel2Controller extends Controller implements Initializable {
     private ArrayList<Arista> aristas = new ArrayList();
     private ArrayList<Circle> puntos = new ArrayList();
     private pacMan2D pacman;
-    
+
     RedGhost redGhost = new RedGhost();
     CyanGhost cyanGhost = new CyanGhost();
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
-
 
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
@@ -724,13 +723,24 @@ public class Nivel2Controller extends Controller implements Initializable {
             xDestino = arista.getDestino().getPoint2D().getX();
             yOrigen = arista.getOrigen().getPoint2D().getY();
             yDestino = arista.getDestino().getPoint2D().getY();
-            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("WHITE"));
-            puntos.add(origen);
-            root.getChildren().add(origen);//
-            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("WHITE"));
-            puntos.add(destino);
-            root.getChildren().add(destino);//
+            if (((xOrigen != 232.0 && yOrigen != 236.0) || (xDestino != 232.0 && yDestino != 236.0))
+                    && ((xOrigen != 232.0 && yOrigen != 407.0) || (xDestino != 232.0 && yDestino != 407.0))
+                    && ((xOrigen != 666.0 && yOrigen != 236.0) || (xDestino != 666.0 && yDestino != 236.0))
+                    && ((xOrigen != 666.0 && yOrigen != 407.0) || (xDestino != 666.0 && yDestino != 407.0))
+                    && (((xOrigen != 512.0 && yOrigen != 236.0) || (xDestino != 512.0 && yDestino != 236.0)))) {
+                if (((xOrigen != 386.0 && yOrigen != 236.0) || (xDestino != 386.0 && yDestino != 236.0))) {
+                    if (((xOrigen != 666.0 && yOrigen != 407.0) || (xDestino != 666.0 && yDestino != 407.0))) {
+                        Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("BLACK"));
+                        puntos.add(origen);
+                        root.getChildren().add(origen);//
+                        Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("BLACK"));
+                        puntos.add(destino);
+                        root.getChildren().add(destino);//
+                    }
+                }
 
+            }
+            System.out.println(xOrigen + "X" + yOrigen + " Y");
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 yDestino += 29;
                 while (yDestino < yOrigen) {
@@ -742,24 +752,34 @@ public class Nivel2Controller extends Controller implements Initializable {
                     yDestino += 29;
                 }
             } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
-                yOrigen += 29;
-                while (yOrigen < yDestino) {
-                    if (yOrigen <= yDestino - 13) {
-                        circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("WHITE"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
+                if (((xOrigen != 232.0 && yOrigen != 407.0) || (xDestino != 232.0 && yDestino != 407.0))
+                        && ((xOrigen != 666.0 && yOrigen != 236.0) || (xDestino != 666.0 && yDestino != 236.0))
+                        && (((xOrigen != 512.0 && yOrigen != 236.0) || (xDestino != 512.0 && yDestino != 236.0)))
+                        && (((xOrigen != 512.0 && yOrigen != 180.0) || (xDestino != 512.0 && yDestino != 180.0)))
+                        && (((xOrigen != 512.0 && yOrigen != 236.0) || (xDestino != 512.0 && yDestino != 236.0)))) {
                     yOrigen += 29;
+                    while (yOrigen < yDestino) {
+                        if (yOrigen <= yDestino - 13) {
+                            circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("WHITE"));
+                            puntos.add(circle);
+                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                        }
+                        yOrigen += 29;
+                    }
                 }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
-                xDestino += 31;
-                while (xDestino < xOrigen) {
-                    if (xDestino <= xOrigen - 16) {
-                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("WHITE"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
+                if (((xOrigen != 232.0 && yOrigen != 236.0) || (xDestino != 232.0 && yDestino != 236.0))
+                        && (((xOrigen != 232.0 && yOrigen != 407.0) || (xDestino != 232.0 && yDestino != 407.0)))
+                        && (((xOrigen != 386.0 && yOrigen != 236.0) || (xDestino != 386.0 && yDestino != 236.0)))) {
                     xDestino += 31;
+                    while (xDestino < xOrigen) {
+                        if (xDestino <= xOrigen - 16) {
+                            circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("WHITE"));
+                            puntos.add(circle);
+                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                        }
+                        xDestino += 31;
+                    }
                 }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 while (xOrigen <= xDestino) {
@@ -772,6 +792,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                 }
             }
         });
+
         //Elimina las puntos repetidos en el mapa 
         ArrayList<Circle> pAux = new ArrayList();
         puntos.stream().forEach((t) -> {
@@ -788,7 +809,7 @@ public class Nivel2Controller extends Controller implements Initializable {
 
         puntos.removeAll(pAux);
         root.getChildren().removeAll(pAux);
-        
+
         //aquí se crean los fantasmas
         root.getChildren().add(redGhost);
         root.getChildren().add(cyanGhost);

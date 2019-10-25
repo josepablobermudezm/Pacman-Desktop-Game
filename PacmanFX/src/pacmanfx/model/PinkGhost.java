@@ -16,7 +16,8 @@ public class PinkGhost extends ImageView {
 
     private Nodo nodo = new Nodo(449.0,240.0);
     Image imgLogo;
-        
+       
+    //en la parte de los nodos lo que se está guardando es la posición del Layout no la del nodo
     public PinkGhost() {
         super();
         this.setLayoutX(512.0);

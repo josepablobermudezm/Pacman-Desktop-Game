@@ -130,4 +130,8 @@ public class JugadorController extends Controller {
         }
     }
 
+    @FXML
+    private void Estadisticas(MouseEvent event) {
+    }
+
 }
