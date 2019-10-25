@@ -77,7 +77,6 @@ public class Nivel3Controller extends Controller implements Initializable {
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
 
-
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X'},
@@ -811,7 +810,7 @@ public class Nivel3Controller extends Controller implements Initializable {
 
         puntos.removeAll(pAux);
         root.getChildren().removeAll(pAux);
-        
+
         //aquí se crean los fantasmas
         root.getChildren().add(redGhost);
         root.getChildren().add(cyanGhost);
@@ -827,6 +826,32 @@ public class Nivel3Controller extends Controller implements Initializable {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel3.jpg");
             img.setImage(imgLogo);
         } catch (Exception e) {
+        }
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas3.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces + 1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\Partidas3.txt";
+                Files.write(Paths.get(path), content.getBytes());
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -847,6 +872,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             img.setImage(imgLogo);
         } catch (Exception e) {
         }
+        
     }
 
 }
