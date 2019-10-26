@@ -603,9 +603,9 @@ public class Nivel3Controller extends Controller implements Initializable {
                 Double posy2 = Double.valueOf(parts[3]);
 
                 Arista arista = new Arista(posx, posy, posx2, posy2);
-                Line linea = new Line(posx, posy, posx2, posy2);
+                /*Line linea = new Line(posx, posy, posx2, posy2);
                 linea.setStroke(Paint.valueOf("RED"));
-                linea.setStrokeWidth(3.00);
+                linea.setStrokeWidth(3.00);*/
                 //this.root.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
@@ -719,11 +719,11 @@ public class Nivel3Controller extends Controller implements Initializable {
         label.setId("puntos");
         root.getChildren().add(label);
         Label puntaje = new Label(String.valueOf(contPuntos));
-        puntosJugador = puntaje;
         puntaje.setLayoutX(165);
         puntaje.setLayoutY(585);
         puntaje.setId("puntos");
         //Agregaar lo de puntaje
+        puntosJugador = puntaje;
         root.getChildren().add(puntaje);
         Label label1 = new Label(nivel);
         label1.setLayoutX(390);
@@ -747,7 +747,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             xDestino = arista.getDestino().getPoint2D().getX();
             yOrigen = arista.getOrigen().getPoint2D().getY();
             yDestino = arista.getDestino().getPoint2D().getY();
-
+            
             Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#efb810"));
             puntos.add(origen);
             root.getChildren().add(origen);//
@@ -822,12 +822,12 @@ public class Nivel3Controller extends Controller implements Initializable {
 
     Nodo inicio;
     Nodo nFinal;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
-        Image imgLogo;
-        
+
+        //nFINAL ES NULL; NO SE PORQUE
         nodos.stream().forEach((t) -> {
             if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
                 inicio = t;
@@ -838,7 +838,14 @@ public class Nivel3Controller extends Controller implements Initializable {
         Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
         dijkstra.ejecutar(inicio);
         ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
-        
+        aristasAux.stream().forEach((t) -> {
+            Line linea = new Line(t.getOrigen().getPoint2D().getX(), t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
+            linea.setStroke(Paint.valueOf("RED"));
+            linea.setStrokeWidth(3.00);
+            this.root.getChildren().add(linea);
+        });
+
+        Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel3.jpg");
             img.setImage(imgLogo);
@@ -889,7 +896,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             img.setImage(imgLogo);
         } catch (Exception e) {
         }
-        
+
     }
 
 }

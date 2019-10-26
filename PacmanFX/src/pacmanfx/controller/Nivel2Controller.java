@@ -776,7 +776,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                 }
 
             }
-            System.out.println(xOrigen + "X" + yOrigen + " Y");
+            //System.out.println(xOrigen + "X" + yOrigen + " Y");
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 yDestino += 29;
                 while (yDestino < yOrigen) {
@@ -873,7 +873,6 @@ public class Nivel2Controller extends Controller implements Initializable {
         Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
         dijkstra.ejecutar(inicio);
         ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
-        System.out.println(aristasAux.size());
         aristasAux.stream().forEach((t) -> {
             Line linea = new Line(t.getOrigen().getPoint2D().getX(),t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
             linea.setStroke(Paint.valueOf("RED"));

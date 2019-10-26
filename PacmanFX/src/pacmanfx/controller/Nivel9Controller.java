@@ -44,6 +44,8 @@ import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import pacmanfx.model.Arista;
 import pacmanfx.model.CyanGhost;
+import pacmanfx.model.Dijkstra;
+import pacmanfx.model.Grafo;
 import pacmanfx.model.Nodo;
 import pacmanfx.model.OrangeGhost;
 import pacmanfx.model.PinkGhost;
@@ -832,9 +834,29 @@ public class Nivel9Controller extends Controller implements Initializable {
         root.getChildren().add(pinkGhost);
     }
 
+    Nodo inicio;
+    Nodo nFinal;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
+        nodos.stream().forEach((t) -> {
+            if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
+                inicio = t;
+            } else if (t.getPoint2D().getX() == 851.0 && t.getPoint2D().getY() == 517.0) {
+                nFinal = t;
+            }
+        });
+        Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+        dijkstra.ejecutar(inicio);
+        ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
+        aristasAux.stream().forEach((t) -> {
+            Line linea = new Line(t.getOrigen().getPoint2D().getX(), t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
+            linea.setStroke(Paint.valueOf("RED"));
+            linea.setStrokeWidth(3.00);
+            this.root.getChildren().add(linea);
+
+        });
         Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel9.jpg");
