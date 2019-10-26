@@ -592,7 +592,7 @@ public class Nivel10Controller extends Controller implements Initializable {
                 Double posy = Double.valueOf(parts[1]);
 
                 Nodo nodo = new Nodo(posx, posy);
-                Circle circle = new Circle(posx, posy, 5, Paint.valueOf("GREEN"));
+                Circle circle = new Circle(posx, posy, 6, Paint.valueOf("GREEN"));
                 //this.root1.getChildren().add(circle);
 
                 i++;
