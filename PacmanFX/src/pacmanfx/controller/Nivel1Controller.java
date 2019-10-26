@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -55,6 +56,8 @@ import pacmanfx.model.PinkGhost;
 import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
+import pacmanfx.util.hiloTiempo;
+import pacmanfx.util.hiloTiempo;
 
 /**
  * FXML Controller class
@@ -78,7 +81,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     CyanGhost cyanGhost = new CyanGhost();
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
-    
+    private hiloTiempo Hilo; 
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
@@ -164,6 +167,8 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
             
         } else if (event.getCode() == event.getCode().ESCAPE) {
+            hiloTiempo.finalizado = true;
+            
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
             MenuController.PuntosTotales += contPuntos;
@@ -675,6 +680,8 @@ public class Nivel1Controller extends Controller implements Initializable {
                             
                         });
                         puntos.remove(circle);
+                        //Cuando se quita los puntos de la pantalla
+                        
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
@@ -708,6 +715,9 @@ public class Nivel1Controller extends Controller implements Initializable {
                             
                         });
                         puntos.remove(circle);
+                        //Cuando se quita los puntos de la pantalla
+                        
+                        
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
@@ -888,7 +898,6 @@ public class Nivel1Controller extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
-
         //
         nodos.stream().forEach((t) -> {
             if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
@@ -907,7 +916,10 @@ public class Nivel1Controller extends Controller implements Initializable {
             linea.setStrokeWidth(3.00);
             this.root.getChildren().add(linea);
         }); 
-        
+
+        Hilo = new hiloTiempo();
+        Hilo.correrHilo();
+       
         Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel1.jpg");
@@ -940,7 +952,6 @@ public class Nivel1Controller extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
     @FXML
