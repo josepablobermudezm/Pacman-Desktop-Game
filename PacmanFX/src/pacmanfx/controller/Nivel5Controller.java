@@ -798,6 +798,7 @@ public class Nivel5Controller extends Controller implements Initializable {
                     xDestino += 31;
                 }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
+                 xOrigen += 31;
                 while (xOrigen <= xDestino) {
                     if (xOrigen <= xDestino - 16) {
                         circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#0CF25C"));
