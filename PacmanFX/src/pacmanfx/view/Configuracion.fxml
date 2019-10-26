@@ -14,6 +14,7 @@
                <children>
                   <ImageView fx:id="omg" fitHeight="645.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true" />
                   <Label fx:id="lblVolver" layoutX="14.0" layoutY="568.0" onMouseClicked="#Volver" styleClass="lbl" text="Volver" />
+                  <Label layoutX="327.0" layoutY="14.0" styleClass="Label" text="Configuraciones" />
                </children>
             </AnchorPane>
          </children>

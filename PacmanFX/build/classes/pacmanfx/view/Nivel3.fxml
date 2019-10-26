@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -12,11 +11,7 @@
          <children>
             <AnchorPane id="AnchorPane" fx:id="root" onMouseClicked="#mouse" prefHeight="645.0" prefWidth="900.0" style="-fx-background-color: black;" styleClass="root" stylesheets="@newCascadeStyleSheet.css">
                <children>
-                  <ImageView fx:id="img" fitHeight="645.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/FondoNivel3.jpg" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="img" fitHeight="645.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true" />
                </children></AnchorPane>
          </children>
       </VBox>

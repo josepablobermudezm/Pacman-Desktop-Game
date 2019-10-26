@@ -7,12 +7,17 @@ package pacmanfx.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -22,6 +27,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -35,7 +42,13 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import pacmanfx.model.Arista;
+import pacmanfx.model.CyanGhost;
+import pacmanfx.model.Dijkstra;
+import pacmanfx.model.Grafo;
 import pacmanfx.model.Nodo;
+import pacmanfx.model.OrangeGhost;
+import pacmanfx.model.PinkGhost;
+import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
 
@@ -61,6 +74,11 @@ public class Nivel2Controller extends Controller implements Initializable {
     private ArrayList<Circle> puntos = new ArrayList();
     private pacMan2D pacman;
 
+    RedGhost redGhost = new RedGhost();
+    CyanGhost cyanGhost = new CyanGhost();
+    OrangeGhost orangeGhost = new OrangeGhost();
+    PinkGhost pinkGhost = new PinkGhost();
+
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X'},
@@ -74,7 +92,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             {'/', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', '/'},
             {'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X'},
             {'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X'},
+            {'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '@', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
@@ -82,13 +100,20 @@ public class Nivel2Controller extends Controller implements Initializable {
             {'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X'},
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
+    @FXML
+    private ImageView omg;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize() {
-
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/FondoNivel22.jpg");
+            omg.setImage(imgLogo);
+        } catch (Exception e) {
+        }
     }
 
     @FXML
@@ -134,6 +159,35 @@ public class Nivel2Controller extends Controller implements Initializable {
         } else if (event.getCode() == event.getCode().ESCAPE) {
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
+            MenuController.PuntosTotales += contPuntos;
+            int PuntosPorNivel = 0;
+            try {
+                File f = new File(".");
+                String dir = f.getAbsolutePath();
+                String fileName = dir + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                File file = new File(fileName);
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    PuntosPorNivel = Integer.parseInt(line);
+                }
+                if (contPuntos > PuntosPorNivel) {
+                    try {
+                        String content = String.valueOf(contPuntos);
+                        File f1 = new File(".");
+                        String dir1 = f1.getAbsolutePath();
+                        String path = dir1 + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                        Files.write(Paths.get(path), content.getBytes());
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     };
 
@@ -522,7 +576,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Nodos2.txt"));*/
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos2.txt"));
             String line = null;
             Integer i = 0;
@@ -546,7 +600,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista2.txt"));*/
             File f = new File(".");
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista2.txt"));
@@ -578,7 +632,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                     rec.setStrokeType(StrokeType.OUTSIDE);
                     rec.setStroke(Paint.valueOf("BLACK"));
                     rec.setStrokeWidth(0.1);
-                    rec.setFill(Paint.valueOf("#3A9881"));
+                    rec.setFill(Paint.valueOf("#bd0d2b"));
                     root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
@@ -705,47 +759,68 @@ public class Nivel2Controller extends Controller implements Initializable {
             xDestino = arista.getDestino().getPoint2D().getX();
             yOrigen = arista.getOrigen().getPoint2D().getY();
             yDestino = arista.getDestino().getPoint2D().getY();
-            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("bdbd00"));
-            puntos.add(origen);
-            root.getChildren().add(origen);//
-            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("bdbd00"));
-            puntos.add(destino);
-            root.getChildren().add(destino);//
+            if (((xOrigen != 232.0 && yOrigen != 236.0) || (xDestino != 232.0 && yDestino != 236.0))
+                    && ((xOrigen != 232.0 && yOrigen != 407.0) || (xDestino != 232.0 && yDestino != 407.0))
+                    && ((xOrigen != 666.0 && yOrigen != 236.0) || (xDestino != 666.0 && yDestino != 236.0))
+                    && ((xOrigen != 666.0 && yOrigen != 407.0) || (xDestino != 666.0 && yDestino != 407.0))
+                    && (((xOrigen != 512.0 && yOrigen != 236.0) || (xDestino != 512.0 && yDestino != 236.0)))) {
+                if (((xOrigen != 386.0 && yOrigen != 236.0) || (xDestino != 386.0 && yDestino != 236.0))) {
+                    if (((xOrigen != 666.0 && yOrigen != 407.0) || (xDestino != 666.0 && yDestino != 407.0))) {
+                        Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("BLACK"));
+                        puntos.add(origen);
+                        root.getChildren().add(origen);//
+                        Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("BLACK"));
+                        puntos.add(destino);
+                        root.getChildren().add(destino);//
+                    }
+                }
 
+            }
+            //System.out.println(xOrigen + "X" + yOrigen + " Y");
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 yDestino += 29;
                 while (yDestino < yOrigen) {
                     if (yDestino <= yOrigen - 13) {
-                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("bdbd00"));
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("WHITE"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
                     yDestino += 29;
                 }
             } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
-                yOrigen += 29;
-                while (yOrigen < yDestino) {
-                    if (yOrigen <= yDestino - 13) {
-                        circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("bdbd00"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
+                if (((xOrigen != 232.0 && yOrigen != 407.0) || (xDestino != 232.0 && yDestino != 407.0))
+                        && ((xOrigen != 666.0 && yOrigen != 236.0) || (xDestino != 666.0 && yDestino != 236.0))
+                        && (((xOrigen != 512.0 && yOrigen != 236.0) || (xDestino != 512.0 && yDestino != 236.0)))
+                        && (((xOrigen != 512.0 && yOrigen != 180.0) || (xDestino != 512.0 && yDestino != 180.0)))
+                        && (((xOrigen != 512.0 && yOrigen != 236.0) || (xDestino != 512.0 && yDestino != 236.0)))) {
                     yOrigen += 29;
+                    while (yOrigen < yDestino) {
+                        if (yOrigen <= yDestino - 13) {
+                            circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("WHITE"));
+                            puntos.add(circle);
+                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                        }
+                        yOrigen += 29;
+                    }
                 }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
-                xDestino += 31;
-                while (xDestino < xOrigen) {
-                    if (xDestino <= xOrigen - 16) {
-                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("bdbd00"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
+                if (((xOrigen != 232.0 && yOrigen != 236.0) || (xDestino != 232.0 && yDestino != 236.0))
+                        && (((xOrigen != 232.0 && yOrigen != 407.0) || (xDestino != 232.0 && yDestino != 407.0)))
+                        && (((xOrigen != 386.0 && yOrigen != 236.0) || (xDestino != 386.0 && yDestino != 236.0)))) {
                     xDestino += 31;
+                    while (xDestino < xOrigen) {
+                        if (xDestino <= xOrigen - 16) {
+                            circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("WHITE"));
+                            puntos.add(circle);
+                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                        }
+                        xDestino += 31;
+                    }
                 }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 while (xOrigen <= xDestino) {
                     if (xOrigen <= xDestino - 16) {
-                        circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("bdbd00"));
+                        circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("WHITE"));
                         puntos.add(circle);
                         root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
@@ -753,6 +828,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                 }
             }
         });
+
         //Elimina las puntos repetidos en el mapa 
         ArrayList<Circle> pAux = new ArrayList();
         puntos.stream().forEach((t) -> {
@@ -769,13 +845,73 @@ public class Nivel2Controller extends Controller implements Initializable {
 
         puntos.removeAll(pAux);
         root.getChildren().removeAll(pAux);
+
+        //aquí se crean los fantasmas
+        root.getChildren().add(redGhost);
+        root.getChildren().add(cyanGhost);
+        root.getChildren().add(orangeGhost);
+        root.getChildren().add(pinkGhost);
     }
 
+    Nodo inicio;
+    Nodo nFinal;
+    
     //bdbd00
     @Override
 
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
+        //CrearMapa();
+        
+        nodos.stream().forEach((t) -> {
+            if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
+                inicio = t;
+            } else if (t.getPoint2D().getX() == 853.0 && t.getPoint2D().getY() == 516.0) {
+                nFinal = t;
+            }
+        });
+        Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+        dijkstra.ejecutar(inicio);
+        ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
+        aristasAux.stream().forEach((t) -> {
+            Line linea = new Line(t.getOrigen().getPoint2D().getX(),t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
+            linea.setStroke(Paint.valueOf("RED"));
+            linea.setStrokeWidth(3.00);
+            this.root.getChildren().add(linea);
+        }); 
+        
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/FondoNivel22.jpg");
+            omg.setImage(imgLogo);
+        } catch (Exception e) {
+        }
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas2.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces+1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\Partidas2.txt";
+                Files.write(Paths.get(path), content.getBytes());
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

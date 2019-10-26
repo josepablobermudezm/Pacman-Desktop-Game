@@ -7,12 +7,17 @@ package pacmanfx.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -22,6 +27,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -35,7 +41,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import pacmanfx.model.Arista;
+import pacmanfx.model.CyanGhost;
+import pacmanfx.model.Dijkstra;
+import pacmanfx.model.Grafo;
 import pacmanfx.model.Nodo;
+import pacmanfx.model.OrangeGhost;
+import pacmanfx.model.PinkGhost;
+import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
 
@@ -62,6 +74,10 @@ public class Nivel3Controller extends Controller implements Initializable {
     private ArrayList<Arista> aristas = new ArrayList();
     private ArrayList<Circle> puntos = new ArrayList();
     private pacMan2D pacman;
+    RedGhost redGhost = new RedGhost();
+    CyanGhost cyanGhost = new CyanGhost();
+    OrangeGhost orangeGhost = new OrangeGhost();
+    PinkGhost pinkGhost = new PinkGhost();
 
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
@@ -76,7 +92,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             {'*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'},
             {'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X'},
             {'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X'},
-            {'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X'},
+            {'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X'},
             {'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X'},
             {'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '@', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X'},
             {'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', 'X'},
@@ -130,6 +146,35 @@ public class Nivel3Controller extends Controller implements Initializable {
         } else if (event.getCode() == event.getCode().ESCAPE) {
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
+            MenuController.PuntosTotales += contPuntos;
+            int PuntosPorNivel = 0;
+            try {
+                File f = new File(".");
+                String dir = f.getAbsolutePath();
+                String fileName = dir + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                File file = new File(fileName);
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    PuntosPorNivel = Integer.parseInt(line);
+                }
+                if (contPuntos > PuntosPorNivel) {
+                    try {
+                        String content = String.valueOf(contPuntos);
+                        File f1 = new File(".");
+                        String dir1 = f1.getAbsolutePath();
+                        String path = dir1 + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                        Files.write(Paths.get(path), content.getBytes());
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     };
 
@@ -519,7 +564,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Nodos3.txt"));*/
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Nodos3.txt"));
             String line = null;
             Integer i = 0;
@@ -543,7 +588,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
             String dir = f.getAbsolutePath();
-            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista.txt"));*/
+            BufferedReader reader = new BufferedReader(new FileReader(dir + "\\pacmanfx\\resources\\Arista3.txt"));*/
             File f = new File(".");
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista3.txt"));
@@ -558,9 +603,9 @@ public class Nivel3Controller extends Controller implements Initializable {
                 Double posy2 = Double.valueOf(parts[3]);
 
                 Arista arista = new Arista(posx, posy, posx2, posy2);
-                Line linea = new Line(posx, posy, posx2, posy2);
+                /*Line linea = new Line(posx, posy, posx2, posy2);
                 linea.setStroke(Paint.valueOf("RED"));
-                linea.setStrokeWidth(3.00);
+                linea.setStrokeWidth(3.00);*/
                 //this.root.getChildren().add(linea);
                 arista.agregarNodos(nodos);
                 aristas.add(arista);
@@ -674,11 +719,11 @@ public class Nivel3Controller extends Controller implements Initializable {
         label.setId("puntos");
         root.getChildren().add(label);
         Label puntaje = new Label(String.valueOf(contPuntos));
-        puntosJugador = puntaje;
         puntaje.setLayoutX(165);
         puntaje.setLayoutY(585);
         puntaje.setId("puntos");
         //Agregaar lo de puntaje
+        puntosJugador = puntaje;
         root.getChildren().add(puntaje);
         Label label1 = new Label(nivel);
         label1.setLayoutX(390);
@@ -702,7 +747,7 @@ public class Nivel3Controller extends Controller implements Initializable {
             xDestino = arista.getDestino().getPoint2D().getX();
             yOrigen = arista.getOrigen().getPoint2D().getY();
             yDestino = arista.getDestino().getPoint2D().getY();
-
+            
             Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#efb810"));
             puntos.add(origen);
             root.getChildren().add(origen);//
@@ -767,24 +812,90 @@ public class Nivel3Controller extends Controller implements Initializable {
 
         puntos.removeAll(pAux);
         root.getChildren().removeAll(pAux);
+
+        //aquí se crean los fantasmas
+        root.getChildren().add(redGhost);
+        root.getChildren().add(cyanGhost);
+        root.getChildren().add(orangeGhost);
+        root.getChildren().add(pinkGhost);
     }
+
+    Nodo inicio;
+    Nodo nFinal;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
+
+        //nFINAL ES NULL; NO SE PORQUE
+        nodos.stream().forEach((t) -> {
+            if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
+                inicio = t;
+            } else if (t.getPoint2D().getX() == 822.0 && t.getPoint2D().getY() == 515.0) {
+                nFinal = t;
+            }
+        });
+        Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+        dijkstra.ejecutar(inicio);
+        ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
+        aristasAux.stream().forEach((t) -> {
+            Line linea = new Line(t.getOrigen().getPoint2D().getX(), t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
+            linea.setStroke(Paint.valueOf("RED"));
+            linea.setStrokeWidth(3.00);
+            this.root.getChildren().add(linea);
+        });
+
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/FondoNivel3.jpg");
+            img.setImage(imgLogo);
+        } catch (Exception e) {
+        }
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Partidas3.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces + 1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\Partidas3.txt";
+                Files.write(Paths.get(path), content.getBytes());
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void mouse(MouseEvent event) {
-        /*root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
+        root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
-        //root.getChildren().add(circle);*/
+        root.getChildren().add(circle);
     }
 
     @Override
     public void initialize() {
+        Image imgLogo;
+        try {
+            imgLogo = new Image("/pacmanfx/resources/FondoNivel3.jpg");
+            img.setImage(imgLogo);
+        } catch (Exception e) {
+        }
 
     }
 

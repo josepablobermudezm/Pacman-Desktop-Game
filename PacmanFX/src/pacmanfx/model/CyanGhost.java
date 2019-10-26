@@ -5,10 +5,26 @@
  */
 package pacmanfx.model;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 /**
  *
  * @author JORDI RODRIGUEZ
  */
-public class CyanGhost {
-     private Nodo nodo = new Nodo();
+public class CyanGhost extends ImageView {
+
+    private Nodo nodo = new Nodo(352.0,298.0);
+    //en la parte de los nodos lo que se está guardando es la posición del Layout no la del nodo
+    Image imgLogo;
+
+    public CyanGhost() {
+        super();
+        this.setLayoutX(352.0);
+        this.setLayoutY(288.0);
+        this.setId("CyanGhost");
+        this.setFitHeight(30);
+        this.setFitWidth(30);
+        this.setImage(new Image("/pacmanfx/resources/blue-ghost.png"));
+    }
 }

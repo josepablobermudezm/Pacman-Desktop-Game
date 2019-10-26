@@ -16,6 +16,12 @@
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 25pt;
 }
+.lblSmall{
+    -fx-font-family: "Decker";
+    -fx-text-fill: gray;
+    /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
+    -fx-font-size: 11pt;
+}
 .lbl:hover{
     -fx-font-family: "Decker";
     -fx-font-size : 27pt;
@@ -59,6 +65,28 @@
     -fx-text-fill : white;
     -fx-font-size : 25pt;
 }
+/*game over*/
+.lblPac1{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : white;
+    -fx-font-size : 25pt;
+}
+.lblPac{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : white;
+    -fx-font-size : 25pt;
+}
+.lblPac:hover{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : #4955ba;
+    -fx-font-size : 25pt;
+}
+.gameover{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : RED;
+    -fx-font-size : 60pt;
+}
+
 .custom-jfx-radio-button-white{
     -fx-text-fill: black;
     -jfx-selected-color: #0d54d1;
@@ -66,6 +94,12 @@
 
 .button{
     -fx-background-color:#042a6b;
+    -jfx-button-type: RAISED;/*raised and flat*/
+    -fx-text-fill: WHITE;
+    -jfx-rippler-fill: RED;
+}
+.button:pressed {
+    -fx-background-color: white;
     -jfx-button-type: RAISED;/*raised and flat*/
     -fx-text-fill: WHITE;
     -jfx-rippler-fill: RED;

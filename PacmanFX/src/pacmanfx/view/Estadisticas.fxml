@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane stylesheets="@newCascadeStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pacmanfx.controller.EstadisticasController">
+   <center>
+      <VBox>
+         <children>
+            <AnchorPane id="AnchorPane" prefHeight="645.0" prefWidth="900.0">
+               <children>
+                  <ImageView fx:id="omg" fitHeight="645.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="lblVolver" layoutX="14.0" layoutY="568.0" onMouseClicked="#Volver" styleClass="lbl" text="Volver" />
+                  <Label layoutX="365.0" layoutY="14.0" styleClass="Label" text="Estadísticas" />
+                  <Label layoutX="59.0" layoutY="54.0" styleClass="lblSmall" text="Total de puntos ganados:" />
+                  <Label fx:id="lblTotalPuntos" layoutX="637.0" layoutY="54.0" prefHeight="19.0" prefWidth="102.0" styleClass="lblSmall" />
+                  <Label layoutX="59.0" layoutY="82.0" styleClass="lblSmall" text="Mayor Cantidad de Puntos en Una partida:" />
+                  <Label fx:id="lblPuntosPartida" layoutX="637.0" layoutY="82.0" prefHeight="19.0" prefWidth="102.0" styleClass="lblSmall" />
+                  <Label layoutX="59.0" layoutY="116.0" styleClass="lblSmall" text="Mayor Cantidad de Puntos sin perder una vida:" />
+                  <Label fx:id="lblPuntosPartidaVida" layoutX="637.0" layoutY="116.0" prefHeight="19.0" prefWidth="102.0" styleClass="lblSmall" />
+                  <Label layoutX="59.0" layoutY="149.0" styleClass="lblSmall" text="Total de Vidas perdidas:" />
+                  <Label fx:id="lblVidasPerdidas" layoutX="637.0" layoutY="149.0" prefHeight="19.0" prefWidth="102.0" styleClass="lblSmall" />
+                  <Label layoutX="246.0" layoutY="238.0" styleClass="lblSmall" text="Cantidad de partidas por nivel:" />
+                  <Label layoutX="65.0" layoutY="281.0" styleClass="lblSmall" text="Nivel 1:" />
+                  <Label layoutX="65.0" layoutY="306.0" styleClass="lblSmall" text="Nivel 2:" />
+                  <Label layoutX="65.0" layoutY="334.0" styleClass="lblSmall" text="Nivel 3:" />
+                  <Label layoutX="65.0" layoutY="364.0" styleClass="lblSmall" text="NIvel 4:" />
+                  <Label layoutX="65.0" layoutY="392.0" styleClass="lblSmall" text="Nivel 5:" />
+                  <Label layoutX="65.0" layoutY="417.0" styleClass="lblSmall" text="Nivel 6:" />
+                  <Label layoutX="65.0" layoutY="444.0" styleClass="lblSmall" text="Nivel 7:" />
+                  <Label layoutX="65.0" layoutY="473.0" styleClass="lblSmall" text="Nivel 8:" />
+                  <Label layoutX="65.0" layoutY="504.0" styleClass="lblSmall" text="Nivel 9:" />
+                  <Label layoutX="65.0" layoutY="531.0" styleClass="lblSmall" text="Nivel 10:" />
+                  <Label fx:id="lblNivel1" layoutX="319.0" layoutY="277.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel2" layoutX="319.0" layoutY="302.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel3" layoutX="319.0" layoutY="330.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel4" layoutX="319.0" layoutY="360.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel5" layoutX="319.0" layoutY="388.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel6" layoutX="319.0" layoutY="413.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel7" layoutX="319.0" layoutY="440.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel8" layoutX="319.0" layoutY="469.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel9" layoutX="319.0" layoutY="500.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblNivel10" layoutX="319.0" layoutY="527.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo1" layoutX="566.0" layoutY="277.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo2" layoutX="566.0" layoutY="302.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo3" layoutX="566.0" layoutY="330.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo4" layoutX="566.0" layoutY="360.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo5" layoutX="566.0" layoutY="388.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo6" layoutX="566.0" layoutY="413.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo7" layoutX="566.0" layoutY="440.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo8" layoutX="566.0" layoutY="469.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo9" layoutX="566.0" layoutY="500.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTiempo10" layoutX="566.0" layoutY="527.0" prefHeight="19.0" prefWidth="60.0" styleClass="lblSmall" />
+                  <Label layoutX="510.0" layoutY="238.0" styleClass="lblSmall" text="Mejor Tiempo por partida:" />
+                  <Label layoutX="59.0" layoutY="179.0" styleClass="lblSmall" text="Cantidad de Fantasmas comidos:" />
+                  <Label fx:id="lblFantasmasComidos" layoutX="637.0" layoutY="179.0" prefHeight="19.0" prefWidth="102.0" styleClass="lblSmall" />
+                  <Label layoutX="59.0" layoutY="210.0" styleClass="lblSmall" text="Tiempo Total de Juego:" />
+                  <Label fx:id="lblTiempoTotalJuego" layoutX="637.0" layoutY="210.0" prefHeight="19.0" prefWidth="102.0" styleClass="lblSmall" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
