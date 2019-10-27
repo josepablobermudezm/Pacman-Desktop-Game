@@ -70,7 +70,19 @@ public class Nodo {
     }
 
     public List<Nodo> getNodos_Adyacentes() {
+        /*aristas_Adyacentes.stream().forEach((t) -> {
+            if(t.getOrigen().getPoint2D().getX()!= this.point2D.getX() && t.getOrigen().getPoint2D().getY()!= this.point2D.getY()){
+               nodos_Adyacentes.add(t.getOrigen());
+            }else if(t.getDestino().getPoint2D().getX()!= this.point2D.getX() && t.getDestino().getPoint2D().getY()!= this.point2D.getY()){
+                nodos_Adyacentes.add(t.getDestino());
+            }
+        });*/
         return nodos_Adyacentes;
     }
 
+    @Override
+    public String toString() {
+        return "Nodo{" + "aristas_Adyacentes=" + aristas_Adyacentes + ", nodos_Adyacentes=" + nodos_Adyacentes + ", point2D=" + point2D + ", Longitud=" + Longitud + ", Marca=" + Marca + ", NodoAntecesorDisjktra=" + NodoAntecesorDisjktra + '}';
+    }
+    
 }

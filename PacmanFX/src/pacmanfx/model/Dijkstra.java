@@ -16,12 +16,12 @@ import javafx.scene.paint.Color;
 public class Dijkstra {
 
     Grafo grafo;
-    ArrayList <Nodo> listaNodosAdyacentes;
-    ArrayList <Arista> aux = new ArrayList <>();
+    ArrayList<Nodo> listaNodosAdyacentes;
+    ArrayList<Arista> aux = new ArrayList<>();
 
     public Dijkstra(Grafo grafo) {
         this.grafo = grafo;
-        listaNodosAdyacentes = new ArrayList <>();
+        listaNodosAdyacentes = new ArrayList<>();
     }
 
     public Dijkstra() {
@@ -50,24 +50,24 @@ public class Dijkstra {
                     }
 
                     if (!aux2.isMarca()) {
-                    
-                    if (isContenido(aux2)) {
-                    int longitud = nodo.getLongitud() + enlace.getPeso();
-                    if (aux2.getLongitud() > longitud) {
-                    aux2.setLongitud(longitud);
-                    aux2.setNodoAntecesorDisjktra(nodo);
-                    }
-                    } else {
-                    aux2.setLongitud(nodo.getLongitud() + enlace.getPeso());
-                    aux2.setNodoAntecesorDisjktra(nodo);
-                    listaNodosAdyacentes.add(aux2);
-                    }
-                    
+
+                        if (isContenido(aux2)) {
+                            int longitud = nodo.getLongitud() + enlace.getPeso();
+                            if (aux2.getLongitud() > longitud) {
+                                aux2.setLongitud(longitud);
+                                aux2.setNodoAntecesorDisjktra(nodo);
+                            }
+                        } else {
+                            aux2.setLongitud(nodo.getLongitud() + enlace.getPeso());
+                            aux2.setNodoAntecesorDisjktra(nodo);
+                            listaNodosAdyacentes.add(aux2);
+                        }
+
                     }
                 });
             }
         }
-        
+
     }
 
     public Nodo buscarMenor() {
@@ -120,7 +120,7 @@ public class Dijkstra {
 
     }
 
-    public ArrayList <Arista> marcarRutaCorta(Nodo nodoFinal) {      
+    public ArrayList<Arista> marcarRutaCorta(Nodo nodoFinal) {
         if (nodoFinal != null) {
             rutaCorta(nodoFinal);
             aux.stream().forEach((t) -> {
@@ -129,9 +129,9 @@ public class Dijkstra {
                     t.setStrokeWidth(5);
                 }*/
             });
-         
+
             return aux;
-        }else{
+        } else {
             System.out.println("XD 2");
             return null;
         }

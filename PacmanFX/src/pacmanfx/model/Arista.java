@@ -88,4 +88,9 @@ public class Arista {
 
     }
 
+    @Override
+    public String toString() {
+        return "Arista{" + "peso=" + peso + ", pesoOriginal=" + pesoOriginal + ", origen=" + origen.getPoint2D() + ", destino=" + destino.getPoint2D() + ", pesoCambio=" + pesoCambio + '}';
+    }
+
 }

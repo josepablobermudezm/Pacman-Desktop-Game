@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -35,7 +34,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
@@ -44,8 +42,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
-import pacmanfx.PacmanFX;
-import static pacmanfx.controller.MenuController.PuntosTotales;
 import pacmanfx.model.Nodo;
 import pacmanfx.model.Arista;
 import pacmanfx.model.CyanGhost;
@@ -57,7 +53,6 @@ import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
 import pacmanfx.util.hiloTiempo;
-import pacmanfx.util.hiloTiempo;
 
 /**
  * FXML Controller class
@@ -65,14 +60,14 @@ import pacmanfx.util.hiloTiempo;
  * @author Jose Pablo Bermudez
  */
 public class Nivel1Controller extends Controller implements Initializable {
-    
+
     double x = 447, y = 405, velx = 0, vely = 0;
     int code = 39/*por default a la derecha*/, cont = 0, gameStatus = 0, MouseX = 0, MouseY = 0,
             xAux = 434, yAux = 392, jAux = 14, iAux = 14, aux = 39, aux2 = 0, cont1 = 0, cont2 = 0, cont4 = 0, vidas = 6, cont3 = 0, contPuntos = 0,
             cont5 = 0, cont6 = 0, cont7 = 0, cont8 = 0, cont9 = 0, cont10 = 0;
     static boolean up = false, down = false, left = false, right = false, value = false, mapa2 = false, Nivel1 = true, Nivel2 = false, Nivel3 = false, Nivel4 = false,
             Nivel5 = false, Nivel6 = false, Nivel7 = false, Nivel8 = false, Nivel9 = false, Nivel10 = false;
-    
+
     String nivel = "Nivel 1";
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
@@ -81,7 +76,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     CyanGhost cyanGhost = new CyanGhost();
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
-    private hiloTiempo Hilo; 
+    private hiloTiempo Hilo;
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
@@ -110,7 +105,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     private BorderPane border;
     @FXML
     private ImageView img;
-    
+
     @Override
     public void initialize() {
         Image imgLogo;
@@ -120,55 +115,82 @@ public class Nivel1Controller extends Controller implements Initializable {
         } catch (Exception e) {
         }
     }
-    
+
     private void pasar(ActionEvent event) {
         FlowController.getInstance().goViewInWindow("Menu");
     }
-    
+
     @FXML
     private void Movimiento(KeyEvent event) {
-        
+
     }
-    
+
     private Nodo nodoAux = null;
     private static boolean encontrado = false;
     private String movimiento = "";
-    
+    private Double posY;
+    private Double posX;
+    ArrayList<Nodo> nodosAux;
+    Boolean adyacente = false;
+    String movimientoPrevio;
+    String movientoOriginal;
+    Nodo auxN;
+    Boolean bandera = false;
+
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
-                
                 movimiento = "DOWN";
                 down(false);
             } else {
-                movimiento = "DOWN";
+                if (movimientoCorrecto("DOWN", nodoAux)) {
+                    movimiento = "DOWN";
+                } else if (movimiento.equals("UP")) {
+                    movimiento = "DOWN";
+                }
+                //movimiento = "DOWN";
             }
         } else if (event.getCode() == event.getCode().LEFT) {
             if (nodoAux == null) {
                 movimiento = "LEFT";
                 left(false);
             } else {
-                movimiento = "LEFT";
+                if (movimientoCorrecto("LEFT", nodoAux)) {
+                    movimiento = "LEFT";
+                } else if (movimiento.equals("RIGHT")) {
+                    movimiento = "LEFT";
+                }
+                //movimiento = "LEFT";
             }
-            
+
         } else if (event.getCode() == event.getCode().UP) {
             if (nodoAux == null) {
                 movimiento = "UP";
                 up(false);
             } else {
-                movimiento = "UP";
+                if (movimientoCorrecto("UP", nodoAux)) {
+                    movimiento = "UP";
+                } else if (movimiento.equals("DOWN")) {
+                    movimiento = "UP";
+                }
+                //movimiento = "UP";
             }
         } else if (event.getCode() == event.getCode().RIGHT) {
             if (nodoAux == null) {
                 movimiento = "RIGHT";
                 right(false);
             } else {
-                movimiento = "RIGHT";
+                if (movimientoCorrecto("RIGHT", nodoAux)) {
+                    movimiento = "RIGHT";
+                } else if (movimiento.equals("LEFT")) {
+                    movimiento = "RIGHT";
+                }
+                //movimiento = "RIGHT";
             }
-            
+
         } else if (event.getCode() == event.getCode().ESCAPE) {
             hiloTiempo.finalizado = true;
-            
+
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
             MenuController.PuntosTotales += contPuntos;
@@ -202,7 +224,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
         }
     };
-    
+
     private void movimiento() {
         switch (movimiento) {
             case "UP":
@@ -219,18 +241,172 @@ public class Nivel1Controller extends Controller implements Initializable {
                 break;
         }
     }
-    
-    private Double posY;
-    private Double posX;
-    
+    Integer xAux2;
+    Integer yAux2;
+
+    private boolean movimientoCorrecto(String movimiento, Nodo destino) {
+        bandera = false;
+        copiaNodos();
+        auxN = null;
+        if (movimiento.equals("UP") && destino != null) {
+            xAux2 = (int) pacman.getpMan().getCenterX() - 14;
+            yAux2 = (int) pacman.getpMan().getCenterY() - 13;
+            while (xAux2 < (int) pacman.getpMan().getCenterX() + 14 && !bandera) {
+                while (yAux2 >= 0) {
+                    if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().isPresent() && !bandera) {
+                        auxN = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
+                        nodosAux.remove(auxN);
+                        destino.getAristas_Adyacentes().stream().forEach((arista) -> {
+                            if (arista.getDestino().equals(auxN)) {
+                                bandera = true;
+                            } else if (arista.getOrigen().equals(auxN)) {
+                                bandera = true;
+                            }
+                        });
+                        if (!bandera) {
+                            auxN = null;
+                        }
+                    }
+                    if (auxN != null) {
+                        yAux2 = -1;
+                        break;
+                    }
+                    yAux2--;
+                }
+
+                if (auxN != null) {
+                    xAux2 = (int) pacman.getpMan().getCenterX() + 14;
+                    break;
+                }
+
+                yAux2 = (int) pacman.getpMan().getCenterY() - 13;
+                xAux2++;
+            }
+        } else if (movimiento.equals("DOWN") && destino != null) {
+            xAux2 = (int) pacman.getpMan().getCenterX() - 14;
+            yAux2 = (int) pacman.getpMan().getCenterY() + 13;
+            while (xAux2 < (int) pacman.getpMan().getCenterX() + 14 && !bandera) {
+                while (yAux2 < 645) {
+                    if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().isPresent() && !bandera) {
+                        auxN = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
+                        nodosAux.remove(auxN);
+                        destino.getAristas_Adyacentes().stream().forEach((arista) -> {
+                            if (arista.getDestino().equals(auxN)) {
+                                bandera = true;
+                            } else if (arista.getOrigen().equals(auxN)) {
+                                bandera = true;
+                            }
+                        });
+                        if (!bandera) {
+                            auxN = null;
+                        }
+                    }
+                    if (auxN != null) {
+                        yAux2 = 646;
+                        break;
+                    }
+                    yAux2++;
+                }
+
+                if (auxN != null) {
+                    xAux2 = (int) pacman.getpMan().getCenterX() + 14;
+                    break;
+                }
+                yAux2 = (int) pacman.getpMan().getCenterY() + 13;
+                xAux2++;
+            }
+        } else if (movimiento.equals("LEFT") && destino != null) {
+            xAux2 = (int) pacman.getpMan().getCenterX() - 13;
+            yAux2 = (int) pacman.getpMan().getCenterY() - 14;
+            while (yAux2 < (int) pacman.getpMan().getCenterY() + 14 && !bandera) {
+                while (xAux2 >= 0) {
+                    if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().isPresent() && !bandera) {
+                        auxN = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
+                        nodosAux.remove(auxN);
+                        destino.getAristas_Adyacentes().stream().forEach((arista) -> {
+                            if (arista.getDestino().equals(auxN)) {
+                                bandera = true;
+                            } else if (arista.getOrigen().equals(auxN)) {
+                                bandera = true;
+                            }
+                        });
+                        if (!bandera) {
+                            auxN = null;
+                        }
+                    }
+                    if (auxN != null) {
+                        xAux2 = -1;
+                        break;
+                    }
+                    xAux2--;
+                }
+                if (auxN != null) {
+                    yAux2 = (int) pacman.getpMan().getCenterY() - 13;
+                    break;
+                }
+
+                yAux2++;
+                xAux2 = (int) pacman.getpMan().getCenterX() - 13;
+            }
+        } else if (movimiento.equals("RIGHT") && destino != null) {
+            xAux2 = (int) pacman.getpMan().getCenterX() + 13;
+            yAux2 = (int) pacman.getpMan().getCenterY() - 13;
+            while (yAux2 < (int) pacman.getpMan().getCenterY() + 13 && !bandera) {
+                while (xAux2 < 900) {
+                    if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().isPresent() && !bandera) {
+                        auxN = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
+                        nodosAux.remove(auxN);
+                        destino.getAristas_Adyacentes().stream().forEach((arista) -> {
+                            if (arista.getDestino().equals(auxN)) {
+                                bandera = true;
+                            } else if (arista.getOrigen().equals(auxN)) {
+                                bandera = true;
+                            }
+                        });
+                        if (!bandera) {
+                            auxN = null;
+                        }
+                    }
+
+                    if (auxN != null) {
+                        xAux2 = -1;
+                        break;
+                    }
+                    xAux2++;
+                }
+                if (auxN != null) {
+                    yAux2 = (int) pacman.getpMan().getCenterY() + 13;
+                    break;
+                }
+
+                yAux2++;
+                xAux2 = (int) pacman.getpMan().getCenterX() + 13;
+            }
+        }
+        return bandera;
+    }
+
     public void up(Boolean devolver) {
+        adyacente = false;
+        copiaNodos();
         if (!devolver) {
             xAux = (int) pacman.getpMan().getCenterX() - 14;
             yAux = (int) pacman.getpMan().getCenterY() - 13;
             while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
                 while (yAux >= 0) {
-                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                    if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
+                        nodoAux = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                        nodosAux.remove(nodoAux);
+                        nodoOrigen.getAristas_Adyacentes().stream().forEach((arista) -> {
+                            if (arista.getDestino().equals(nodoAux)) {
+                                adyacente = true;
+                            } else if (arista.getOrigen().equals(nodoAux)) {
+                                adyacente = true;
+                            }
+                        });
+                        if (!adyacente) {
+                            nodoAux = null;
+                        }
                     }
                     if (nodoAux != null) {
                         yAux = -1;
@@ -238,16 +414,17 @@ public class Nivel1Controller extends Controller implements Initializable {
                     }
                     yAux--;
                 }
-                
+
                 if (nodoAux != null) {
                     xAux = (int) pacman.getpMan().getCenterX() + 14;
                     break;
                 }
-                
+
                 yAux = (int) pacman.getpMan().getCenterY() - 13;
                 xAux++;
             }
             if (nodoAux != null) {
+                movientoOriginal = "UP";
                 pacman.getpMan().setRotate(-90);
                 Timeline timeline = new Timeline();
                 KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
@@ -259,27 +436,33 @@ public class Nivel1Controller extends Controller implements Initializable {
                 posY = pacman.getpMan().getCenterY();
                 posX = pacman.getpMan().getCenterX();
                 timeline.play();
-                
-                String movimientoOr = "UP";
-                
-                timeline.currentTimeProperty().addListener((observable) -> {
 
-                    //contPuntos++;
-                    if (!movimientoOr.equals(movimiento) && movimiento.equals("DOWN")) {
+                movimientoPrevio = "UP";
+
+                timeline.currentTimeProperty().addListener((observable) -> {
+                    if (!movimientoPrevio.equals(movimiento) && movimiento.equals("DOWN")) {
                         Platform.runLater(() -> {
                             timeline.stop();
                             down(true);
                         });
+                    } else {
+                        //Aqui verifico si el movimiento del PacMan se haga bien y no pare
+                        //movimiento = "UP";
                     }
                 });
-                
+
                 timeline.setOnFinished((value) -> {
+                    nodoOrigen = nodoAux;
                     nodoAux = null;
                     movimiento();
                 });
             } else {
                 //Abro la boca del pacMan cuando no encuentro ningun nodo
                 pacman.getpMan().setLength(300);
+                /*if (nodoOrigen.getAristas_Adyacentes().stream().anyMatch(x -> x.getDestino().getPoint2D().getY() < nodoOrigen.getPoint2D().getY() || x.getOrigen().getPoint2D().getY() < nodoOrigen.getPoint2D().getY())) {
+                    movimiento = movientoOriginal;
+                    movimiento();
+                }*/
             }
         } else {
             pacman.getpMan().setRotate(-90);
@@ -293,33 +476,49 @@ public class Nivel1Controller extends Controller implements Initializable {
             posY = pacman.getpMan().getCenterY();
             posX = pacman.getpMan().getCenterX();
             timeline.play();
-            
-            String movimientoOr = "UP";
-            
+
+            movimientoPrevio = "UP";
+
             timeline.currentTimeProperty().addListener((observable) -> {
-                if (!movimientoOr.equals(movimiento) && movimiento.equals("DOWN")) {
+                if (!movimientoPrevio.equals(movimiento) && movimiento.equals("DOWN")) {
                     Platform.runLater(() -> {
                         timeline.stop();
                         down(true);
                     });
+                } else {
+                    //movimiento = "UP";
                 }
             });
-            
+
             timeline.setOnFinished((value) -> {
+                //nodoOrigen = nodoAux;
                 nodoAux = null;
                 movimiento();
             });
         }
     }
-    
+
     public void down(Boolean devolver) {
+        adyacente = false;
+        copiaNodos();
         if (!devolver) {
             xAux = (int) pacman.getpMan().getCenterX() - 14;
             yAux = (int) pacman.getpMan().getCenterY() + 13;
             while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
                 while (yAux < 645) {
-                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                    if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
+                        nodoAux = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                        nodosAux.remove(nodoAux);
+                        nodoOrigen.getAristas_Adyacentes().stream().forEach((arista) -> {
+                            if (arista.getDestino().equals(nodoAux)) {
+                                adyacente = true;
+                            } else if (arista.getOrigen().equals(nodoAux)) {
+                                adyacente = true;
+                            }
+                        });
+                        if (!adyacente) {
+                            nodoAux = null;
+                        }
                     }
                     if (nodoAux != null) {
                         yAux = 646;
@@ -327,16 +526,17 @@ public class Nivel1Controller extends Controller implements Initializable {
                     }
                     yAux++;
                 }
-                
+
                 if (nodoAux != null) {
                     xAux = (int) pacman.getpMan().getCenterX() + 14;
                     break;
                 }
                 yAux = (int) pacman.getpMan().getCenterY() + 13;
                 xAux++;
-                
+
             }
             if (nodoAux != null) {
+                movientoOriginal = "DOWN";
                 pacman.getpMan().setRotate(90);
                 Timeline timeline = new Timeline();
                 KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
@@ -348,23 +548,31 @@ public class Nivel1Controller extends Controller implements Initializable {
                 posY = pacman.getpMan().getCenterY();
                 posX = pacman.getpMan().getCenterX();
                 timeline.play();
-                String movimientoOr = "DOWN";
+                movimientoPrevio = "DOWN";
+
                 timeline.currentTimeProperty().addListener((observable) -> {
-                    if (!movimientoOr.equals(movimiento) && movimiento.equals("UP")) {
+                    if (!movimientoPrevio.equals(movimiento) && movimiento.equals("UP")) {
                         Platform.runLater(() -> {
                             timeline.stop();
                             up(true);
                         });
+                    } else {
+                        //  movimiento = "DOWN";
                     }
                 });
-                
+
                 timeline.setOnFinished((valor) -> {
+                    nodoOrigen = nodoAux;
                     nodoAux = null;
                     movimiento();
                 });
             } else {
                 //Abro la boca del pacMan cuando no encuentro ningun nodo
                 pacman.getpMan().setLength(300);
+                /*if (nodoOrigen.getAristas_Adyacentes().stream().anyMatch(x -> x.getDestino().getPoint2D().getY() > nodoOrigen.getPoint2D().getY() || x.getOrigen().getPoint2D().getY() > nodoOrigen.getPoint2D().getY())) {
+                    movimiento = movientoOriginal;
+                    movimiento();
+                }*/
             }
         } else {
             pacman.getpMan().setRotate(90);
@@ -378,34 +586,48 @@ public class Nivel1Controller extends Controller implements Initializable {
             posY = pacman.getpMan().getCenterY();
             posX = pacman.getpMan().getCenterX();
             timeline.play();
-            String movimientoOr = "DOWN";
+            movimientoPrevio = "DOWN";
             timeline.currentTimeProperty().addListener((observable) -> {
-                if (!movimientoOr.equals(movimiento) && movimiento.equals("UP")) {
+                if (!movimientoPrevio.equals(movimiento) && movimiento.equals("UP")) {
                     Platform.runLater(() -> {
                         timeline.stop();
                         up(true);
                     });
+                } else {
+                    //movimiento = "DOWN";
                 }
             });
-            
+
             timeline.setOnFinished((valor) -> {
+                //nodoOrigen = nodoAux;
                 nodoAux = null;
                 movimiento();
             });
         }
     }
-    
+
     public void left(Boolean devolver) {
+        adyacente = false;
+        copiaNodos();
         if (!devolver) {
             xAux = (int) pacman.getpMan().getCenterX() - 13;
             yAux = (int) pacman.getpMan().getCenterY() - 14;
-            
             while (yAux < (int) pacman.getpMan().getCenterY() + 14) {
                 while (xAux >= 0) {
-                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                    if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
+                        nodoAux = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                        nodosAux.remove(nodoAux);
+                        nodoOrigen.getAristas_Adyacentes().stream().forEach((arista) -> {
+                            if (arista.getDestino().equals(nodoAux)) {
+                                adyacente = true;
+                            } else if (arista.getOrigen().equals(nodoAux)) {
+                                adyacente = true;
+                            }
+                        });
+                        if (!adyacente) {
+                            nodoAux = null;
+                        }
                     }
-                    
                     if (nodoAux != null) {
                         xAux = -1;
                         break;
@@ -416,13 +638,13 @@ public class Nivel1Controller extends Controller implements Initializable {
                     yAux = (int) pacman.getpMan().getCenterY() - 13;
                     break;
                 }
-                
+
                 yAux++;
                 xAux = (int) pacman.getpMan().getCenterX() - 13;
-                
+
             }
-            
             if (nodoAux != null) {
+                movientoOriginal = "LEFT";
                 pacman.getpMan().setRotate(-180);
                 Timeline timeline = new Timeline();
                 KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
@@ -435,24 +657,31 @@ public class Nivel1Controller extends Controller implements Initializable {
                 posX = pacman.getpMan().getCenterX();
                 //Inicio de la animacion
                 timeline.play();
-                String movimientoOr = "LEFT";
+                movimientoPrevio = "LEFT";
                 //Durante el transcurso de la animacion
                 timeline.currentTimeProperty().addListener((observable) -> {
-                    if (!movimientoOr.equals(movimiento) && movimiento.equals("RIGHT")) {
+                    if (!movimientoPrevio.equals(movimiento) && movimiento.equals("RIGHT")) {
                         Platform.runLater(() -> {
                             timeline.stop();
                             right(true);
                         });
+                    } else {
+                        //  movimiento = "LEFT";
                     }
                 });
                 //Cuando se termina la animacion
                 timeline.setOnFinished((valor) -> {
+                    nodoOrigen = nodoAux;
                     nodoAux = null;
                     movimiento();
                 });
             } else {
                 //Cuando el pacMan no encuentra un nodo para moverse
                 pacman.getpMan().setLength(300);
+                /*if (nodoOrigen.getAristas_Adyacentes().stream().anyMatch(x -> x.getDestino().getPoint2D().getX() < nodoOrigen.getPoint2D().getX() || x.getOrigen().getPoint2D().getX() < nodoOrigen.getPoint2D().getX())) {
+                    movimiento = movientoOriginal;
+                    movimiento();
+                }*/
             }
         } else {
             pacman.getpMan().setRotate(-180);
@@ -465,37 +694,54 @@ public class Nivel1Controller extends Controller implements Initializable {
             //La posicion del PacMan antes de la animacion
             posY = pacman.getpMan().getCenterY();
             posX = pacman.getpMan().getCenterX();
-            String movimientoOr = "LEFT";
+            movimientoPrevio = "LEFT";
             //Inicio de la animacion
             timeline.play();
             //Durante el transcurso de la animacion
             timeline.currentTimeProperty().addListener((observable) -> {
-                if (!movimientoOr.equals(movimiento) && movimiento.equals("RIGHT")) {
+                if (!movimientoPrevio.equals(movimiento) && movimiento.equals("RIGHT")) {
                     Platform.runLater(() -> {
                         timeline.stop();
                         right(true);
                     });
+                } else {
+                    //movimiento = "LEFT";
                 }
             });
             //Cuando se termina la animacion
             timeline.setOnFinished((valor) -> {
+                // nodoOrigen = nodoAux;
                 nodoAux = null;
                 movimiento();
+
             });
         }
     }
-    
+
     public void right(Boolean devolver) {
+        adyacente = false;
+        copiaNodos();
+        //cargarNodoArista();
         if (!devolver) {
             xAux = (int) pacman.getpMan().getCenterX() + 13;
             yAux = (int) pacman.getpMan().getCenterY() - 13;
-            
             while (yAux < (int) pacman.getpMan().getCenterY() + 13) {
                 while (xAux < 900) {
-                    if (nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent()) {
-                        nodoAux = nodos.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                    if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
+                        nodoAux = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                        nodosAux.remove(nodoAux);
+                        nodoOrigen.getAristas_Adyacentes().stream().forEach((arista) -> {
+                            if (arista.getDestino().equals(nodoAux)) {
+                                adyacente = true;
+                            } else if (arista.getOrigen().equals(nodoAux)) {
+                                adyacente = true;
+                            }
+                        });
+                        if (!adyacente) {
+                            nodoAux = null;
+                        }
                     }
-                    
+
                     if (nodoAux != null) {
                         xAux = -1;
                         break;
@@ -506,13 +752,13 @@ public class Nivel1Controller extends Controller implements Initializable {
                     yAux = (int) pacman.getpMan().getCenterY() + 13;
                     break;
                 }
-                
+
                 yAux++;
                 xAux = (int) pacman.getpMan().getCenterX() + 13;
-                
             }
-            
+
             if (nodoAux != null) {
+                movientoOriginal = "RIGHT";
                 pacman.getpMan().setRotate(0);
                 Timeline timeline = new Timeline();
                 KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
@@ -524,24 +770,31 @@ public class Nivel1Controller extends Controller implements Initializable {
                 posY = pacman.getpMan().getCenterY();
                 posX = pacman.getpMan().getCenterX();
                 timeline.play();
-                String movimientoOr = "RIGHT";
+                movimientoPrevio = "RIGHT";
                 //Durante el transcurso de la animacion
                 timeline.currentTimeProperty().addListener((observable) -> {
-                    if (!movimientoOr.equals(movimiento) && movimiento.equals("LEFT")) {
+                    if (!movimientoPrevio.equals(movimiento) && movimiento.equals("LEFT")) {
                         Platform.runLater(() -> {
                             timeline.stop();
                             left(true);
                         });
+                    } else {
+                        //movimiento = "RIGHT";
                     }
                 });
-                
+
                 timeline.setOnFinished((valor) -> {
+                    nodoOrigen = nodoAux;
                     nodoAux = null;
                     movimiento();
                 });
             } else {
                 //Cuando el pacMan no encuentra un nodo para moverse
                 pacman.getpMan().setLength(300);
+                /*if (nodoOrigen.getAristas_Adyacentes().stream().anyMatch(x -> x.getDestino().getPoint2D().getX() > nodoOrigen.getPoint2D().getX() || x.getOrigen().getPoint2D().getX() > nodoOrigen.getPoint2D().getX())) {
+                    movimiento = movientoOriginal;
+                    movimiento();
+                }*/
             }
         } else {
             pacman.getpMan().setRotate(0);
@@ -555,33 +808,35 @@ public class Nivel1Controller extends Controller implements Initializable {
             posY = pacman.getpMan().getCenterY();
             posX = pacman.getpMan().getCenterX();
             timeline.play();
-            String movimientoOr = "RIGHT";
+            movimientoPrevio = "RIGHT";
             //Durante el transcurso de la animacion
             timeline.currentTimeProperty().addListener((observable) -> {
-                if (!movimientoOr.equals(movimiento) && movimiento.equals("LEFT")) {
+                if (!movimientoPrevio.equals(movimiento) && movimiento.equals("LEFT")) {
                     Platform.runLater(() -> {
                         timeline.stop();
                         left(true);
                     });
+                } else {
+                    //movimiento = "RIGHT";
                 }
             });
-            
+
             timeline.setOnFinished((valor) -> {
+                //nodoOrigen = nodoAux;
                 nodoAux = null;
                 movimiento();
             });
         }
     }
-    
+
     private Label puntosJugador;
     private static Circle circle;
     private static Double xOrigen;
     private static Double xDestino;
     private static Double yOrigen;
     private static Double yDestino;
-    
-    public void CrearMapa() {
-        
+
+    public void nodos() {
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -597,7 +852,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 parts = line.split("\\$");
                 Double posx = Double.valueOf(parts[0]);
                 Double posy = Double.valueOf(parts[1]);
-                
+
                 Nodo nodo = new Nodo(posx, posy);
                 Circle circle = new Circle(posx, posy, 5, Paint.valueOf("GREEN"));
                 //this.root.getChildren().add(circle);
@@ -606,8 +861,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                 nodos.add(nodo);
             }
         } catch (IOException ex) {
-            
+
         }
+    }
+
+    public void aristas() {
         try {
             //para que esto funcione en visualCode es necesario seleccionarlo desde src y usar este código
             /*File f = new File(".");
@@ -617,7 +875,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             String dir = f.getAbsolutePath();
             BufferedReader reader = new BufferedReader(new FileReader(dir + "\\src\\pacmanfx\\resources\\Arista.txt"));
             String line = null;
-            
+
             while ((line = reader.readLine()) != null) {
                 String[] parts;
                 parts = line.split("\\$");
@@ -625,7 +883,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 Double posy = Double.valueOf(parts[1]);
                 Double posx2 = Double.valueOf(parts[2]);
                 Double posy2 = Double.valueOf(parts[3]);
-                
+
                 Arista arista = new Arista(posx, posy, posx2, posy2);
                 Line linea = new Line(posx, posy, posx2, posy2);
                 linea.setStroke(Paint.valueOf("RED"));
@@ -636,7 +894,22 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
         } catch (IOException | NumberFormatException e) {
         }
-        
+    }
+
+    public void cargarNodoArista() {
+        nodos();
+        aristas();
+    }
+
+    public void copiaNodos() {
+        this.nodosAux = new ArrayList();
+        nodos.stream().forEach((nodo) -> {
+            nodosAux.add(nodo);
+        });
+    }
+
+    public void CrearMapa() {
+        cargarNodoArista();
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 29; j++) {
                 if (Mapa[i][j] == 'X') {//pared
@@ -677,18 +950,18 @@ public class Nivel1Controller extends Controller implements Initializable {
                                 }
                                 puntoX++;
                             }
-                            
+
                         });
                         puntos.remove(circle);
                         //Cuando se quita los puntos de la pantalla
-                        
+
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
 
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerYProperty().addListener((observable) -> {
-                        
+
                         cont++;
                         //Cierro y abro el PacMan
                         if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
@@ -712,16 +985,15 @@ public class Nivel1Controller extends Controller implements Initializable {
                                 }
                                 puntoY++;
                             }
-                            
+
                         });
                         puntos.remove(circle);
                         //Cuando se quita los puntos de la pantalla
-                        
-                        
+
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
                     });
-                    
+
                     pacman.getpMan().setFill(Paint.valueOf("GREEN"));
                     pacman.getpMan().setStrokeType(StrokeType.INSIDE);
                     pacman.getpMan().setStroke(Paint.valueOf("#00ab55"));
@@ -742,7 +1014,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 }
             }
         }
-        
+
         Label label = new Label("Puntos:");
         label.setLayoutX(10);
         label.setLayoutY(585);
@@ -760,7 +1032,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         label1.setLayoutY(585);
         label1.setId("puntos");
         root.getChildren().add(label1);
-        
+
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
             arc.setFill(Paint.valueOf("GREEN"));
@@ -771,9 +1043,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             root.getChildren().add(arc);
             cont3 += 30;
         }
-        
+
         aristas.stream().forEach((arista) -> {
-            
+
             xOrigen = arista.getOrigen().getPoint2D().getX();
             xDestino = arista.getDestino().getPoint2D().getX();
             yOrigen = arista.getOrigen().getPoint2D().getY();
@@ -792,7 +1064,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 puntos.add(destino);
                 root.getChildren().add(destino);//
             }
-            
+
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 if (((xOrigen != 512.0 && yOrigen != 240.0) || (xDestino != 512.0 && yDestino != 240.0))) {
                     yDestino += 29;
@@ -882,7 +1154,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 }
             });
         });
-        
+
         puntos.removeAll(pAux);
         root.getChildren().removeAll(pAux);
 
@@ -891,15 +1163,24 @@ public class Nivel1Controller extends Controller implements Initializable {
         root.getChildren().add(cyanGhost);
         root.getChildren().add(orangeGhost);
         root.getChildren().add(pinkGhost);
+        nodos.stream().forEach((nodo) -> {
+            if (nodo.getPoint2D().getX() == 447.0 && nodo.getPoint2D().getY() == 405.0) {
+                nodoOrigen = nodo;
+            }
+        });
     }
-    Nodo inicio;
+
+    Nodo nodoOrigen;
     Nodo nFinal;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
-        //
-        nodos.stream().forEach((t) -> {
+        //Inicio el movimiento del PacMan hacia la derecha
+        movimiento = "RIGHT";
+        right(false);
+        /*      nodos.stream().forEach((t) -> {
+            //System.out.println(t.getAristas_Adyacentes().size());
             if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
                 inicio = t;
             } else if (t.getPoint2D().getX() == 849.0 && t.getPoint2D().getY() == 515.0) {
@@ -909,17 +1190,16 @@ public class Nivel1Controller extends Controller implements Initializable {
         Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
         dijkstra.ejecutar(inicio);
         ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
-        System.out.println(aristasAux.size());
         aristasAux.stream().forEach((t) -> {
-            Line linea = new Line(t.getOrigen().getPoint2D().getX(),t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
+            Line linea = new Line(t.getOrigen().getPoint2D().getX(), t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
             linea.setStroke(Paint.valueOf("RED"));
             linea.setStrokeWidth(3.00);
             this.root.getChildren().add(linea);
-        }); 
+        });
 
         Hilo = new hiloTiempo();
         Hilo.correrHilo();
-       
+         */
         Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel1.jpg");
@@ -944,22 +1224,28 @@ public class Nivel1Controller extends Controller implements Initializable {
                 String dir1 = f1.getAbsolutePath();
                 String path = dir1 + "\\src\\pacmanfx\\resources\\Partidas1.txt";
                 Files.write(Paths.get(path), content.getBytes());
+
             } catch (IOException ex) {
-                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
         } catch (IOException ex) {
-            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
     private void mouse(MouseEvent event) {
-        root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
+        /*root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
-        root.getChildren().add(circle);
+        root.getChildren().add(circle);*/
     }
 }
