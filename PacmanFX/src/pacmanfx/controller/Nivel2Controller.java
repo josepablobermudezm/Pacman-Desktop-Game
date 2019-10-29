@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -126,64 +125,44 @@ public class Nivel2Controller extends Controller implements Initializable {
     private Nodo nodoAux = null;
     private static boolean encontrado = false;
     private String movimiento = "";
-    private Double posY;
-    private Double posX;
-    ArrayList<Nodo> nodosAux;
-    Boolean adyacente = false;
-    String movimientoPrevio;
-    String movimientoOriginal;
-    Nodo auxN;
-    Boolean bandera = false;
-    Stack<String> pila = new Stack<>();
 
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
+
                 movimiento = "DOWN";
-                movimientoOriginal = "DOWN";
-                pila.push("DOWN");
                 down(false);
             } else {
-                pila.push("DOWN");
                 movimiento = "DOWN";
             }
         } else if (event.getCode() == event.getCode().LEFT) {
             if (nodoAux == null) {
                 movimiento = "LEFT";
-                movimientoOriginal = "LEFT";
-                pila.push("LEFT");
                 left(false);
             } else {
                 movimiento = "LEFT";
-                pila.push("LEFT");
             }
 
         } else if (event.getCode() == event.getCode().UP) {
             if (nodoAux == null) {
                 movimiento = "UP";
-                movimientoOriginal = "UP";
-                pila.push("UP");
                 up(false);
             } else {
                 movimiento = "UP";
-                pila.push("UP");
             }
         } else if (event.getCode() == event.getCode().RIGHT) {
             if (nodoAux == null) {
                 movimiento = "RIGHT";
-                movimientoOriginal = "RIGHT";
-                pila.push("RIGHT");
                 right(false);
             } else {
                 movimiento = "RIGHT";
-                pila.push("RIGHT");
             }
 
         } else if (event.getCode() == event.getCode().ESCAPE) {
 
             hiloTiempo.finalizado = true;
             int tiempo = Hilo.getTic();
-            MenuController.TiempoTotalJuego += tiempo;
+            MenuController.TiempoTotalJuego+=tiempo;
             int tiempoActual = 0;
             try {
                 File f = new File(".");
@@ -263,6 +242,9 @@ public class Nivel2Controller extends Controller implements Initializable {
                 break;
         }
     }
+
+    private Double posY;
+    private Double posX;
 
     public void up(Boolean devolver) {
         if (!devolver) {
