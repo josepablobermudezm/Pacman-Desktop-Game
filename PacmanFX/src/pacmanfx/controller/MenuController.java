@@ -40,17 +40,16 @@ public class MenuController extends Controller implements Initializable {
     private ImageView omg;
     static public int PuntosTotales = 0;
     static public int MayorCantidadDePuntosPartida = 0;
+    static public int TiempoTotalJuego = 0;
 
     @Override
     public void initialize() {
-
         Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/fondo4.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
-
     }
 
     @FXML
@@ -87,6 +86,10 @@ public class MenuController extends Controller implements Initializable {
     @FXML
     private void Salir(MouseEvent event) {
         //FlowController.getMainStage().close();
+        
+        /*
+            Puntos totales ganador en el juego
+        */
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -112,6 +115,36 @@ public class MenuController extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        /*
+            Tiempo total en el juego
+        */
+        
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\TiempoTotalJuego.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                TiempoTotalJuego += Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            String content = String.valueOf(TiempoTotalJuego);
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String path = dir + "\\src\\pacmanfx\\resources\\TiempoTotalJuego.txt";
+            Files.write(Paths.get(path), content.getBytes());
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.getStage().close();
     }
 
@@ -129,7 +162,6 @@ public class MenuController extends Controller implements Initializable {
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
-
     }
 
 }

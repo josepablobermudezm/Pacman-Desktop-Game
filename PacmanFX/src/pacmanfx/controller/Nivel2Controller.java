@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -51,6 +52,7 @@ import pacmanfx.model.PinkGhost;
 import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
+import pacmanfx.util.hiloTiempo;
 
 /**
  * FXML Controller class
@@ -102,6 +104,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
     @FXML
     private ImageView omg;
+    private hiloTiempo Hilo;
 
     /**
      * Initializes the controller class.
@@ -123,42 +126,93 @@ public class Nivel2Controller extends Controller implements Initializable {
     private Nodo nodoAux = null;
     private static boolean encontrado = false;
     private String movimiento = "";
+    private Double posY;
+    private Double posX;
+    ArrayList<Nodo> nodosAux;
+    Boolean adyacente = false;
+    String movimientoPrevio;
+    String movimientoOriginal;
+    Nodo auxN;
+    Boolean bandera = false;
+    Stack<String> pila = new Stack<>();
 
     private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoAux == null) {
-
                 movimiento = "DOWN";
+                movimientoOriginal = "DOWN";
+                pila.push("DOWN");
                 down(false);
             } else {
+                pila.push("DOWN");
                 movimiento = "DOWN";
             }
         } else if (event.getCode() == event.getCode().LEFT) {
             if (nodoAux == null) {
                 movimiento = "LEFT";
+                movimientoOriginal = "LEFT";
+                pila.push("LEFT");
                 left(false);
             } else {
                 movimiento = "LEFT";
+                pila.push("LEFT");
             }
 
         } else if (event.getCode() == event.getCode().UP) {
             if (nodoAux == null) {
                 movimiento = "UP";
+                movimientoOriginal = "UP";
+                pila.push("UP");
                 up(false);
             } else {
                 movimiento = "UP";
+                pila.push("UP");
             }
         } else if (event.getCode() == event.getCode().RIGHT) {
             if (nodoAux == null) {
                 movimiento = "RIGHT";
+                movimientoOriginal = "RIGHT";
+                pila.push("RIGHT");
                 right(false);
             } else {
                 movimiento = "RIGHT";
+                pila.push("RIGHT");
             }
 
         } else if (event.getCode() == event.getCode().ESCAPE) {
-            FlowController.getInstance().initialize();
-            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
+
+            hiloTiempo.finalizado = true;
+            int tiempo = Hilo.getTic();
+            MenuController.TiempoTotalJuego += tiempo;
+            int tiempoActual = 0;
+            try {
+                File f = new File(".");
+                String dir = f.getAbsolutePath();
+                String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo2.txt";
+                File file = new File(fileName);
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    tiempoActual = Integer.parseInt(line);
+                }
+                if (tiempo > tiempoActual) {
+                    try {
+                        String content = String.valueOf(tiempo);
+                        File f1 = new File(".");
+                        String dir1 = f1.getAbsolutePath();
+                        String path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo2.txt";
+                        Files.write(Paths.get(path), content.getBytes());
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             MenuController.PuntosTotales += contPuntos;
             int PuntosPorNivel = 0;
             try {
@@ -188,6 +242,8 @@ public class Nivel2Controller extends Controller implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            FlowController.getInstance().initialize();
+            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
         }
     };
 
@@ -207,9 +263,6 @@ public class Nivel2Controller extends Controller implements Initializable {
                 break;
         }
     }
-
-    private Double posY;
-    private Double posX;
 
     public void up(Boolean devolver) {
         if (!devolver) {
@@ -855,14 +908,15 @@ public class Nivel2Controller extends Controller implements Initializable {
 
     Nodo inicio;
     Nodo nFinal;
-    
+
     //bdbd00
     @Override
 
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
         //CrearMapa();
-        
+        Hilo = new hiloTiempo();
+        Hilo.correrHilo();
         nodos.stream().forEach((t) -> {
             if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
                 inicio = t;
@@ -874,12 +928,12 @@ public class Nivel2Controller extends Controller implements Initializable {
         dijkstra.ejecutar(inicio);
         ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
         aristasAux.stream().forEach((t) -> {
-            Line linea = new Line(t.getOrigen().getPoint2D().getX(),t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
+            Line linea = new Line(t.getOrigen().getPoint2D().getX(), t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
             linea.setStroke(Paint.valueOf("RED"));
             linea.setStrokeWidth(3.00);
             this.root.getChildren().add(linea);
-        }); 
-        
+        });
+
         Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel22.jpg");
@@ -899,7 +953,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                 veces = Integer.parseInt(line);
             }
             try {
-                String content = String.valueOf(veces+1);
+                String content = String.valueOf(veces + 1);
                 File f1 = new File(".");
                 String dir1 = f1.getAbsolutePath();
                 String path = dir1 + "\\src\\pacmanfx\\resources\\Partidas2.txt";

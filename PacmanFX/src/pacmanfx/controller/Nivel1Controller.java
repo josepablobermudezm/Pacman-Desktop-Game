@@ -219,10 +219,39 @@ public class Nivel1Controller extends Controller implements Initializable {
                 //movimiento = "RIGHT";
             }
         } else if (event.getCode() == event.getCode().ESCAPE) {
+            //aquí se mide guarda el dato con el tiempo que tarda en finalizar un nivel
             hiloTiempo.finalizado = true;
+            int tiempo = Hilo.getTic();
+            MenuController.TiempoTotalJuego+=tiempo;
+            int tiempoActual = 0;
+            try {
+                File f = new File(".");
+                String dir = f.getAbsolutePath();
+                String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo1.txt";
+                File file = new File(fileName);
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    tiempoActual = Integer.parseInt(line);
+                }
+                if (tiempo > tiempoActual) {
+                    try {
+                        String content = String.valueOf(tiempo);
+                        File f1 = new File(".");
+                        String dir1 = f1.getAbsolutePath();
+                        String path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo1.txt";
+                        Files.write(Paths.get(path), content.getBytes());
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-            FlowController.getInstance().initialize();
-            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
             MenuController.PuntosTotales += contPuntos;
             int PuntosPorNivel = 0;
             try {
@@ -236,6 +265,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 while ((line = br.readLine()) != null) {
                     PuntosPorNivel = Integer.parseInt(line);
                 }
+                System.out.println(contPuntos + " > " + PuntosPorNivel);
                 if (contPuntos > PuntosPorNivel) {
                     try {
                         String content = String.valueOf(contPuntos);
@@ -246,12 +276,16 @@ public class Nivel1Controller extends Controller implements Initializable {
                     } catch (IOException ex) {
                         Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } else {
+                    System.out.println("no es mayor");
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            FlowController.getInstance().initialize();
+            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
         }
     };
 
@@ -259,11 +293,10 @@ public class Nivel1Controller extends Controller implements Initializable {
 
         if (!pila.isEmpty()) {
             String movAux = pila.pop();
-            if(movimientoCorrecto(movAux, nodoOrigen)){
+            if (movimientoCorrecto(movAux, nodoOrigen)) {
                 movimiento = movAux;
                 movimientoOriginal = movimiento;
-            }
-            else if (!movimiento.equals(movimientoOriginal) && !movimientoCorrecto(movimiento, nodoOrigen)) {
+            } else if (!movimiento.equals(movimientoOriginal) && !movimientoCorrecto(movimiento, nodoOrigen)) {
                 movimiento = movimientoOriginal;
                 //movimiento();
                 //System.out.println(movimiento);
@@ -1270,10 +1303,10 @@ public class Nivel1Controller extends Controller implements Initializable {
             linea.setStrokeWidth(3.00);
             this.root.getChildren().add(linea);
         });
-
+         */
         Hilo = new hiloTiempo();
         Hilo.correrHilo();
-         */
+
         Image imgLogo;
         try {
             imgLogo = new Image("/pacmanfx/resources/FondoNivel1.jpg");

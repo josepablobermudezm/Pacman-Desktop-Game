@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import static pacmanfx.controller.MenuController.PuntosTotales;
+import static pacmanfx.controller.MenuController.TiempoTotalJuego;
 import pacmanfx.util.FlowController;
 
 /**
@@ -87,7 +88,9 @@ public class EstadisticasController extends Controller implements Initializable 
     @FXML
     private Label lblTiempoTotalJuego;
     static public boolean estadisticas = false;
-    int aux = 0, aux1 = 0, ContNivel1 = 0,ContNivel2 = 0, ContNivel3 = 0,ContNivel4 = 0, ContNivel5 = 0, ContNivel6 = 0, ContNivel7 = 0, ContNivel8 = 0, ContNivel9 = 0, ContNivel10 = 0;
+    int txtPuntosTotales = 0, txtTiempoTotal = 0, aux1 = 0, ContNivel1 = 0, ContNivel2 = 0, ContNivel3 = 0, ContNivel4 = 0, ContNivel5 = 0, ContNivel6 = 0, ContNivel7 = 0,
+            ContNivel8 = 0, ContNivel9 = 0, ContNivel10 = 0;
+    int tiempo1 = 0, tiempo2 = 0, tiempo3 = 0, tiempo4 = 0, tiempo5 = 0, tiempo6 = 0, tiempo7 = 0, tiempo8 = 0, tiempo9 = 0, tiempo10 = 0;
 
     /**
      * Initializes the controller class.
@@ -96,6 +99,9 @@ public class EstadisticasController extends Controller implements Initializable 
     public void initialize(URL url, ResourceBundle rb) {
         estadisticas = true;
         omg.setImage(new Image("/pacmanfx/resources/fondo8.jpg"));
+        /*
+            Puntos totales en toda la historia
+         */
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -105,7 +111,26 @@ public class EstadisticasController extends Controller implements Initializable 
             BufferedReader br = new BufferedReader(fr);
             String line;
             while ((line = br.readLine()) != null) {
-                aux = Integer.parseInt(line);
+                txtPuntosTotales = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /*
+            tiempo total gastado en el juego
+         */
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\TiempoTotalJuego.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                txtTiempoTotal = Integer.parseInt(line);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,7 +153,10 @@ public class EstadisticasController extends Controller implements Initializable 
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        /*
+            Lee los archivos de la cantidad de partidas jugadas por nivel
+         */
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -289,6 +317,182 @@ public class EstadisticasController extends Controller implements Initializable 
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        /*
+            lee los archivos de los mejores tiempos por nivel
+         */
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo1.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo1 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo2.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo2 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo3.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo3 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo4.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo4 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo5.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo5 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo6.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo6 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo7.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo7 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo8.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo8 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo9.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo9 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo10.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                tiempo10 = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //setea los mejores tiempos para cada nivel
+        lblTiempo1.setText(String.valueOf(String.valueOf(tiempo1 / 60) + ":" + String.valueOf((tiempo1 % 60 >= 10) ? tiempo1 % 60 : "0" + tiempo1 % 60)));
+        lblTiempo2.setText(String.valueOf(String.valueOf(tiempo2 / 60) + ":" + String.valueOf((tiempo2 % 60 >= 10) ? tiempo2 % 60 : "0" + tiempo2 % 60)));
+        lblTiempo3.setText(String.valueOf(String.valueOf(tiempo3 / 60) + ":" + String.valueOf((tiempo3 % 60 >= 10) ? tiempo3 % 60 : "0" + tiempo3 % 60)));
+        lblTiempo4.setText(String.valueOf(tiempo4 / 60) + ":" + String.valueOf((tiempo4 % 60 >= 10) ? tiempo4 % 60 : "0" + tiempo4 % 60));
+        lblTiempo5.setText(String.valueOf(tiempo5 / 60) + ":" + String.valueOf((tiempo5 % 60 >= 10) ? tiempo5 % 60 : "0" + tiempo5 % 60));
+        lblTiempo6.setText(String.valueOf(tiempo6 / 60) + ":" + String.valueOf((tiempo6 % 60 >= 10) ? tiempo6 % 60 : "0" + tiempo6 % 60));
+        lblTiempo7.setText(String.valueOf(tiempo7 / 60) + ":" + String.valueOf((tiempo7 % 60 >= 10) ? tiempo7 % 60 : "0" + tiempo7 % 60));
+        lblTiempo8.setText(String.valueOf(tiempo8 / 60) + ":" + String.valueOf((tiempo8 % 60 >= 10) ? tiempo8 % 60 : "0" + tiempo8 % 60));
+        lblTiempo9.setText(String.valueOf(tiempo9 / 60) + ":" + String.valueOf((tiempo9 % 60 >= 10) ? tiempo9 % 60 : "0" + tiempo9 % 60));
+        lblTiempo10.setText(String.valueOf(tiempo10 / 60) + ":" + String.valueOf((tiempo10 % 60 >= 10) ? tiempo10 % 60 : "0" + tiempo10 % 60));
+        //setea las cantidades de partidas que tiene cada nivel
         lblNivel1.setText(String.valueOf(ContNivel1));
         lblNivel2.setText(String.valueOf(ContNivel2));
         lblNivel3.setText(String.valueOf(ContNivel3));
@@ -299,8 +503,18 @@ public class EstadisticasController extends Controller implements Initializable 
         lblNivel8.setText(String.valueOf(ContNivel8));
         lblNivel9.setText(String.valueOf(ContNivel9));
         lblNivel10.setText(String.valueOf(ContNivel10));
-        lblTotalPuntos.setText(String.valueOf(PuntosTotales + aux));
-        lblPuntosPartida.setText(String.valueOf(aux1));
+        //mayor cantidad de puntos ganados en una partida
+        lblPuntosPartida.setText(String.valueOf(aux1 * 10));
+        /*
+            aquí lo que hago es mostrar el valor de que tenga la variable static que es lo que se va a haber generado hasta el momento en el nivel
+            y después a esa variable le sumo el dato obtenido desde el txt
+         */
+        //setea los puntos que se han comido en toda la historia
+        lblTotalPuntos.setText(String.valueOf(PuntosTotales + txtPuntosTotales));//variable PuntosTotales es una variable estatica de Menu
+        //setea el tiempo total de juego
+        lblTiempoTotalJuego.setText(String.valueOf(
+                (TiempoTotalJuego + txtTiempoTotal) / 60 + ":" + String.valueOf(((TiempoTotalJuego + txtTiempoTotal) % 60 >= 10) ? (TiempoTotalJuego + txtTiempoTotal) % 60 : "0" + ((TiempoTotalJuego + txtTiempoTotal) % 60))));//variable TiempoTotalJuego es una variable estatica de Menu
+        //setea la mayor cantidad de puntos que se hayan obtenido en los niveles
     }
 
     @Override

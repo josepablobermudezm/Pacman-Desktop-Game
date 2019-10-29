@@ -52,6 +52,7 @@ import pacmanfx.model.PinkGhost;
 import pacmanfx.model.RedGhost;
 import pacmanfx.model.pacMan2D;
 import pacmanfx.util.FlowController;
+import pacmanfx.util.hiloTiempo;
 
 /**
  * FXML Controller class
@@ -78,6 +79,7 @@ public class Nivel7Controller extends Controller implements Initializable {
     CyanGhost cyanGhost = new CyanGhost();
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
+    private hiloTiempo Hilo;
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
@@ -163,6 +165,39 @@ public class Nivel7Controller extends Controller implements Initializable {
         } else if (event.getCode() == event.getCode().ESCAPE) {
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
+            
+            hiloTiempo.finalizado = true;
+            int tiempo = Hilo.getTic();
+            MenuController.TiempoTotalJuego+=tiempo;
+            int tiempoActual = 0;
+            try {
+                File f = new File(".");
+                String dir = f.getAbsolutePath();
+                String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo7.txt";
+                File file = new File(fileName);
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    tiempoActual = Integer.parseInt(line);
+                }
+                if (tiempo > tiempoActual) {
+                    try {
+                        String content = String.valueOf(tiempo);
+                        File f1 = new File(".");
+                        String dir1 = f1.getAbsolutePath();
+                        String path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo7.txt";
+                        Files.write(Paths.get(path), content.getBytes());
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             MenuController.PuntosTotales += contPuntos;
             int PuntosPorNivel = 0;
             try {
@@ -842,6 +877,8 @@ public class Nivel7Controller extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
+        Hilo = new hiloTiempo();
+        Hilo.correrHilo();
         nodos.stream().forEach((t) -> {
             if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
                 inicio = t;
