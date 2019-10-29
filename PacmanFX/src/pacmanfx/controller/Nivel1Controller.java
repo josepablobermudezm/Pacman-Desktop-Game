@@ -126,7 +126,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
     }
 
-    private Nodo nodoAux = null;
+    private Nodo nodoDestino = null;
     private static boolean encontrado = false;
     private String movimiento = "";
     private Double posY;
@@ -135,13 +135,13 @@ public class Nivel1Controller extends Controller implements Initializable {
     Boolean adyacente = false;
     String movimientoPrevio;
     String movimientoOriginal;
-    Nodo auxN;
+    Nodo auxNodo;
     Boolean bandera = false;
     Stack<String> pila = new Stack<>();
 
-    private EventHandler<KeyEvent> moverPacman = event -> {
+    private EventHandler <KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
-            if (nodoAux == null) {
+            if (nodoDestino == null) {
                 movimiento = "DOWN";
                 movimientoOriginal = "DOWN";
                 pila.push("DOWN");
@@ -149,19 +149,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             } else {
                 pila.push("DOWN");
                 movimiento = "DOWN";
-
-                //movimientoOriginal = "DOWN";
-                /*if (movimientoOriginal.equals("DOWN") && movimientoCorrecto("DOWN", nodoAux)) {
-                    movimiento = "DOWN";
-                } else if (movimiento.equals("UP")) {
-                    movimiento = "DOWN";
-                }else{
-                    movimientoOriginal = "DOWN";
-                }*/
-                //movimiento = "DOWN";
             }
         } else if (event.getCode() == event.getCode().LEFT) {
-            if (nodoAux == null) {
+            if (nodoDestino == null) {
                 movimiento = "LEFT";
                 movimientoOriginal = "LEFT";
                 pila.push("LEFT");
@@ -169,19 +159,10 @@ public class Nivel1Controller extends Controller implements Initializable {
             } else {
                 movimiento = "LEFT";
                 pila.push("LEFT");
-                //movimientoOriginal = "";
-                /*9if (movimientoOriginal.equals("UP") && movimientoCorrecto("LEFT", nodoAux)) {
-                    movimiento = "LEFT";
-                } else if (movimiento.equals("RIGHT")) {
-                    movimiento = "LEFT";
-                }else{
-                    movimientoOriginal = "LEFT";
-                }*/
-                //movimiento = "LEFT";
             }
 
         } else if (event.getCode() == event.getCode().UP) {
-            if (nodoAux == null) {
+            if (nodoDestino == null) {
                 movimiento = "UP";
                 movimientoOriginal = "UP";
                 pila.push("UP");
@@ -189,18 +170,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             } else {
                 movimiento = "UP";
                 pila.push("UP");
-                //movimientoOriginal = "UP";
-                /*if (movimientoOriginal.equals("UP") && movimientoCorrecto("UP", nodoAux)) {
-                    movimiento = "UP";
-                } else if (movimiento.equals("DOWN")) {
-                    movimiento = "UP";
-                }else{
-                    movimientoOriginal = "UP";
-                }*/
-                //movimiento = "UP";
             }
         } else if (event.getCode() == event.getCode().RIGHT) {
-            if (nodoAux == null) {
+            if (nodoDestino == null) {
                 movimiento = "RIGHT";
                 movimientoOriginal = "RIGHT";
                 pila.push("RIGHT");
@@ -208,15 +180,6 @@ public class Nivel1Controller extends Controller implements Initializable {
             } else {
                 movimiento = "RIGHT";
                 pila.push("RIGHT");
-                //movimientoOriginal = "RIGHT";
-                /*if (movimientoOriginal.equals("RIGHT") && movimientoCorrecto("RIGHT", nodoAux)) {
-                    movimiento = "RIGHT";
-                } else if (movimiento.equals("LEFT")) {
-                    movimiento = "RIGHT";
-                }else{
-                    movimientoOriginal = "RIGHT";
-                }*/
-                //movimiento = "RIGHT";
             }
         } else if (event.getCode() == event.getCode().ESCAPE) {
             hiloTiempo.finalizado = true;
@@ -256,7 +219,6 @@ public class Nivel1Controller extends Controller implements Initializable {
     };
 
     private void movimiento() {
-
         if (!pila.isEmpty()) {
             String movAux = pila.pop();
             if(movimientoCorrecto(movAux, nodoOrigen)){
@@ -265,8 +227,6 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
             else if (!movimiento.equals(movimientoOriginal) && !movimientoCorrecto(movimiento, nodoOrigen)) {
                 movimiento = movimientoOriginal;
-                //movimiento();
-                //System.out.println(movimiento);
             }
             pila.push(movAux);
         }
@@ -293,34 +253,34 @@ public class Nivel1Controller extends Controller implements Initializable {
     private boolean movimientoCorrecto(String movimiento, Nodo destino) {
         bandera = false;
         copiaNodos();
-        auxN = null;
+        auxNodo = null;
         if (movimiento.equals("UP") && destino != null) {
             xAux2 = (int) destino.getPoint2D().getX() - 14;
             yAux2 = (int) destino.getPoint2D().getY() - 13;
             while (xAux2 < (int) destino.getPoint2D().getX() + 14 && !bandera) {
                 while (yAux2 >= 0) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().isPresent() && !bandera) {
-                        auxN = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
-                        nodosAux.remove(auxN);
+                        auxNodo = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
+                        nodosAux.remove(auxNodo);
                         destino.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(auxN)) {
+                            if (arista.getDestino().equals(auxNodo)) {
                                 bandera = true;
-                            } else if (arista.getOrigen().equals(auxN)) {
+                            } else if (arista.getOrigen().equals(auxNodo)) {
                                 bandera = true;
                             }
                         });
                         if (!bandera) {
-                            auxN = null;
+                            auxNodo = null;
                         }
                     }
-                    if (auxN != null) {
+                    if (auxNodo != null) {
                         yAux2 = -1;
                         break;
                     }
                     yAux2--;
                 }
 
-                if (auxN != null) {
+                if (auxNodo != null) {
                     xAux2 = (int) destino.getPoint2D().getX() + 14;
                     break;
                 }
@@ -334,27 +294,27 @@ public class Nivel1Controller extends Controller implements Initializable {
             while (xAux2 < (int) destino.getPoint2D().getX() + 14 && !bandera) {
                 while (yAux2 < 645) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().isPresent() && !bandera) {
-                        auxN = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
-                        nodosAux.remove(auxN);
+                        auxNodo = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
+                        nodosAux.remove(auxNodo);
                         destino.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(auxN)) {
+                            if (arista.getDestino().equals(auxNodo)) {
                                 bandera = true;
-                            } else if (arista.getOrigen().equals(auxN)) {
+                            } else if (arista.getOrigen().equals(auxNodo)) {
                                 bandera = true;
                             }
                         });
                         if (!bandera) {
-                            auxN = null;
+                            auxNodo = null;
                         }
                     }
-                    if (auxN != null) {
+                    if (auxNodo != null) {
                         yAux2 = 646;
                         break;
                     }
                     yAux2++;
                 }
 
-                if (auxN != null) {
+                if (auxNodo != null) {
                     xAux2 = (int) destino.getPoint2D().getX() + 14;
                     break;
                 }
@@ -367,26 +327,26 @@ public class Nivel1Controller extends Controller implements Initializable {
             while (yAux2 < (int) destino.getPoint2D().getY() + 14 && !bandera) {
                 while (xAux2 >= 0) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().isPresent() && !bandera) {
-                        auxN = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
-                        nodosAux.remove(auxN);
+                        auxNodo = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
+                        nodosAux.remove(auxNodo);
                         destino.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(auxN)) {
+                            if (arista.getDestino().equals(auxNodo)) {
                                 bandera = true;
-                            } else if (arista.getOrigen().equals(auxN)) {
+                            } else if (arista.getOrigen().equals(auxNodo)) {
                                 bandera = true;
                             }
                         });
                         if (!bandera) {
-                            auxN = null;
+                            auxNodo = null;
                         }
                     }
-                    if (auxN != null) {
+                    if (auxNodo != null) {
                         xAux2 = -1;
                         break;
                     }
                     xAux2--;
                 }
-                if (auxN != null) {
+                if (auxNodo != null) {
                     yAux2 = (int) destino.getPoint2D().getY() - 13;
                     break;
                 }
@@ -400,27 +360,27 @@ public class Nivel1Controller extends Controller implements Initializable {
             while (yAux2 < (int) destino.getPoint2D().getY() + 13 && !bandera) {
                 while (xAux2 < 900) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().isPresent() && !bandera) {
-                        auxN = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
-                        nodosAux.remove(auxN);
+                        auxNodo = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
+                        nodosAux.remove(auxNodo);
                         destino.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(auxN)) {
+                            if (arista.getDestino().equals(auxNodo)) {
                                 bandera = true;
-                            } else if (arista.getOrigen().equals(auxN)) {
+                            } else if (arista.getOrigen().equals(auxNodo)) {
                                 bandera = true;
                             }
                         });
                         if (!bandera) {
-                            auxN = null;
+                            auxNodo = null;
                         }
                     }
 
-                    if (auxN != null) {
+                    if (auxNodo != null) {
                         xAux2 = -1;
                         break;
                     }
                     xAux2++;
                 }
-                if (auxN != null) {
+                if (auxNodo != null) {
                     yAux2 = (int) destino.getPoint2D().getY() + 13;
                     break;
                 }
@@ -441,27 +401,27 @@ public class Nivel1Controller extends Controller implements Initializable {
             while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
                 while (yAux >= 0) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
-                        nodoAux = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
-                        nodosAux.remove(nodoAux);
+                        nodoDestino = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                        nodosAux.remove(nodoDestino);
                         nodoOrigen.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(nodoAux)) {
+                            if (arista.getDestino().equals(nodoDestino)) {
                                 adyacente = true;
-                            } else if (arista.getOrigen().equals(nodoAux)) {
+                            } else if (arista.getOrigen().equals(nodoDestino)) {
                                 adyacente = true;
                             }
                         });
                         if (!adyacente) {
-                            nodoAux = null;
+                            nodoDestino = null;
                         }
                     }
-                    if (nodoAux != null) {
+                    if (nodoDestino != null) {
                         yAux = -1;
                         break;
                     }
                     yAux--;
                 }
 
-                if (nodoAux != null) {
+                if (nodoDestino != null) {
                     xAux = (int) pacman.getpMan().getCenterX() + 14;
                     break;
                 }
@@ -469,11 +429,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                 yAux = (int) pacman.getpMan().getCenterY() - 13;
                 xAux++;
             }
-            if (nodoAux != null) {
+            if (nodoDestino != null) {
                 pacman.getpMan().setRotate(-90);
                 Timeline timeline = new Timeline();
-                KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
-                Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+                KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoDestino.getPoint2D().getY());
+                Double distance = nodoDestino.getPoint2D().distance(pacman.getNodo().getPoint2D());
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
                 timeline.getKeyFrames().add(kfy);
@@ -497,8 +457,8 @@ public class Nivel1Controller extends Controller implements Initializable {
                 });
 
                 timeline.setOnFinished((value) -> {
-                    nodoOrigen = nodoAux;
-                    nodoAux = null;
+                    nodoOrigen = nodoDestino;
+                    nodoDestino = null;
                     movimiento();
                 });
             } else {
@@ -543,7 +503,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
             timeline.setOnFinished((value) -> {
                 //nodoOrigen = nodoAux;
-                nodoAux = null;
+                nodoDestino = null;
                 movimiento();
             });
         }
@@ -558,27 +518,27 @@ public class Nivel1Controller extends Controller implements Initializable {
             while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
                 while (yAux < 645) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
-                        nodoAux = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
-                        nodosAux.remove(nodoAux);
+                        nodoDestino = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                        nodosAux.remove(nodoDestino);
                         nodoOrigen.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(nodoAux)) {
+                            if (arista.getDestino().equals(nodoDestino)) {
                                 adyacente = true;
-                            } else if (arista.getOrigen().equals(nodoAux)) {
+                            } else if (arista.getOrigen().equals(nodoDestino)) {
                                 adyacente = true;
                             }
                         });
                         if (!adyacente) {
-                            nodoAux = null;
+                            nodoDestino = null;
                         }
                     }
-                    if (nodoAux != null) {
+                    if (nodoDestino != null) {
                         yAux = 646;
                         break;
                     }
                     yAux++;
                 }
 
-                if (nodoAux != null) {
+                if (nodoDestino != null) {
                     xAux = (int) pacman.getpMan().getCenterX() + 14;
                     break;
                 }
@@ -586,11 +546,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                 xAux++;
 
             }
-            if (nodoAux != null) {
+            if (nodoDestino != null) {
                 pacman.getpMan().setRotate(90);
                 Timeline timeline = new Timeline();
-                KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoAux.getPoint2D().getY());
-                Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+                KeyValue kvy = new KeyValue(pacman.getpMan().centerYProperty(), nodoDestino.getPoint2D().getY());
+                Double distance = nodoDestino.getPoint2D().distance(pacman.getNodo().getPoint2D());
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 KeyFrame kfy = new KeyFrame(Duration.millis((distance / 13) * 100), kvy);
                 timeline.getKeyFrames().add(kfy);
@@ -614,8 +574,8 @@ public class Nivel1Controller extends Controller implements Initializable {
                 });
 
                 timeline.setOnFinished((valor) -> {
-                    nodoOrigen = nodoAux;
-                    nodoAux = null;
+                    nodoOrigen = nodoDestino;
+                    nodoDestino = null;
                     movimiento();
                 });
             } else {
@@ -658,7 +618,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
             timeline.setOnFinished((valor) -> {
                 //nodoOrigen = nodoAux;
-                nodoAux = null;
+                nodoDestino = null;
                 movimiento();
             });
         }
@@ -673,26 +633,26 @@ public class Nivel1Controller extends Controller implements Initializable {
             while (yAux < (int) pacman.getpMan().getCenterY() + 14) {
                 while (xAux >= 0) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
-                        nodoAux = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
-                        nodosAux.remove(nodoAux);
+                        nodoDestino = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                        nodosAux.remove(nodoDestino);
                         nodoOrigen.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(nodoAux)) {
+                            if (arista.getDestino().equals(nodoDestino)) {
                                 adyacente = true;
-                            } else if (arista.getOrigen().equals(nodoAux)) {
+                            } else if (arista.getOrigen().equals(nodoDestino)) {
                                 adyacente = true;
                             }
                         });
                         if (!adyacente) {
-                            nodoAux = null;
+                            nodoDestino = null;
                         }
                     }
-                    if (nodoAux != null) {
+                    if (nodoDestino != null) {
                         xAux = -1;
                         break;
                     }
                     xAux--;
                 }
-                if (nodoAux != null) {
+                if (nodoDestino != null) {
                     yAux = (int) pacman.getpMan().getCenterY() - 13;
                     break;
                 }
@@ -701,11 +661,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                 xAux = (int) pacman.getpMan().getCenterX() - 13;
 
             }
-            if (nodoAux != null) {
+            if (nodoDestino != null) {
                 pacman.getpMan().setRotate(-180);
                 Timeline timeline = new Timeline();
-                KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
-                Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+                KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoDestino.getPoint2D().getX());
+                Double distance = nodoDestino.getPoint2D().distance(pacman.getNodo().getPoint2D());
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
                 timeline.getKeyFrames().add(kf);
@@ -730,8 +690,8 @@ public class Nivel1Controller extends Controller implements Initializable {
                 });
                 //Cuando se termina la animacion
                 timeline.setOnFinished((valor) -> {
-                    nodoOrigen = nodoAux;
-                    nodoAux = null;
+                    nodoOrigen = nodoDestino;
+                    nodoDestino = null;
                     movimiento();
                 });
             } else {
@@ -776,7 +736,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             //Cuando se termina la animacion
             timeline.setOnFinished((valor) -> {
                 // nodoOrigen = nodoAux;
-                nodoAux = null;
+                nodoDestino = null;
                 movimiento();
 
             });
@@ -793,27 +753,27 @@ public class Nivel1Controller extends Controller implements Initializable {
             while (yAux < (int) pacman.getpMan().getCenterY() + 13) {
                 while (xAux < 900) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
-                        nodoAux = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
-                        nodosAux.remove(nodoAux);
+                        nodoDestino = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().get();
+                        nodosAux.remove(nodoDestino);
                         nodoOrigen.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(nodoAux)) {
+                            if (arista.getDestino().equals(nodoDestino)) {
                                 adyacente = true;
-                            } else if (arista.getOrigen().equals(nodoAux)) {
+                            } else if (arista.getOrigen().equals(nodoDestino)) {
                                 adyacente = true;
                             }
                         });
                         if (!adyacente) {
-                            nodoAux = null;
+                            nodoDestino = null;
                         }
                     }
 
-                    if (nodoAux != null) {
+                    if (nodoDestino != null) {
                         xAux = -1;
                         break;
                     }
                     xAux++;
                 }
-                if (nodoAux != null) {
+                if (nodoDestino != null) {
                     yAux = (int) pacman.getpMan().getCenterY() + 13;
                     break;
                 }
@@ -822,11 +782,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                 xAux = (int) pacman.getpMan().getCenterX() + 13;
             }
 
-            if (nodoAux != null) {
+            if (nodoDestino != null) {
                 pacman.getpMan().setRotate(0);
                 Timeline timeline = new Timeline();
-                KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoAux.getPoint2D().getX());
-                Double distance = nodoAux.getPoint2D().distance(pacman.getNodo().getPoint2D());
+                KeyValue kv = new KeyValue(pacman.getpMan().centerXProperty(), nodoDestino.getPoint2D().getX());
+                Double distance = nodoDestino.getPoint2D().distance(pacman.getNodo().getPoint2D());
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 13) * 100), kv);
                 timeline.getKeyFrames().add(kf);
@@ -850,8 +810,8 @@ public class Nivel1Controller extends Controller implements Initializable {
                 });
 
                 timeline.setOnFinished((valor) -> {
-                    nodoOrigen = nodoAux;
-                    nodoAux = null;
+                    nodoOrigen = nodoDestino;
+                    nodoDestino = null;
                     movimiento();
                 });
             } else {
@@ -895,7 +855,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
             timeline.setOnFinished((valor) -> {
                 //nodoOrigen = nodoAux;
-                nodoAux = null;
+                nodoDestino = null;
                 movimiento();
             });
         }
