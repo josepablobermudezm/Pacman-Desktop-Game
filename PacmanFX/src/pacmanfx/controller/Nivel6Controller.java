@@ -1282,11 +1282,11 @@ public class Nivel6Controller extends Controller implements Initializable {
 
     @FXML
     private void mouse(MouseEvent event) {
-        /*root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
+        root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
-        root.getChildren().add(circle);*/
+        root.getChildren().add(circle);
     }
 
     @FXML

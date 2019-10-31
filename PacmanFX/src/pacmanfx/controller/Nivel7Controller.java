@@ -1159,8 +1159,8 @@ public class Nivel7Controller extends Controller implements Initializable {
                     }
                 //}
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
-                if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
-                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {
+                /*if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
+                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {*/
                     xDestino += 31;
                     while (xDestino < xOrigen) {
                         if (xDestino <= xOrigen - 16) {
@@ -1170,10 +1170,10 @@ public class Nivel7Controller extends Controller implements Initializable {
                         }
                         xDestino += 31;
                     }
-                }
+                //}
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
-                if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
-                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {
+                /*if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
+                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {*/
                     xOrigen += 31;
                     while (xOrigen <= xDestino) {
                         if (xOrigen <= xDestino - 16) {
@@ -1183,7 +1183,7 @@ public class Nivel7Controller extends Controller implements Initializable {
                         }
                         xOrigen += 31;
                     }
-                }
+                //}
             }
         });
 
@@ -1290,10 +1290,10 @@ public class Nivel7Controller extends Controller implements Initializable {
 
     @FXML
     private void mouse(MouseEvent event) {
-        /*root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
+        root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
-        root.getChildren().add(circle);*/
+        root.getChildren().add(circle);
     }
 }
