@@ -13,8 +13,8 @@
             <AnchorPane id="AnchorPane" fx:id="root" onMouseClicked="#mouse" prefHeight="645.0" prefWidth="900.0" style="-fx-background-color: black;" styleClass="root" stylesheets="@newCascadeStyleSheet.css">
                <children>
                   <ImageView fx:id="img" fitHeight="645.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="lblEncierro" layoutX="563.0" layoutY="585.0" maxWidth="57.0" prefHeight="50.0" prefWidth="48.0" styleClass="lblIconLevel1" text="E" />
-                  <Label fx:id="lblSuperVelocidad" layoutX="636.0" layoutY="585.0" maxWidth="57.0" prefHeight="50.0" prefWidth="48.0" styleClass="lblIconLevel1" text="S" />
+                  <Label fx:id="lblEncierro" layoutX="563.0" layoutY="585.0" maxWidth="57.0" prefHeight="50.0" prefWidth="48.0" styleClass="lblIconLevel6" text="E" />
+                  <Label fx:id="lblSuperVelocidad" layoutX="636.0" layoutY="585.0" maxWidth="57.0" prefHeight="50.0" prefWidth="48.0" styleClass="lblIconLevel6" text="S" />
                </children></AnchorPane>
          </children>
       </VBox>

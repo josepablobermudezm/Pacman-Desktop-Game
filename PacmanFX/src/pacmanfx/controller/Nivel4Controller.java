@@ -69,6 +69,7 @@ public class Nivel4Controller extends Controller implements Initializable {
     static boolean up = false, down = false, left = false, right = false, value = false, mapa2 = false, Nivel1 = true, Nivel2 = false, Nivel3 = false, Nivel4 = false,
             Nivel5 = false, Nivel6 = false, Nivel7 = false, Nivel8 = false, Nivel9 = false, Nivel10 = false;
     String nivel = "Nivel 4";
+    int EncierroValor = 0;
     int contVidas = 0, contVidas2 = 0;
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
@@ -245,6 +246,13 @@ public class Nivel4Controller extends Controller implements Initializable {
             }
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
+        }
+        /*
+            Se activa el encierro en el caso que la habilidad este activa
+            La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
+        */
+        if (event.getCode() == event.getCode().E && Encierro()){
+            
         }
     };
 
@@ -1013,11 +1021,16 @@ public class Nivel4Controller extends Controller implements Initializable {
                             }
 
                         });
+                        
+                        if(Encierro()){
+                            lblEncierro.setVisible(true);
+                        }
+                        
                         puntos.remove(circle);
                         //Cuando logra comerse todos los puntos en la pantalla
                         //quedan 8 porque aún no se han limpiado bien más adelante hay que cambiiarlo
                         int veces = 0;
-                        if (puntos.size() == 8 && contVidas == 0) {
+                        if (puntos.size() == 8) {
                             if (vidas == 6) {
                                 if (contVidas == 0) {
                                     System.out.println("Si cumple");
@@ -1297,6 +1310,7 @@ public class Nivel4Controller extends Controller implements Initializable {
         movimientoOriginal = "RIGHT";
         pila.push("RIGHT");
         right(false);
+        EncierroValor = (puntos.size() - 9) / 2;
         /*      nodos.stream().forEach((t) -> {
             //System.out.println(t.getAristas_Adyacentes().size());
             if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
@@ -1356,6 +1370,8 @@ public class Nivel4Controller extends Controller implements Initializable {
             Logger.getLogger(JugadorController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+        lblEncierro.setVisible(false);
+        lblSuperVelocidad.setVisible(false);
     }
 
     @FXML
@@ -1401,5 +1417,12 @@ public class Nivel4Controller extends Controller implements Initializable {
             Logger.getLogger(JugadorController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public boolean Encierro() {
+        /*
+            condición para el encierro
+            Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
+         */
+        return ((puntos.size() - 9 == EncierroValor) && (vidas == 6));
     }
 }

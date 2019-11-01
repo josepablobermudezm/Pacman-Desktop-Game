@@ -1396,7 +1396,6 @@ public class Nivel1Controller extends Controller implements Initializable {
             Logger.getLogger(JugadorController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println((puntos.size() - 8) / 2);
         lblEncierro.setVisible(false);
         lblSuperVelocidad.setVisible(false);
     }
