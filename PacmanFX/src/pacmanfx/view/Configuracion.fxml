@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -13,8 +15,38 @@
             <AnchorPane id="AnchorPane" prefHeight="645.0" prefWidth="900.0">
                <children>
                   <ImageView fx:id="omg" fitHeight="645.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="lblVolver" layoutX="14.0" layoutY="568.0" onMouseClicked="#Volver" styleClass="lbl" text="Volver" />
+                  <Label fx:id="lblVolver" layoutX="14.0" layoutY="598.0" onMouseClicked="#Volver" styleClass="lbl" text="Volver" />
                   <Label layoutX="327.0" layoutY="14.0" styleClass="Label" text="Configuraciones" />
+                  <Label layoutX="27.0" layoutY="95.0" styleClass="lblSmall" text="Puntos Totales:" />
+                  <TextField fx:id="txtPuntosTotales" layoutX="320.0" layoutY="89.0" maxWidth="100.0" />
+                  <Label layoutX="27.0" layoutY="147.0" styleClass="lblSmall" text="Mayor Cantidad de Punto en una partida:" />
+                  <TextField fx:id="txtMayorCantPartida" layoutX="320.0" layoutY="141.0" maxWidth="100.0" />
+                  <Label layoutX="29.0" layoutY="250.0" prefHeight="19.0" prefWidth="276.0" styleClass="lblSmall" text="Nivel 1 Completado:" />
+                  <TextField fx:id="txtNivel1Completado" layoutX="322.0" layoutY="244.0" maxWidth="100.0" />
+                  <Label layoutX="29.0" layoutY="290.0" prefHeight="19.0" prefWidth="276.0" styleClass="lblSmall" text="Nivel 2 Completado:" />
+                  <TextField fx:id="txtNivel2Completado" layoutX="322.0" layoutY="284.0" maxWidth="100.0" />
+                  <Label layoutX="29.0" layoutY="333.0" prefHeight="19.0" prefWidth="276.0" styleClass="lblSmall" text="Nivel 3 Completado:" />
+                  <TextField fx:id="txtNivel3Completado" layoutX="322.0" layoutY="327.0" maxWidth="100.0" />
+                  <Label layoutX="29.0" layoutY="382.0" prefHeight="19.0" prefWidth="276.0" styleClass="lblSmall" text="Nivel 4 Completado:" />
+                  <TextField fx:id="txtNivel4Completado" layoutX="322.0" layoutY="376.0" maxWidth="100.0" />
+                  <Label layoutX="29.0" layoutY="428.0" prefHeight="19.0" prefWidth="276.0" styleClass="lblSmall" text="Nivel 5 Completado:" />
+                  <TextField fx:id="txtNivel5Completado" layoutX="322.0" layoutY="422.0" maxWidth="100.0" />
+                  <Label layoutX="529.0" layoutY="288.0" prefHeight="19.0" prefWidth="148.0" styleClass="lblSmall" text="Nivel 6 Completado:" />
+                  <TextField fx:id="txtNivel6Completado" layoutX="689.0" layoutY="288.0" maxWidth="100.0" />
+                  <Label layoutX="529.0" layoutY="334.0" prefHeight="19.0" prefWidth="148.0" styleClass="lblSmall" text="Nivel 7 Completado:" />
+                  <TextField fx:id="txtNivel7Completado" layoutX="689.0" layoutY="334.0" maxWidth="100.0" />
+                  <Label layoutX="529.0" layoutY="383.0" prefHeight="19.0" prefWidth="148.0" styleClass="lblSmall" text="Nivel 8 Completado:" />
+                  <TextField fx:id="txtNivel8Completado" layoutX="689.0" layoutY="383.0" maxWidth="100.0" />
+                  <Label layoutX="529.0" layoutY="433.0" prefHeight="19.0" prefWidth="148.0" styleClass="lblSmall" text="Nivel 9 Completado:" />
+                  <TextField fx:id="txtNivel9Completado" layoutX="689.0" layoutY="433.0" maxWidth="100.0" />
+                  <Button fx:id="btnGuardarMayorCantPartida111111111" layoutX="715.0" layoutY="497.0" mnemonicParsing="false" onAction="#guardar" text="Guardar" />
+                  <Label layoutX="534.0" layoutY="250.0" prefHeight="19.0" prefWidth="148.0" styleClass="lblSmall" text="Nivel 10 Completado:" />
+                  <TextField fx:id="txtNivel10Completado" layoutX="689.0" layoutY="244.0" maxWidth="100.0" />
+                  <Label layoutX="27.0" layoutY="203.0" styleClass="lblSmall" text="1 = Nivel Completado/ 0 = Nivel No Completado" />
+                  <Label layoutX="29.0" layoutY="470.0" prefHeight="19.0" prefWidth="276.0" styleClass="lblSmall" text="Cantidad de Fantasmas Comidos:" />
+                  <TextField fx:id="txtCantFantasmas" layoutX="322.0" layoutY="464.0" maxWidth="100.0" />
+                  <Label layoutX="29.0" layoutY="510.0" prefHeight="19.0" prefWidth="276.0" styleClass="lblSmall" text="Consecutivamente sin perder Vidas:" />
+                  <TextField fx:id="txtCantVidas" layoutX="322.0" layoutY="504.0" maxWidth="100.0" />
                </children>
             </AnchorPane>
          </children>

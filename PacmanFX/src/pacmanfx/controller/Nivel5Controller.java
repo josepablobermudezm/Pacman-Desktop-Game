@@ -70,7 +70,7 @@ public class Nivel5Controller extends Controller implements Initializable {
     static boolean up = false, down = false, left = false, right = false, value = false, mapa2 = false, Nivel1 = true, Nivel2 = false, Nivel3 = false, Nivel4 = false,
             Nivel5 = false, Nivel6 = false, Nivel7 = false, Nivel8 = false, Nivel9 = false, Nivel10 = false;
     String nivel = "Nivel 5";
-
+    int contVidas = 0, contVidas2 = 0;
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
     private ArrayList<Circle> puntos = new ArrayList();
@@ -103,6 +103,10 @@ public class Nivel5Controller extends Controller implements Initializable {
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
     @FXML
     private ImageView img;
+    @FXML
+    private Label lblEncierro;
+    @FXML
+    private Label lblSuperVelocidad;
 
     /**
      * Initializes the controller class.
@@ -133,8 +137,8 @@ public class Nivel5Controller extends Controller implements Initializable {
     Nodo auxNodo;
     Boolean bandera = false;
     Stack<String> pila = new Stack<>();
-    
-    private EventHandler <KeyEvent> moverPacman = event -> {
+
+    private EventHandler<KeyEvent> moverPacman = event -> {
         if (event.getCode() == event.getCode().DOWN) {
             if (nodoDestino == null) {
                 movimiento = "DOWN";
@@ -180,7 +184,7 @@ public class Nivel5Controller extends Controller implements Initializable {
             //aquí se mide guarda el dato con el tiempo que tarda en finalizar un nivel
             hiloTiempo.finalizado = true;
             int tiempo = Hilo.getTic();
-            MenuController.TiempoTotalJuego+=tiempo;
+            MenuController.TiempoTotalJuego += tiempo;
             int tiempoActual = 0;
             try {
                 File f = new File(".");
@@ -258,7 +262,7 @@ public class Nivel5Controller extends Controller implements Initializable {
             }
             pila.push(movAux);
         }
-        
+
         switch (movimiento) {
             case "UP":
                 up(false);
@@ -277,7 +281,7 @@ public class Nivel5Controller extends Controller implements Initializable {
 
     Integer xAux2;
     Integer yAux2;
-    
+
     private boolean movimientoCorrecto(String movimiento, Nodo destino) {
         bandera = false;
         copiaNodos();
@@ -419,7 +423,7 @@ public class Nivel5Controller extends Controller implements Initializable {
         }
         return bandera;
     }
-    
+
     public void up(Boolean devolver) {
         adyacente = false;
         copiaNodos();
@@ -955,7 +959,7 @@ public class Nivel5Controller extends Controller implements Initializable {
         } catch (IOException | NumberFormatException e) {
         }
     }
-    
+
     public void cargarNodoArista() {
         nodos();
         aristas();
@@ -967,7 +971,7 @@ public class Nivel5Controller extends Controller implements Initializable {
             nodosAux.add(nodo);
         });
     }
-    
+
     public void CrearMapa() {
 
         cargarNodoArista();
@@ -1014,7 +1018,81 @@ public class Nivel5Controller extends Controller implements Initializable {
 
                         });
                         puntos.remove(circle);
-                        //Cuando se quita los puntos de la pantalla
+                        //Cuando logra comerse todos los puntos en la pantalla
+                        //quedan 8 porque aún no se han limpiado bien más adelante hay que cambiiarlo
+                        int veces = 0;
+                        if (puntos.size() == 8 && contVidas == 0) {
+                            if (vidas == 6) {
+                                if (contVidas == 0) {
+                                    System.out.println("Si cumple");
+                                    /*
+                                    Lo que hace esta parte es aumentar un contador en el texto para saber cual es la cantidad de juegos terminados sin perder vidas
+                                    la variable contVidas es porque el método se hace varias veces entonces es para que solo se haga una vez la suma del contador
+                                     */
+                                    try {
+                                        File f = new File(".");
+                                        String dir = f.getAbsolutePath();
+                                        String fileName = dir + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+                                        File file = new File(fileName);
+                                        FileReader fr = new FileReader(file);
+                                        BufferedReader br = new BufferedReader(fr);
+                                        String line;
+                                        while ((line = br.readLine()) != null) {
+                                            veces = Integer.parseInt(line);
+                                        }
+                                        try {
+                                            String content = String.valueOf(veces + 1);
+                                            File f1 = new File(".");
+                                            String dir1 = f1.getAbsolutePath();
+                                            String path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+                                            Files.write(Paths.get(path), content.getBytes());
+
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(MenuController.class
+                                                    .getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    } catch (FileNotFoundException ex) {
+                                        Logger.getLogger(JugadorController.class
+                                                .getName()).log(Level.SEVERE, null, ex);
+
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(JugadorController.class
+                                                .getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    contVidas++;
+                                }
+                            } else {
+                                if (contVidas2 == 0) {
+                                    System.out.println("no cumple");
+                                    try {
+                                        String content = "0";
+                                        File f1 = new File(".");
+                                        String dir1 = f1.getAbsolutePath();
+                                        String path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+                                        Files.write(Paths.get(path), content.getBytes());
+
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(MenuController.class
+                                                .getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    contVidas2++;
+                                }
+                            }
+                            try {
+                                String content = "1";
+                                File f1 = new File(".");
+                                String dir1 = f1.getAbsolutePath();
+                                String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel5Completado.txt";
+                                Files.write(Paths.get(path), content.getBytes());
+
+                            } catch (IOException ex) {
+                                Logger.getLogger(MenuController.class
+                                        .getName()).log(Level.SEVERE, null, ex);
+
+                            }
+                            FlowController.getInstance().initialize();
+                            FlowController.getInstance().goViewInStage("Nivel6", this.getStage());
+                        }
 
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
@@ -1118,25 +1196,25 @@ public class Nivel5Controller extends Controller implements Initializable {
                     && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                     && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
                     && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {*/
-                Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
-                puntos.add(origen);
-                root.getChildren().add(origen);//
-                Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#0CF25C"));
-                puntos.add(destino);
-                root.getChildren().add(destino);//
+            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
+            puntos.add(origen);
+            root.getChildren().add(origen);//
+            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#0CF25C"));
+            puntos.add(destino);
+            root.getChildren().add(destino);//
             //}
 
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 //if (((xOrigen != 512.0 && yOrigen != 240.0) || (xDestino != 512.0 && yDestino != 240.0))) {
-                    yDestino += 29;
-                    while (yDestino < yOrigen) {
-                        if (yDestino <= yOrigen - 13) {
-                            circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
-                            puntos.add(circle);
-                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                        }
-                        yDestino += 29;
+                yDestino += 29;
+                while (yDestino < yOrigen) {
+                    if (yDestino <= yOrigen - 13) {
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
+                        puntos.add(circle);
+                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
+                    yDestino += 29;
+                }
                 //}
             } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
                 /*if (((xOrigen != 260.0 && yOrigen != 240.0) || (xDestino != 260.0 && yDestino != 240.0))
@@ -1144,41 +1222,41 @@ public class Nivel5Controller extends Controller implements Initializable {
                         && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                         && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
                         && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {*/
-                    yOrigen += 29;
-                    while (yOrigen < yDestino) {
-                        if (yOrigen <= yDestino - 13) {
-                            circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#0CF25C"));
-                            puntos.add(circle);
-                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                        }
-                        yOrigen += 29;
+                yOrigen += 29;
+                while (yOrigen < yDestino) {
+                    if (yOrigen <= yDestino - 13) {
+                        circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#0CF25C"));
+                        puntos.add(circle);
+                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
+                    yOrigen += 29;
+                }
                 //}
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
                 /*if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
                         && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {*/
-                    xDestino += 31;
-                    while (xDestino < xOrigen) {
-                        if (xDestino <= xOrigen - 16) {
-                            circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
-                            puntos.add(circle);
-                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                        }
-                        xDestino += 31;
+                xDestino += 31;
+                while (xDestino < xOrigen) {
+                    if (xDestino <= xOrigen - 16) {
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
+                        puntos.add(circle);
+                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
+                    xDestino += 31;
+                }
                 //}
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 /*if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
                         && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {*/
-                    xOrigen += 31;
-                    while (xOrigen <= xDestino) {
-                        if (xOrigen <= xDestino - 16) {
-                            circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#0CF25C"));
-                            puntos.add(circle);
-                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                        }
-                        xOrigen += 31;
+                xOrigen += 31;
+                while (xOrigen <= xDestino) {
+                    if (xOrigen <= xDestino - 16) {
+                        circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#0CF25C"));
+                        puntos.add(circle);
+                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
+                    xOrigen += 31;
+                }
                 //}
             }
         });
@@ -1213,7 +1291,7 @@ public class Nivel5Controller extends Controller implements Initializable {
 
     Nodo nodoOrigen;
     Nodo nFinal;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
@@ -1290,5 +1368,42 @@ public class Nivel5Controller extends Controller implements Initializable {
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
         root.getChildren().add(circle);
+    }
+
+    /*
+        este método lo que hace es aumentar la cantidad de fantasmas que se ha comido el usuario. Es para usarlo cuando ya funcione comer fantasmas
+     */
+    void ComerFantasmaGuardarArchivo() {
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\FantasmasComidos.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces + 1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\FantasmasComidos.txt";
+                Files.write(Paths.get(path), content.getBytes());
+
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

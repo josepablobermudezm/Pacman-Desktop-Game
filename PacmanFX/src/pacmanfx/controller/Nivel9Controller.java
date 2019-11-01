@@ -78,6 +78,7 @@ public class Nivel9Controller extends Controller implements Initializable {
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
     private hiloTiempo Hilo;
+    int contVidas = 0, contVidas2 = 0;
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
@@ -106,6 +107,10 @@ public class Nivel9Controller extends Controller implements Initializable {
     private BorderPane border;
     @FXML
     private ImageView img;
+    @FXML
+    private Label lblEncierro;
+    @FXML
+    private Label lblSuperVelocidad;
 
     @Override
     public void initialize() {
@@ -1016,7 +1021,81 @@ public class Nivel9Controller extends Controller implements Initializable {
 
                         });
                         puntos.remove(circle);
-                        //Cuando se quita los puntos de la pantalla
+                        //Cuando logra comerse todos los puntos en la pantalla
+                        //quedan 7 porque aún no se han limpiado bien más adelante hay que cambiiarlo
+                        int veces = 0;
+                        if (puntos.size() == 9 && contVidas == 0) {
+                            if (vidas == 6) {
+                                if (contVidas == 0) {
+                                    System.out.println("Si cumple");
+                                    /*
+                                    Lo que hace esta parte es aumentar un contador en el texto para saber cual es la cantidad de juegos terminados sin perder vidas
+                                    la variable contVidas es porque el método se hace varias veces entonces es para que solo se haga una vez la suma del contador
+                                     */
+                                    try {
+                                        File f = new File(".");
+                                        String dir = f.getAbsolutePath();
+                                        String fileName = dir + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+                                        File file = new File(fileName);
+                                        FileReader fr = new FileReader(file);
+                                        BufferedReader br = new BufferedReader(fr);
+                                        String line;
+                                        while ((line = br.readLine()) != null) {
+                                            veces = Integer.parseInt(line);
+                                        }
+                                        try {
+                                            String content = String.valueOf(veces + 1);
+                                            File f1 = new File(".");
+                                            String dir1 = f1.getAbsolutePath();
+                                            String path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+                                            Files.write(Paths.get(path), content.getBytes());
+
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(MenuController.class
+                                                    .getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    } catch (FileNotFoundException ex) {
+                                        Logger.getLogger(JugadorController.class
+                                                .getName()).log(Level.SEVERE, null, ex);
+
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(JugadorController.class
+                                                .getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    contVidas++;
+                                }
+                            } else {
+                                if (contVidas2 == 0) {
+                                    System.out.println("no cumple");
+                                    try {
+                                        String content = "0";
+                                        File f1 = new File(".");
+                                        String dir1 = f1.getAbsolutePath();
+                                        String path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+                                        Files.write(Paths.get(path), content.getBytes());
+
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(MenuController.class
+                                                .getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    contVidas2++;
+                                }
+                            }
+                            try {
+                                String content = "1";
+                                File f1 = new File(".");
+                                String dir1 = f1.getAbsolutePath();
+                                String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel9Completado.txt";
+                                Files.write(Paths.get(path), content.getBytes());
+
+                            } catch (IOException ex) {
+                                Logger.getLogger(MenuController.class
+                                        .getName()).log(Level.SEVERE, null, ex);
+
+                            }
+                            FlowController.getInstance().initialize();
+                            FlowController.getInstance().goViewInStage("Nivel10", this.getStage());
+                        }
 
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
@@ -1292,5 +1371,41 @@ public class Nivel9Controller extends Controller implements Initializable {
         System.out.println(event.getY());
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
         root.getChildren().add(circle);
+    }
+    /*
+        este método lo que hace es aumentar la cantidad de fantasmas que se ha comido el usuario. Es para usarlo cuando ya funcione comer fantasmas
+    */
+    void ComerFantasmaGuardarArchivo(){
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\FantasmasComidos.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces + 1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\FantasmasComidos.txt";
+                Files.write(Paths.get(path), content.getBytes());
+
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

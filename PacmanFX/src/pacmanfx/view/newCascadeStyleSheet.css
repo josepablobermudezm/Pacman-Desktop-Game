@@ -18,7 +18,7 @@
 }
 .lblSmall{
     -fx-font-family: "Decker";
-    -fx-text-fill: gray;
+    -fx-text-fill: white;
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 11pt;
 }
@@ -80,6 +80,11 @@
     -fx-font-family: "Showcard Gothic";
     -fx-text-fill : #4955ba;
     -fx-font-size : 25pt;
+}
+.lblIconLevel1{
+    -fx-font-family: "Showcard Gothic";
+    -fx-text-fill : GREEN;
+    -fx-font-size : 45pt;
 }
 .gameover{
     -fx-font-family: "Showcard Gothic";

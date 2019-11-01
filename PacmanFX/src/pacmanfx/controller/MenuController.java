@@ -41,6 +41,7 @@ public class MenuController extends Controller implements Initializable {
     static public int PuntosTotales = 0;
     static public int MayorCantidadDePuntosPartida = 0;
     static public int TiempoTotalJuego = 0;
+    static public int VidasConsecutivas = 0;
 
     @Override
     public void initialize() {
@@ -86,10 +87,10 @@ public class MenuController extends Controller implements Initializable {
     @FXML
     private void Salir(MouseEvent event) {
         //FlowController.getMainStage().close();
-        
+
         /*
             Puntos totales ganador en el juego
-        */
+         */
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -115,11 +116,10 @@ public class MenuController extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         /*
             Tiempo total en el juego
-        */
-        
+         */
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
@@ -145,6 +145,44 @@ public class MenuController extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        /*
+            Juegos sin haber perdido vidas 
+        */
+        int vidas = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                vidas = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if (vidas >= 3) {
+            try {
+                String content = "1";
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidas.txt";
+                Files.write(Paths.get(path), content.getBytes());
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Edición de Nivel");
+                alert.setContentText("Error al editar el nivel");
+                alert.showAndWait();
+            }
+        }
+
         this.getStage().close();
     }
 

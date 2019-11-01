@@ -11,17 +11,21 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import static pacmanfx.controller.MenuController.PuntosTotales;
 import static pacmanfx.controller.MenuController.TiempoTotalJuego;
+import static pacmanfx.controller.MenuController.VidasConsecutivas;
 import pacmanfx.util.FlowController;
 
 /**
@@ -480,6 +484,42 @@ public class EstadisticasController extends Controller implements Initializable 
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /*
+            Juegos sin perder Vidas consecutivas
+        */
+        int vidas = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                vidas = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (vidas >= 3) {
+            try {
+                String content = "1";
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidas.txt";
+                Files.write(Paths.get(path), content.getBytes());
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Edición de Nivel");
+                alert.setContentText("Error al editar el nivel");
+                alert.showAndWait();
+            }
         }
         //setea los mejores tiempos para cada nivel
         lblTiempo1.setText(String.valueOf(String.valueOf(tiempo1 / 60) + ":" + String.valueOf((tiempo1 % 60 >= 10) ? tiempo1 % 60 : "0" + tiempo1 % 60)));
