@@ -14,6 +14,9 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Stack;
@@ -150,8 +153,8 @@ public class Nivel1Controller extends Controller implements Initializable {
         /*
             Se activa el encierro en el caso que la habilidad este activa
             La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
-        */
-        if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0){
+         */
+        if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0) {
             lblEncierro.setVisible(false);
             UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
             EncierroBandera = false;
@@ -159,10 +162,9 @@ public class Nivel1Controller extends Controller implements Initializable {
                 
                 Método a realizar
             
-            */
+             */
             contadorEncierro++;
-        }
-        else if (event.getCode() == event.getCode().DOWN) {
+        } else if (event.getCode() == event.getCode().DOWN) {
             if (nodoDestino == null) {
                 movimiento = "DOWN";
                 movimientoOriginal = "DOWN";
@@ -299,7 +301,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             case "RIGHT":
                 right(false);
                 break;
-            
+
         }
     }
 
@@ -1041,7 +1043,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
                         });
                         puntos.remove(circle);
-                        if(Encierro()){
+                        if (Encierro()) {
                             lblEncierro.setVisible(true);
                             EncierroBandera = true;
                         }
@@ -1111,7 +1113,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                                 String dir1 = f1.getAbsolutePath();
                                 String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt";
                                 Files.write(Paths.get(path), content.getBytes());
-                                
+
                             } catch (IOException ex) {
                                 Logger.getLogger(MenuController.class
                                         .getName()).log(Level.SEVERE, null, ex);
@@ -1327,11 +1329,90 @@ public class Nivel1Controller extends Controller implements Initializable {
         root.getChildren().add(cyanGhost);
         root.getChildren().add(orangeGhost);
         root.getChildren().add(pinkGhost);
+
         nodos.stream().forEach((nodo) -> {
             if (nodo.getPoint2D().getX() == 447.0 && nodo.getPoint2D().getY() == 405.0) {
                 nodoOrigen = nodo;
             }
         });
+
+    }
+    /*
+    Algortitmo de dijstra 
+     */
+    
+
+    Nodo inicial;
+
+    void moveRedGhost() {
+        if (inicial == null) {
+            nodos.stream().forEach((t) -> {
+                //System.out.println(t.getAristas_Adyacentes().size());
+                if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
+                    inicial = t;
+                } else if (t.getPoint2D().getX() == 849.0 && t.getPoint2D().getY() == 515.0) {
+                    nFinal = t;
+                }
+            });
+        }
+        Dijkstra dijkstra;
+        dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+        dijkstra.ejecutar(inicial);
+        
+        List<Arista> aristasAux;
+        if(nodoDestino!=null){
+            aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+        }else{
+            aristasAux = dijkstra.marcarRutaCorta(nodoOrigen);
+        }
+        
+        //Doy vuelta a la lista 
+        Collections.reverse(aristasAux);
+        /*
+        3 pixeles 
+         */
+
+        Line linea = new Line(aristasAux.get(0).getOrigen().getPoint2D().getX(), aristasAux.get(0).getOrigen().getPoint2D().getY(), aristasAux.get(0).getDestino().getPoint2D().getX(), aristasAux.get(0).getDestino().getPoint2D().getY());
+        linea.setStroke(Paint.valueOf("RED"));
+        linea.setStrokeWidth(3.00);
+        this.root.getChildren().add(linea);
+
+        Timeline timeline = new Timeline();
+
+        Arista arista = aristasAux.get(0);
+        if (inicial.getPoint2D().getX() != arista.getOrigen().getPoint2D().getX() && inicial.getPoint2D().getY() != arista.getOrigen().getPoint2D().getY()) {
+
+            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), arista.getOrigen().getPoint2D().getX());
+            Double distance = inicial.getPoint2D().distance(arista.getOrigen().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 15) * 100), kv);
+            timeline.getKeyFrames().add(kf);
+            /* //La posicion del PacMan antes de la animacion
+            posY = pacman.getpMan().getCenterY();
+            posX = pacman.getpMan().getCenterX();*/
+            timeline.play();
+            
+            timeline.setOnFinished((event) -> {
+                inicial = arista.getOrigen();
+                moveRedGhost();
+            });
+        } else if (inicial.getPoint2D().getX() != arista.getDestino().getPoint2D().getX() && inicial.getPoint2D().getY() != arista.getDestino().getPoint2D().getY()) {
+            System.out.println("HI");
+            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), arista.getDestino().getPoint2D().getX());
+            Double distance = inicial.getPoint2D().distance(arista.getDestino().getPoint2D());
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 15) * 100), kv);
+            timeline.getKeyFrames().add(kf);
+            /*  //La posicion del PacMan antes de la animacion
+            posY = pacman.getpMan().getCenterY();
+            posX = pacman.getpMan().getCenterX();*/
+            timeline.play();
+
+            timeline.setOnFinished((event) -> {
+                inicial = arista.getDestino();
+                moveRedGhost();
+            });
+        }
     }
 
     Nodo nodoOrigen;
@@ -1345,25 +1426,9 @@ public class Nivel1Controller extends Controller implements Initializable {
         movimientoOriginal = "RIGHT";
         pila.push("RIGHT");
         right(false);
+        moveRedGhost();
         EncierroValor = (puntos.size() - 8) / 2;
-        /*      nodos.stream().forEach((t) -> {
-            //System.out.println(t.getAristas_Adyacentes().size());
-            if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
-                inicio = t;
-            } else if (t.getPoint2D().getX() == 849.0 && t.getPoint2D().getY() == 515.0) {
-                nFinal = t;
-            }
-        });
-        Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
-        dijkstra.ejecutar(inicio);
-        ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
-        aristasAux.stream().forEach((t) -> {
-            Line linea = new Line(t.getOrigen().getPoint2D().getX(), t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
-            linea.setStroke(Paint.valueOf("RED"));
-            linea.setStrokeWidth(3.00);
-            this.root.getChildren().add(linea);
-        });
-         */
+
         Hilo = new hiloTiempo();
         Hilo.correrHilo();
 
@@ -1458,7 +1523,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     /*
         Este método se utiliza como contador para saber si se ha usado la habilidad de encierro 5 o más veces,
         en el caso que la condiciones sea positiva es necesario entregar un premio al usuario
-    */
+     */
     public void UsarEncierroContador() {
         int veces = 0;
         try {
@@ -1492,13 +1557,13 @@ public class Nivel1Controller extends Controller implements Initializable {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public boolean Encierro() {
         /*
             condición para el encierro
             Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
             uso ese rango porque a veces no funciona si lo hago con ==
          */
-        return ((((puntos.size() - 8) > EncierroValor-4) && ((puntos.size() - 8) < EncierroValor+4)) && (vidas == 6));
+        return ((((puntos.size() - 8) > EncierroValor - 4) && ((puntos.size() - 8) < EncierroValor + 4)) && (vidas == 6));
     }
 }
