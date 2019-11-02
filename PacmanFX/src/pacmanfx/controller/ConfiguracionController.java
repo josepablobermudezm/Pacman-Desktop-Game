@@ -69,6 +69,8 @@ public class ConfiguracionController extends Controller implements Initializable
     private TextField txtCantFantasmas;
     @FXML
     private TextField txtCantVidas;
+    @FXML
+    private TextField txtEncierros;
 
     @Override
     public void initialize() {
@@ -253,6 +255,16 @@ public class ConfiguracionController extends Controller implements Initializable
             while ((line12 = br12.readLine()) != null) {
                 txtCantVidas.setText(line12);
             }
+            File f13 = new File(".");
+            String dir13 = f13.getAbsolutePath();
+            String fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+            File file13 = new File(fileName13);
+            FileReader fr13 = new FileReader(file13);
+            BufferedReader br13 = new BufferedReader(fr13);
+            String line13;
+            while ((line13 = br13.readLine()) != null) {
+                txtEncierros.setText(line13);
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -260,6 +272,23 @@ public class ConfiguracionController extends Controller implements Initializable
         }
     }
 
+    private void GuardarEncierroCantidad() {
+        try {
+            String content = txtEncierros.getText();
+            File f1 = new File(".");
+            String dir1 = f1.getAbsolutePath();
+            String path = dir1 + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+            Files.write(Paths.get(path), content.getBytes());
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Editar Puntos Totales");
+            alert.setContentText("Error al editar Puntos totales");
+            alert.showAndWait();
+        }
+    }
+    
     private void GuardarPuntosTotales() {
         try {
             String content = txtPuntosTotales.getText();
@@ -516,6 +545,7 @@ public class ConfiguracionController extends Controller implements Initializable
             GuardarNivel1();
             GuardarMayorCantPartida();
             GuardarFantasmas();
+            GuardarEncierroCantidad();
             GuardarVidas();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Edición de Juego");

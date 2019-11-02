@@ -146,9 +146,25 @@ public class Nivel10Controller extends Controller implements Initializable {
     Nodo auxNodo;
     Boolean bandera = false;
     Stack<String> pila = new Stack<>();
+    private boolean EncierroBandera = false;
+    private int contadorEncierro = 0;
 
-    private EventHandler <KeyEvent> moverPacman = event -> {
-        if (event.getCode() == event.getCode().DOWN) {
+    private EventHandler<KeyEvent> moverPacman = event -> {
+        /*
+            Se activa el encierro en el caso que la habilidad este activa
+            La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
+         */
+        if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0) {
+            lblEncierro.setVisible(false);
+            UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
+            EncierroBandera = false;
+            /*
+                
+                Método a realizar
+            
+             */
+            contadorEncierro++;
+        } else if (event.getCode() == event.getCode().DOWN) {
             if (nodoDestino == null) {
                 movimiento = "DOWN";
                 movimientoOriginal = "DOWN";
@@ -193,7 +209,7 @@ public class Nivel10Controller extends Controller implements Initializable {
             //aquí se mide guarda el dato con el tiempo que tarda en finalizar un nivel
             hiloTiempo.finalizado = true;
             int tiempo = Hilo.getTic();
-            MenuController.TiempoTotalJuego+=tiempo;
+            MenuController.TiempoTotalJuego += tiempo;
             int tiempoActual = 0;
             try {
                 File f = new File(".");
@@ -261,9 +277,15 @@ public class Nivel10Controller extends Controller implements Initializable {
         /*
             Se activa el encierro en el caso que la habilidad este activa
             La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
-        */
-        if (event.getCode() == event.getCode().E && Encierro()){
+         */
+        if (event.getCode() == event.getCode().E && Encierro()) {
+            lblEncierro.setVisible(false);
+            UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
+            /*
+                
+                Método a realizar
             
+             */
         }
     };
 
@@ -438,8 +460,7 @@ public class Nivel10Controller extends Controller implements Initializable {
         }
         return bandera;
     }
-    
-    
+
     public void up(Boolean devolver) {
         adyacente = false;
         copiaNodos();
@@ -975,7 +996,7 @@ public class Nivel10Controller extends Controller implements Initializable {
         } catch (IOException | NumberFormatException e) {
         }
     }
-    
+
     public void cargarNodoArista() {
         nodos();
         aristas();
@@ -987,7 +1008,7 @@ public class Nivel10Controller extends Controller implements Initializable {
             nodosAux.add(nodo);
         });
     }
-    
+
     public void CrearMapa() {
         cargarNodoArista();
         for (int i = 0; i < 20; i++) {
@@ -1032,11 +1053,12 @@ public class Nivel10Controller extends Controller implements Initializable {
                             }
 
                         });
-                        
-                        if(Encierro()){
+
+                        if (Encierro()) {
                             lblEncierro.setVisible(true);
+                            EncierroBandera = true;
                         }
-                        
+
                         puntos.remove(circle);
                         //Cuando logra comerse todos los puntos en la pantalla
                         //quedan 7 porque aún no se han limpiado bien más adelante hay que cambiiarlo
@@ -1216,25 +1238,25 @@ public class Nivel10Controller extends Controller implements Initializable {
                     && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                     && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
                     && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {*/
-                Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
-                puntos.add(origen);
-                root1.getChildren().add(origen);//
-                Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#ffffff"));
-                puntos.add(destino);
-                root1.getChildren().add(destino);//
+            Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
+            puntos.add(origen);
+            root1.getChildren().add(origen);//
+            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#ffffff"));
+            puntos.add(destino);
+            root1.getChildren().add(destino);//
             //}
 
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 //if (((xOrigen != 512.0 && yOrigen != 240.0) || (xDestino != 512.0 && yDestino != 240.0))) {
-                    yDestino += 29;
-                    while (yDestino < yOrigen) {
-                        if (yDestino <= yOrigen - 13) {
-                            circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
-                            puntos.add(circle);
-                            root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                        }
-                        yDestino += 29;
+                yDestino += 29;
+                while (yDestino < yOrigen) {
+                    if (yDestino <= yOrigen - 13) {
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
+                        puntos.add(circle);
+                        root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
+                    yDestino += 29;
+                }
                 //}
             } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
                 /*if (((xOrigen != 260.0 && yOrigen != 240.0) || (xDestino != 260.0 && yDestino != 240.0))
@@ -1242,41 +1264,41 @@ public class Nivel10Controller extends Controller implements Initializable {
                         && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                         && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
                         && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {*/
-                    yOrigen += 29;
-                    while (yOrigen < yDestino) {
-                        if (yOrigen <= yDestino - 13) {
-                            circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#ffffff"));
-                            puntos.add(circle);
-                            root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                        }
-                        yOrigen += 29;
+                yOrigen += 29;
+                while (yOrigen < yDestino) {
+                    if (yOrigen <= yDestino - 13) {
+                        circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#ffffff"));
+                        puntos.add(circle);
+                        root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
+                    yOrigen += 29;
+                }
                 //}
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
                 /*if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
                         && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {*/
-                    xDestino += 31;
-                    while (xDestino < xOrigen) {
-                        if (xDestino <= xOrigen - 16) {
-                            circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
-                            puntos.add(circle);
-                            root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                        }
-                        xDestino += 31;
+                xDestino += 31;
+                while (xDestino < xOrigen) {
+                    if (xDestino <= xOrigen - 16) {
+                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#ffffff"));
+                        puntos.add(circle);
+                        root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
+                    xDestino += 31;
+                }
                 //}
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 /*if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
                         && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {*/
-                    xOrigen += 31;
-                    while (xOrigen <= xDestino) {
-                        if (xOrigen <= xDestino - 16) {
-                            circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#ffffff"));
-                            puntos.add(circle);
-                            root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                        }
-                        xOrigen += 31;
+                xOrigen += 31;
+                while (xOrigen <= xDestino) {
+                    if (xOrigen <= xDestino - 16) {
+                        circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#ffffff"));
+                        puntos.add(circle);
+                        root1.getChildren().add(circle);//tamaño y posición de la comida del pacman
                     }
+                    xOrigen += 31;
+                }
                 //}
             }
         });
@@ -1393,10 +1415,11 @@ public class Nivel10Controller extends Controller implements Initializable {
         Circle circle = new Circle(event.getX(), event.getY(), 3, Paint.valueOf("RED"));
         root1.getChildren().add(circle);
     }
+
     /*
         este método lo que hace es aumentar la cantidad de fantasmas que se ha comido el usuario. Es para usarlo cuando ya funcione comer fantasmas
-    */
-    void ComerFantasmaGuardarArchivo(){
+     */
+    void ComerFantasmaGuardarArchivo() {
         int veces = 0;
         try {
             File f = new File(".");
@@ -1429,11 +1452,46 @@ public class Nivel10Controller extends Controller implements Initializable {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void UsarEncierroContador() {
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces + 1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+                Files.write(Paths.get(path), content.getBytes());
+
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public boolean Encierro() {
         /*
             condición para el encierro
             Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
          */
-        return ((puntos.size() == EncierroValor) && (vidas == 6));
+        return ((((puntos.size() ) > EncierroValor-4) && ((puntos.size()) < EncierroValor+4)) && (vidas == 6));
     }
 }

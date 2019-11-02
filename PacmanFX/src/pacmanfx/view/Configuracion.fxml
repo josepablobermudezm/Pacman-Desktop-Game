@@ -47,6 +47,8 @@
                   <TextField fx:id="txtCantFantasmas" layoutX="322.0" layoutY="464.0" maxWidth="100.0" />
                   <Label layoutX="29.0" layoutY="510.0" prefHeight="19.0" prefWidth="276.0" styleClass="lblSmall" text="Consecutivamente sin perder Vidas:" />
                   <TextField fx:id="txtCantVidas" layoutX="322.0" layoutY="504.0" maxWidth="100.0" />
+                  <Label layoutX="518.0" layoutY="147.0" prefHeight="19.0" prefWidth="159.0" styleClass="lblSmall" text="Cantidad de Encierros:" />
+                  <TextField fx:id="txtEncierros" layoutX="684.0" layoutY="141.0" maxWidth="100.0" />
                </children>
             </AnchorPane>
          </children>

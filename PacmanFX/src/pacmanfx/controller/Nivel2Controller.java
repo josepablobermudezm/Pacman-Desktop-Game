@@ -81,6 +81,7 @@ public class Nivel2Controller extends Controller implements Initializable {
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
     int contVidas = 0, contVidas2 = 0;
+    private int contadorEncierro = 0;
 
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
@@ -140,9 +141,25 @@ public class Nivel2Controller extends Controller implements Initializable {
     Nodo auxNodo;
     Boolean bandera = false;
     Stack<String> pila = new Stack<>();
+    private boolean EncierroBandera = false;
     
     private EventHandler <KeyEvent> moverPacman = event -> {
-        if (event.getCode() == event.getCode().DOWN) {
+        /*
+            Se activa el encierro en el caso que la habilidad este activa
+            La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
+        */
+        if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0){
+            lblEncierro.setVisible(false);
+            UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
+            EncierroBandera = false;
+            /*
+                
+                Método a realizar
+            
+            */
+            contadorEncierro++;
+        }
+        else if (event.getCode() == event.getCode().DOWN) {
             if (nodoDestino == null) {
                 movimiento = "DOWN";
                 movimientoOriginal = "DOWN";
@@ -251,13 +268,6 @@ public class Nivel2Controller extends Controller implements Initializable {
             }
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
-        }
-        /*
-            Se activa el encierro en el caso que la habilidad este activa
-            La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
-        */
-        if (event.getCode() == event.getCode().E && Encierro()){
-            
         }
     };
 
@@ -1030,6 +1040,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                         
                         if(Encierro()){
                             lblEncierro.setVisible(true);
+                            EncierroBandera = true;
                         }
                         
                         puntos.remove(circle);
@@ -1429,11 +1440,46 @@ public class Nivel2Controller extends Controller implements Initializable {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void UsarEncierroContador() {
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces + 1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+                Files.write(Paths.get(path), content.getBytes());
+
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public boolean Encierro() {
         /*
             condición para el encierro
             Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
          */
-        return ((puntos.size() - 9 == EncierroValor) && (vidas == 6));
+        return ((((puntos.size() - 9) > EncierroValor-4) && ((puntos.size() - 9) < EncierroValor+4)) && (vidas == 6));
     }
 }

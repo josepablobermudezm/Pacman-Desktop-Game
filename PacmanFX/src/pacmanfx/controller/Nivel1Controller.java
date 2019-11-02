@@ -68,7 +68,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             cont5 = 0, cont6 = 0, cont7 = 0, cont8 = 0, cont9 = 0, cont10 = 0;
     static boolean up = false, down = false, left = false, right = false, value = false, mapa2 = false, Nivel1 = true, Nivel2 = false, Nivel3 = false, Nivel4 = false,
             Nivel5 = false, Nivel6 = false, Nivel7 = false, Nivel8 = false, Nivel9 = false, Nivel10 = false;
-
+    private boolean EncierroBandera = false;
     String nivel = "Nivel 1";
     private ArrayList<Nodo> nodos = new ArrayList();
     private ArrayList<Arista> aristas = new ArrayList();
@@ -78,8 +78,9 @@ public class Nivel1Controller extends Controller implements Initializable {
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
     private hiloTiempo Hilo;
-    int contVidas = 0, contVidas2 = 0;
-    int EncierroValor = 0;
+    private int contVidas = 0, contVidas2 = 0;
+    private int EncierroValor = 0;
+    private int contadorEncierro = 0;
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
@@ -146,7 +147,22 @@ public class Nivel1Controller extends Controller implements Initializable {
     Stack<String> pila = new Stack<>();
 
     private EventHandler<KeyEvent> moverPacman = event -> {
-        if (event.getCode() == event.getCode().DOWN) {
+        /*
+            Se activa el encierro en el caso que la habilidad este activa
+            La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
+        */
+        if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0){
+            lblEncierro.setVisible(false);
+            UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
+            EncierroBandera = false;
+            /*
+                
+                Método a realizar
+            
+            */
+            contadorEncierro++;
+        }
+        else if (event.getCode() == event.getCode().DOWN) {
             if (nodoDestino == null) {
                 movimiento = "DOWN";
                 movimientoOriginal = "DOWN";
@@ -255,13 +271,6 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
             FlowController.getInstance().initialize();
             FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
-        }
-        /*
-            Se activa el encierro en el caso que la habilidad este activa
-            La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
-        */
-        if (event.getCode() == event.getCode().E && Encierro()){
-            
         }
     };
 
@@ -1032,15 +1041,15 @@ public class Nivel1Controller extends Controller implements Initializable {
 
                         });
                         puntos.remove(circle);
-
                         if(Encierro()){
                             lblEncierro.setVisible(true);
+                            EncierroBandera = true;
                         }
 
                         //Cuando logra comerse todos los puntos en la pantalla
                         //quedan 8 porque aún no se han limpiado bien más adelante hay que cambiiarlo
                         int veces = 0;
-                        if (puntos.size() < 9) {
+                        if (puntos.size() < 8) {
                             if (vidas == 6) {
                                 if (contVidas == 0) {
                                     /*
@@ -1446,11 +1455,50 @@ public class Nivel1Controller extends Controller implements Initializable {
         }
     }
 
+    /*
+        Este método se utiliza como contador para saber si se ha usado la habilidad de encierro 5 o más veces,
+        en el caso que la condiciones sea positiva es necesario entregar un premio al usuario
+    */
+    public void UsarEncierroContador() {
+        int veces = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                veces = Integer.parseInt(line);
+            }
+            try {
+                String content = String.valueOf(veces + 1);
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+                Files.write(Paths.get(path), content.getBytes());
+
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public boolean Encierro() {
         /*
             condición para el encierro
             Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
+            uso ese rango porque a veces no funciona si lo hago con ==
          */
-        return ((puntos.size() - 8 == EncierroValor) && (vidas == 6));
+        return ((((puntos.size() - 8) > EncierroValor-4) && ((puntos.size() - 8) < EncierroValor+4)) && (vidas == 6));
     }
 }

@@ -182,7 +182,44 @@ public class MenuController extends Controller implements Initializable {
                 alert.showAndWait();
             }
         }
-
+        
+        /*
+            Si ha usado la habilidad de encierro por lo menos 5 veces
+        */
+        int encierro = 0;
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                encierro = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if (encierro >= 5) {
+            try {
+                String content = "1";
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\Encierro5Veces.txt";
+                Files.write(Paths.get(path), content.getBytes());
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Edición de Nivel");
+                alert.setContentText("Error al editar el nivel");
+                alert.showAndWait();
+            }
+        }
         this.getStage().close();
     }
 

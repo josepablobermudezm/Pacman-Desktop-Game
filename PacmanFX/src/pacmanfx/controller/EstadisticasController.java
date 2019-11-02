@@ -487,7 +487,7 @@ public class EstadisticasController extends Controller implements Initializable 
         }
         /*
             Juegos sin perder Vidas consecutivas
-        */
+         */
         int vidas = 0;
         try {
             File f = new File(".");
@@ -521,6 +521,7 @@ public class EstadisticasController extends Controller implements Initializable 
                 alert.showAndWait();
             }
         }
+
         //setea los mejores tiempos para cada nivel
         lblTiempo1.setText(String.valueOf(String.valueOf(tiempo1 / 60) + ":" + String.valueOf((tiempo1 % 60 >= 10) ? tiempo1 % 60 : "0" + tiempo1 % 60)));
         lblTiempo2.setText(String.valueOf(String.valueOf(tiempo2 / 60) + ":" + String.valueOf((tiempo2 % 60 >= 10) ? tiempo2 % 60 : "0" + tiempo2 % 60)));

@@ -59,7 +59,7 @@ public class JugadorController extends Controller {
     private ImageView logro6;
 
     int Nivel1 = 0, Nivel2 = 0, Nivel3 = 0, Nivel4 = 0, Nivel5 = 0, Nivel6 = 0, Nivel7 = 0, Nivel8 = 0, Nivel9 = 0, Nivel10 = 0,
-            cantFantasmas = 0, vidasConsecutivas = 0, vidasConsecutivasAux = 0;
+            cantFantasmas = 0, vidasConsecutivas = 0, vidasConsecutivasAux = 0, EncierroCont = 0;
 
     /**
      * Initializes the controller class.
@@ -212,6 +212,32 @@ public class JugadorController extends Controller {
                     alert.showAndWait();
                 }
             }
+            File f14 = new File(".");
+            String dir14 = f14.getAbsolutePath();
+            String fileName14 = dir14 + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+            File file14 = new File(fileName14);
+            FileReader fr14 = new FileReader(file14);
+            BufferedReader br14 = new BufferedReader(fr14);
+            String line14;
+            while ((line14 = br14.readLine()) != null) {
+                EncierroCont = Integer.parseInt(line14);
+            }
+            if (EncierroCont >= 5) {
+                try {
+                    String content = "1";
+                    File f1 = new File(".");
+                    String dir1 = f1.getAbsolutePath();
+                    String path = dir1 + "\\src\\pacmanfx\\resources\\Encierro5Veces.txt";
+                    Files.write(Paths.get(path), content.getBytes());
+                } catch (IOException ex) {
+                    Logger.getLogger(MenuController.class
+                            .getName()).log(Level.SEVERE, null, ex);
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Edición de Nivel");
+                    alert.setContentText("Error al editar el nivel");
+                    alert.showAndWait();
+                }
+            }
             File f12 = new File(".");
             String dir12 = f12.getAbsolutePath();
             String fileName12 = dir12 + "\\src\\pacmanfx\\resources\\NoPerderVidas.txt";
@@ -242,8 +268,11 @@ public class JugadorController extends Controller {
         } else {
             logro3.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
         }
-
-        logro4.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
+        if(EncierroCont >= 5){
+            logro4.setImage(new Image("/pacmanfx/resources/premio.png"));
+        }else{
+            logro4.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
+        }
         logro5.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
         logro6.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
 
