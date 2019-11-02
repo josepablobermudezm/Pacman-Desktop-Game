@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -82,6 +83,10 @@ public class Nivel2Controller extends Controller implements Initializable {
     PinkGhost pinkGhost = new PinkGhost();
     int contVidas = 0, contVidas2 = 0;
     private int contadorEncierro = 0;
+    private hiloTiempo Hilo2 = new hiloTiempo();
+    ;
+    private boolean Pelotas = false;
+    int tiempo = 0;
 
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
@@ -97,12 +102,12 @@ public class Nivel2Controller extends Controller implements Initializable {
             {'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X'},
             {'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X'},
             {'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X'},
-            {'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X'},
+            {'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', '/'},
             {'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '@', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X'},
-            {'/', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', '/'},
+            {'/', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X'},
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
     @FXML
     private ImageView omg;
@@ -142,13 +147,13 @@ public class Nivel2Controller extends Controller implements Initializable {
     Boolean bandera = false;
     Stack<String> pila = new Stack<>();
     private boolean EncierroBandera = false;
-    
-    private EventHandler <KeyEvent> moverPacman = event -> {
+
+    private EventHandler<KeyEvent> moverPacman = event -> {
         /*
             Se activa el encierro en el caso que la habilidad este activa
             La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
-        */
-        if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0){
+         */
+        if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0) {
             lblEncierro.setVisible(false);
             UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
             EncierroBandera = false;
@@ -156,10 +161,9 @@ public class Nivel2Controller extends Controller implements Initializable {
                 
                 Método a realizar
             
-            */
+             */
             contadorEncierro++;
-        }
-        else if (event.getCode() == event.getCode().DOWN) {
+        } else if (event.getCode() == event.getCode().DOWN) {
             if (nodoDestino == null) {
                 movimiento = "DOWN";
                 movimientoOriginal = "DOWN";
@@ -204,7 +208,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             //aquí se mide guarda el dato con el tiempo que tarda en finalizar un nivel
             hiloTiempo.finalizado = true;
             int tiempo = Hilo.getTic();
-            MenuController.TiempoTotalJuego+=tiempo;
+            MenuController.TiempoTotalJuego += tiempo;
             int tiempoActual = 0;
             try {
                 File f = new File(".");
@@ -273,8 +277,7 @@ public class Nivel2Controller extends Controller implements Initializable {
 
     Integer xAux2;
     Integer yAux2;
-    
-    
+
     private boolean movimientoCorrecto(String movimiento, Nodo destino) {
         bandera = false;
         copiaNodos();
@@ -416,7 +419,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         }
         return bandera;
     }
-    
+
     private void movimiento() {
         if (!pila.isEmpty()) {
             String movAux = pila.pop();
@@ -443,7 +446,6 @@ public class Nivel2Controller extends Controller implements Initializable {
                 break;
         }
     }
-
 
     public void up(Boolean devolver) {
         adyacente = false;
@@ -979,7 +981,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         } catch (IOException | NumberFormatException e) {
         }
     }
-    
+
     public void cargarNodoArista() {
         nodos();
         aristas();
@@ -991,7 +993,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             nodosAux.add(nodo);
         });
     }
-    
+
     public void CrearMapa() {
 
         cargarNodoArista();
@@ -1031,19 +1033,33 @@ public class Nivel2Controller extends Controller implements Initializable {
                                     Integer puntaje = contPuntos * 10;
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
+                                    /*
+                                        El pacman se comio un power pellet
+                                     */
+                                    if ((punto.getCenterX() == 79 && punto.getCenterY() == 42) || (punto.getCenterX() == 820 && punto.getCenterY() == 42)
+                                            || (punto.getCenterX() == 48 && punto.getCenterY() == 516) || (punto.getCenterX() == 853 && punto.getCenterY() == 516)) {
+                                        Pelotas = true;
+                                    }
                                     break;
                                 }
                                 puntoX++;
                             }
-
                         });
-                        
-                        if(Encierro()){
+                        /*
+                            envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                         */
+                        if (Pelotas) {
+                            new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
+                            Pelotas = false;
+                        }
+
+                        if (Encierro()) {
                             lblEncierro.setVisible(true);
                             EncierroBandera = true;
                         }
-                        
+
                         puntos.remove(circle);
+
                         //Cuando logra comerse todos los puntos en la pantalla
                         //quedan 8 porque aún no se han limpiado bien más adelante hay que cambiiarlo
                         int veces = 0;
@@ -1147,12 +1163,27 @@ public class Nivel2Controller extends Controller implements Initializable {
                                     Integer puntaje = contPuntos * 10;
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
+                                    /*
+                                        Cuando el pacman se come una power pellet
+                                     */
+                                    if ((punto.getCenterX() == 79 && punto.getCenterY() == 42) || (punto.getCenterX() == 820 && punto.getCenterY() == 42)
+                                            || (punto.getCenterX() == 48 && punto.getCenterY() == 516) || (punto.getCenterX() == 853 && punto.getCenterY() == 516)) {
+                                        Pelotas = true;
+                                    }
                                     break;
                                 }
+
                                 puntoY++;
                             }
 
                         });
+                        if (Pelotas) {
+                            /*
+                                envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                             */
+                            new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
+                            Pelotas = false;
+                        }
                         puntos.remove(circle);
                         //Cuando se quita los puntos de la pantalla
 
@@ -1223,12 +1254,25 @@ public class Nivel2Controller extends Controller implements Initializable {
                     && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                     && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
                     && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {
-                Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("WHITE"));
-                puntos.add(origen);
-                root.getChildren().add(origen);//
-                Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("WHITE"));
-                puntos.add(destino);
-                root.getChildren().add(destino);//
+                /*
+                    Condición para los Power Pellets
+                 */
+                if ((xOrigen == 79 && yOrigen == 42) || (xOrigen == 820 && yOrigen == 42)
+                        || (xOrigen == 48 && yOrigen == 516) || (xOrigen == 853 && yOrigen == 516)) {
+                    Circle origen = new Circle(xDestino, yDestino, 5, Paint.valueOf("WHITE"));
+                    puntos.add(origen);
+                    root.getChildren().add(origen);//
+                    Circle destino = new Circle(xOrigen, yOrigen, 5, Paint.valueOf("WHITE"));
+                    puntos.add(destino);
+                    root.getChildren().add(destino);//
+                } else {
+                    Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("WHITE"));
+                    puntos.add(origen);
+                    root.getChildren().add(origen);//
+                    Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("WHITE"));
+                    puntos.add(destino);
+                    root.getChildren().add(destino);//
+                }
             }
 
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
@@ -1406,8 +1450,8 @@ public class Nivel2Controller extends Controller implements Initializable {
 
     /*
         este método lo que hace es aumentar la cantidad de fantasmas que se ha comido el usuario. Es para usarlo cuando ya funcione comer fantasmas
-    */
-    void ComerFantasmaGuardarArchivo(){
+     */
+    void ComerFantasmaGuardarArchivo() {
         int veces = 0;
         try {
             File f = new File(".");
@@ -1440,7 +1484,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void UsarEncierroContador() {
         int veces = 0;
         try {
@@ -1474,12 +1518,12 @@ public class Nivel2Controller extends Controller implements Initializable {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public boolean Encierro() {
         /*
             condición para el encierro
             Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
          */
-        return ((((puntos.size() - 9) > EncierroValor-4) && ((puntos.size() - 9) < EncierroValor+4)) && (vidas == 6));
+        return ((((puntos.size() - 9) > EncierroValor - 4) && ((puntos.size() - 9) < EncierroValor + 4)) && (vidas == 6));
     }
 }

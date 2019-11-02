@@ -82,8 +82,9 @@ public class Nivel5Controller extends Controller implements Initializable {
     PinkGhost pinkGhost = new PinkGhost();
     private hiloTiempo Hilo;
     private int contadorEncierro = 0;
+    private boolean Pelotas = false;
     char Mapa[][]
-         = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', '/', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+            = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', '/', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X'},
@@ -1028,12 +1029,26 @@ public class Nivel5Controller extends Controller implements Initializable {
                                     Integer puntaje = contPuntos * 10;
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
+                                    /*
+                                        El pacman se comio un power pellet
+                                     */
+                                    if ((punto.getCenterX() == 45.0 && punto.getCenterY() == 517.0) || (punto.getCenterX() == 851.0 && punto.getCenterY() == 45.0)
+                                            || (punto.getCenterX() == 45.0 && punto.getCenterY() == 45.0) || (punto.getCenterX() == 851.0 && punto.getCenterY() == 517.0)) {
+                                        Pelotas = true;
+                                    }
                                     break;
                                 }
                                 puntoX++;
                             }
 
                         });
+                        /*
+                            envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                         */
+                        if (Pelotas) {
+                            new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
+                            Pelotas = false;
+                        }
 
                         if (Encierro()) {
                             lblEncierro.setVisible(true);
@@ -1143,12 +1158,26 @@ public class Nivel5Controller extends Controller implements Initializable {
                                     Integer puntaje = contPuntos * 10;
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
+                                    /*
+                                        El pacman se comio un power pellet
+                                     */
+                                    if ((punto.getCenterX() == 45.0 && punto.getCenterY() == 517.0) || (punto.getCenterX() == 851.0 && punto.getCenterY() == 45.0)
+                                            || (punto.getCenterX() == 45.0 && punto.getCenterY() == 45.0) || (punto.getCenterX() == 851.0 && punto.getCenterY() == 517.0)) {
+                                        Pelotas = true;
+                                    }
                                     break;
                                 }
                                 puntoY++;
                             }
 
                         });
+                        /*
+                            envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                         */
+                        if (Pelotas) {
+                            new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
+                            Pelotas = false;
+                        }
                         puntos.remove(circle);
                         //Cuando se quita los puntos de la pantalla
 
@@ -1219,14 +1248,20 @@ public class Nivel5Controller extends Controller implements Initializable {
                     && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                     && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
                     && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {*/
+
             Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#0CF25C"));
             puntos.add(origen);
             root.getChildren().add(origen);//
-            Circle destino = new Circle(xOrigen, yOrigen, 3, Paint.valueOf("#0CF25C"));
-            puntos.add(destino);
-            root.getChildren().add(destino);//
-            //}
+            if ((xOrigen == 45.0 && yOrigen == 517.0) || (xOrigen == 851.0 && yOrigen == 45.0)
+                    || (xOrigen == 45.0 && yOrigen == 45.0)) {
+                Circle destino = new Circle(xOrigen, yOrigen, 5, Paint.valueOf("#0CF25C"));
+                puntos.add(destino);
+                root.getChildren().add(destino);//
+            }
+            //if (xOrigen == 851.0 && yOrigen == 517.0) {
 
+            //}
+            //}
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
                 //if (((xOrigen != 512.0 && yOrigen != 240.0) || (xDestino != 512.0 && yDestino != 240.0))) {
                 yDestino += 29;
@@ -1245,6 +1280,7 @@ public class Nivel5Controller extends Controller implements Initializable {
                         && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                         && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
                         && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {*/
+
                 yOrigen += 29;
                 while (yOrigen < yDestino) {
                     if (yOrigen <= yDestino - 13) {
@@ -1305,6 +1341,10 @@ public class Nivel5Controller extends Controller implements Initializable {
         root.getChildren().add(cyanGhost);
         root.getChildren().add(orangeGhost);
         root.getChildren().add(pinkGhost);
+        Circle destino1 = new Circle(851.0, 517.0, 5, Paint.valueOf("#0CF25C"));
+        puntos.add(destino1);
+        root.getChildren().add(destino1);//
+        System.out.println("hola");
         nodos.stream().forEach((nodo) -> {
             if (nodo.getPoint2D().getX() == 447.0 && nodo.getPoint2D().getY() == 407.0) {
                 nodoOrigen = nodo;
@@ -1316,7 +1356,8 @@ public class Nivel5Controller extends Controller implements Initializable {
     Nodo nFinal;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources
+    ) {
         CrearMapa();
         //Inicio el movimiento del PacMan hacia la derecha
         movimiento = "RIGHT";
@@ -1388,7 +1429,8 @@ public class Nivel5Controller extends Controller implements Initializable {
     }
 
     @FXML
-    private void mouse(MouseEvent event) {
+    private void mouse(MouseEvent event
+    ) {
         root.getChildren().get(root.getChildren().size() - 1).setOpacity(0);
         System.out.println(event.getX());
         System.out.println(event.getY());
@@ -1472,6 +1514,6 @@ public class Nivel5Controller extends Controller implements Initializable {
             condición para el encierro
             Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
          */
-        return ((((puntos.size() - 8) > EncierroValor-4) && ((puntos.size() - 8) < EncierroValor+4)) && (vidas == 6));
+        return ((((puntos.size() - 8) > EncierroValor - 4) && ((puntos.size() - 8) < EncierroValor + 4)) && (vidas == 6));
     }
 }
