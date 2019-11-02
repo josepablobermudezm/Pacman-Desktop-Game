@@ -75,6 +75,7 @@ public class ConfiguracionController extends Controller implements Initializable
     private Button btnDificultad;
     @FXML
     private Button btnEliminarTodo;
+    private int Dificultad = 0;
 
     @Override
     public void initialize() {
@@ -94,6 +95,22 @@ public class ConfiguracionController extends Controller implements Initializable
             imgLogo = new Image("/pacmanfx/resources/fondo8.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
+        }
+        try {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Dificultad.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                Dificultad = Integer.parseInt(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
         /*
             Cargo todos los datos desde los bloc de notas hasta los textfield para que posteriormente se puedan editar
@@ -136,7 +153,13 @@ public class ConfiguracionController extends Controller implements Initializable
         try {
             File f = new File(".");
             String dir = f.getAbsolutePath();
-            String fileName = dir + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName = (Dificultad == 1) ? (dir + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel1Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel1Completado.txt");
             File file = new File(fileName);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
@@ -146,7 +169,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f2 = new File(".");
             String dir2 = f2.getAbsolutePath();
-            String fileName2 = dir2 + "\\src\\pacmanfx\\resources\\Nivel2Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName2 = (Dificultad == 1) ? (dir2 + "\\src\\pacmanfx\\resources\\Nivel2Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel2Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel2Completado.txt");
             File file2 = new File(fileName2);
             FileReader fr2 = new FileReader(file2);
             BufferedReader br2 = new BufferedReader(fr2);
@@ -156,7 +185,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f3 = new File(".");
             String dir3 = f3.getAbsolutePath();
-            String fileName3 = dir3 + "\\src\\pacmanfx\\resources\\Nivel3Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName3 = (Dificultad == 1) ? (dir3 + "\\src\\pacmanfx\\resources\\Nivel3Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel3Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel3Completado.txt");
             File file3 = new File(fileName3);
             FileReader fr3 = new FileReader(file3);
             BufferedReader br3 = new BufferedReader(fr3);
@@ -166,7 +201,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f4 = new File(".");
             String dir4 = f4.getAbsolutePath();
-            String fileName4 = dir4 + "\\src\\pacmanfx\\resources\\Nivel4Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName4 = (Dificultad == 1) ? (dir4 + "\\src\\pacmanfx\\resources\\Nivel4Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel4Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel4Completado.txt");
             File file4 = new File(fileName4);
             FileReader fr4 = new FileReader(file4);
             BufferedReader br4 = new BufferedReader(fr4);
@@ -176,7 +217,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f5 = new File(".");
             String dir5 = f5.getAbsolutePath();
-            String fileName5 = dir5 + "\\src\\pacmanfx\\resources\\Nivel5Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName5 = (Dificultad == 1) ? (dir5 + "\\src\\pacmanfx\\resources\\Nivel5Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel5Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel5Completado.txt");
             File file5 = new File(fileName5);
             FileReader fr5 = new FileReader(file5);
             BufferedReader br5 = new BufferedReader(fr5);
@@ -186,7 +233,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f6 = new File(".");
             String dir6 = f6.getAbsolutePath();
-            String fileName6 = dir6 + "\\src\\pacmanfx\\resources\\Nivel6Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName6 = (Dificultad == 1) ? (dir6 + "\\src\\pacmanfx\\resources\\Nivel6Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel6Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel6Completado.txt");
             File file6 = new File(fileName6);
             FileReader fr6 = new FileReader(file6);
             BufferedReader br6 = new BufferedReader(fr6);
@@ -196,7 +249,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f7 = new File(".");
             String dir7 = f7.getAbsolutePath();
-            String fileName7 = dir7 + "\\src\\pacmanfx\\resources\\Nivel7Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName7 = (Dificultad == 1) ? (dir7 + "\\src\\pacmanfx\\resources\\Nivel7Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel7Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel7Completado.txt");
             File file7 = new File(fileName7);
             FileReader fr7 = new FileReader(file7);
             BufferedReader br7 = new BufferedReader(fr7);
@@ -206,7 +265,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f8 = new File(".");
             String dir8 = f8.getAbsolutePath();
-            String fileName8 = dir8 + "\\src\\pacmanfx\\resources\\Nivel8Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName8 = (Dificultad == 1) ? (dir8 + "\\src\\pacmanfx\\resources\\Nivel8Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel8Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel8Completado.txt");
             File file8 = new File(fileName8);
             FileReader fr8 = new FileReader(file8);
             BufferedReader br8 = new BufferedReader(fr8);
@@ -216,7 +281,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f9 = new File(".");
             String dir9 = f9.getAbsolutePath();
-            String fileName9 = dir9 + "\\src\\pacmanfx\\resources\\Nivel9Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName9 = (Dificultad == 1) ? (dir9 + "\\src\\pacmanfx\\resources\\Nivel9Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel9Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel9Completado.txt");
             File file9 = new File(fileName9);
             FileReader fr9 = new FileReader(file9);
             BufferedReader br9 = new BufferedReader(fr9);
@@ -226,7 +297,13 @@ public class ConfiguracionController extends Controller implements Initializable
             }
             File f10 = new File(".");
             String dir10 = f10.getAbsolutePath();
-            String fileName10 = dir10 + "\\src\\pacmanfx\\resources\\Nivel10Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName10 = (Dificultad == 1) ? (dir10 + "\\src\\pacmanfx\\resources\\Nivel10Completado.txt")
+                    : (Dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel10Completado.txt")
+                            : (dir + "\\src\\pacmanfx\\resources\\DifNivel10Completado.txt");
             File file10 = new File(fileName10);
             FileReader fr10 = new FileReader(file10);
             BufferedReader br10 = new BufferedReader(fr10);
@@ -287,7 +364,7 @@ public class ConfiguracionController extends Controller implements Initializable
             alert.showAndWait();
         }
     }
-    
+
     private void GuardarPuntosTotales() {
         try {
             String content = txtPuntosTotales.getText();
@@ -329,7 +406,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel1Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel1Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel1Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -346,7 +429,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel2Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel2Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel2Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel2Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel2Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -363,7 +452,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel3Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel3Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel3Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel3Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel3Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -380,7 +475,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel4Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel4Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel4Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel4Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel4Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -397,7 +498,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel5Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel5Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel5Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel5Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel5Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -414,7 +521,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel6Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel6Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel6Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel6Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel6Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -431,7 +544,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel7Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel7Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel7Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel7Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel7Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -448,7 +567,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel8Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel8Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel8Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel8Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel8Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -465,7 +590,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel9Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel9Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel9Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel9Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel9Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -482,7 +613,13 @@ public class ConfiguracionController extends Controller implements Initializable
             String content = txtNivel10Completado.getText();
             File f1 = new File(".");
             String dir1 = f1.getAbsolutePath();
-            String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel10Completado.txt";
+            /*
+                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+                y si es 3 leemos los niveles completados en difícil
+             */
+            String path = (Dificultad == 1) ? (dir1 + "\\src\\pacmanfx\\resources\\Nivel10Completado.txt")
+                    : (Dificultad == 2) ? (dir1 + "\\src\\pacmanfx\\resources\\IntNivel10Completado.txt")
+                            : (dir1 + "\\src\\pacmanfx\\resources\\DifNivel10Completado.txt");
             Files.write(Paths.get(path), content.getBytes());
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
@@ -493,7 +630,7 @@ public class ConfiguracionController extends Controller implements Initializable
             alert.showAndWait();
         }
     }
-    
+
     private void GuardarFantasmas() {
         try {
             String content = txtCantFantasmas.getText();
@@ -510,7 +647,7 @@ public class ConfiguracionController extends Controller implements Initializable
             alert.showAndWait();
         }
     }
-    
+
     private void GuardarVidas() {
         try {
             String content = txtCantVidas.getText();

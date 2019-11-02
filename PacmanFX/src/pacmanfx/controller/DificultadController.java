@@ -95,7 +95,7 @@ public class DificultadController extends Controller implements Initializable {
     @FXML
     private void Volver(MouseEvent event) {
         FlowController.getInstance().initialize();
-        FlowController.getInstance().goViewInStage("Menu", this.getStage());
+        FlowController.getInstance().goViewInStage("Configuracion", this.getStage());
     }
 
     /*

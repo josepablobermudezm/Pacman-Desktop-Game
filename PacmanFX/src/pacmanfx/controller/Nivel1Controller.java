@@ -84,6 +84,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     private int contVidas = 0, contVidas2 = 0;
     private int EncierroValor = 0;
     private int contadorEncierro = 0;
+    private boolean Pelotas = false;
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
@@ -1036,12 +1037,28 @@ public class Nivel1Controller extends Controller implements Initializable {
                                     Integer puntaje = contPuntos * 10;
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
+                                    /*
+                                        Cuando el pacman se come una power pellet
+                                     */
+                                    if ((punto.getCenterX() == 46 && punto.getCenterY() == 41) || (punto.getCenterX() == 849 && punto.getCenterY() == 515)
+                                            || (punto.getCenterX() == 849 && punto.getCenterY() == 41) || (punto.getCenterX() == 46 && punto.getCenterY() == 515)) {
+                                        Pelotas = true;
+                                    }
                                     break;
                                 }
                                 puntoX++;
                             }
 
                         });
+                        if (Pelotas) {
+                            /*
+                                envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                             */
+                            new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
+                            Pelotas = false;
+                        }
+                        
+                        
                         puntos.remove(circle);
                         if (Encierro()) {
                             lblEncierro.setVisible(true);
@@ -1147,12 +1164,26 @@ public class Nivel1Controller extends Controller implements Initializable {
                                     Integer puntaje = contPuntos * 10;
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
+                                    /*
+                                        Cuando el pacman se come una power pellet
+                                     */
+                                    if ((punto.getCenterX() == 46 && punto.getCenterY() == 41) || (punto.getCenterX() == 849 && punto.getCenterY() == 515)
+                                            || (punto.getCenterX() == 849 && punto.getCenterY() == 41) || (punto.getCenterX() == 46 && punto.getCenterY() == 515)) {
+                                        Pelotas = true;
+                                    }
                                     break;
                                 }
                                 puntoY++;
                             }
 
                         });
+                        if (Pelotas) {
+                            /*
+                                envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                             */
+                            new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
+                            Pelotas = false;
+                        }
                         puntos.remove(circle);
                         //Cuando se quita los puntos de la pantalla
 
@@ -1323,13 +1354,26 @@ public class Nivel1Controller extends Controller implements Initializable {
 
         puntos.removeAll(pAux);
         root.getChildren().removeAll(pAux);
-
+/*if ((punto.getCenterX() == 46 && punto.getCenterY() == 41) || (punto.getCenterX() == 849 && punto.getCenterY() == 515)
+                                            || (punto.getCenterX() == 849 && punto.getCenterY() == 81) || (punto.getCenterX() == 46 && punto.getCenterY() == 515)) {
+                                        */
         //aquí se crean los fantasmas
         root.getChildren().add(redGhost);
         root.getChildren().add(cyanGhost);
         root.getChildren().add(orangeGhost);
         root.getChildren().add(pinkGhost);
-
+        Circle origen1 = new Circle(46.0, 41.0, 5, Paint.valueOf("#127041"));
+        puntos.add(origen1);
+        root.getChildren().add(origen1);
+        Circle origen2 = new Circle(849.0, 515.0, 5, Paint.valueOf("#127041"));
+        puntos.add(origen2);
+        root.getChildren().add(origen2);
+        Circle origen3 = new Circle(849.0, 41.0, 5, Paint.valueOf("#127041"));
+        puntos.add(origen3);
+        root.getChildren().add(origen3);
+        Circle origen4 = new Circle(46.0, 515.0, 5, Paint.valueOf("#127041"));
+        puntos.add(origen4);
+        root.getChildren().add(origen4);
         nodos.stream().forEach((nodo) -> {
             if (nodo.getPoint2D().getX() == 447.0 && nodo.getPoint2D().getY() == 405.0) {
                 nodoOrigen = nodo;
@@ -1348,7 +1392,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         if (inicial == null) {
             nodos.stream().forEach((t) -> {
                 //System.out.println(t.getAristas_Adyacentes().size());
-                if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
+                if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
                     inicial = t;
                 } else if (t.getPoint2D().getX() == 849.0 && t.getPoint2D().getY() == 515.0) {
                     nFinal = t;
