@@ -39,7 +39,7 @@
                   <TextField fx:id="txtNivel8Completado" layoutX="689.0" layoutY="383.0" maxWidth="100.0" />
                   <Label layoutX="529.0" layoutY="433.0" prefHeight="19.0" prefWidth="148.0" styleClass="lblSmall" text="Nivel 9 Completado:" />
                   <TextField fx:id="txtNivel9Completado" layoutX="689.0" layoutY="433.0" maxWidth="100.0" />
-                  <Button fx:id="btnGuardarMayorCantPartida111111111" layoutX="715.0" layoutY="497.0" mnemonicParsing="false" onAction="#guardar" text="Guardar" />
+                  <Button fx:id="btnGuardarMayorCantPartida111111111" layoutX="582.0" layoutY="554.0" mnemonicParsing="false" onAction="#guardar" text="Guardar" />
                   <Label layoutX="534.0" layoutY="250.0" prefHeight="19.0" prefWidth="148.0" styleClass="lblSmall" text="Nivel 10 Completado:" />
                   <TextField fx:id="txtNivel10Completado" layoutX="689.0" layoutY="244.0" maxWidth="100.0" />
                   <Label layoutX="27.0" layoutY="203.0" styleClass="lblSmall" text="1 = Nivel Completado/ 0 = Nivel No Completado" />
@@ -49,6 +49,8 @@
                   <TextField fx:id="txtCantVidas" layoutX="322.0" layoutY="504.0" maxWidth="100.0" />
                   <Label layoutX="518.0" layoutY="147.0" prefHeight="19.0" prefWidth="159.0" styleClass="lblSmall" text="Cantidad de Encierros:" />
                   <TextField fx:id="txtEncierros" layoutX="684.0" layoutY="141.0" maxWidth="100.0" />
+                  <Button fx:id="btnDificultad" layoutX="403.0" layoutY="554.0" mnemonicParsing="false" onAction="#SeleccionDificultad" text="Seleccionar Dificultad" />
+                  <Button fx:id="btnEliminarTodo" layoutX="673.0" layoutY="554.0" mnemonicParsing="false" onAction="#eliminar" text="Reiniciar Juego" />
                </children>
             </AnchorPane>
          </children>

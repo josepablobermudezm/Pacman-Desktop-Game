@@ -5,8 +5,15 @@
  */
 package pacmanfx.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -46,78 +53,32 @@ public class SeleccionNivelController extends Controller implements Initializabl
     private ImageView img9;
     @FXML
     private ImageView img10;
+    static public int n1 = 0, n2 = 0, n3 = 0, n4 = 0, n5 = 0, n6 = 0, n7 = 0, n8 = 0, n9 = 0, n10 = 0;
+    @FXML
+    private ImageView Lock2;
+    @FXML
+    private ImageView Lock3;
+    @FXML
+    private ImageView Lock4;
+    @FXML
+    private ImageView Lock5;
+    @FXML
+    private ImageView Lock6;
+    @FXML
+    private ImageView Lock7;
+    @FXML
+    private ImageView Lock8;
+    @FXML
+    private ImageView Lock9;
+    @FXML
+    private ImageView Lock10;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize() {
-        Image imgLogo;
-        try {
-            imgLogo = new Image("/pacmanfx/resources/fondo8.jpg");
-            omg.setImage(imgLogo);
-        } catch (Exception e) {
-        }
-        Image img11;
-        try {
-            img11 = new Image("/pacmanfx/resources/FondoNivel1.jpg");
-            img1.setImage(img11);
-        } catch (Exception e) {
-        }
-        Image img22;
-        try {
-            img22 = new Image("/pacmanfx/resources/FondoNivel22.jpg");
-            img2.setImage(img22);
-        } catch (Exception e) {
-        }
-        Image img33;
-        try {
-            img33 = new Image("/pacmanfx/resources/FondoNivel3.jpg");
-            img3.setImage(img33);
-        } catch (Exception e) {
-        }
-        Image img44;
-        try {
-            img44 = new Image("/pacmanfx/resources/FondoNivel4.jpg");
-            img4.setImage(img44);
-        } catch (Exception e) {
-        }
-        Image img55;
-        try {
-            img55 = new Image("/pacmanfx/resources/FondoNivel5.jpg");
-            img5.setImage(img55);
-        } catch (Exception e) {
-        }
-        Image img66;
-        try {
-            img66 = new Image("/pacmanfx/resources/FondoNivel6.jpg");
-            img6.setImage(img66);
-        } catch (Exception e) {
-        }
-        Image img77;
-        try {
-            img77 = new Image("/pacmanfx/resources/FondoNivel7.jpg");
-            img7.setImage(img77);
-        } catch (Exception e) {
-        }
-        Image img88;
-        try {
-            img88 = new Image("/pacmanfx/resources/FondoNivel8.jpg");
-            img8.setImage(img88);
-        } catch (Exception e) {
-        }
-        Image img99;
-        try {
-            img99 = new Image("/pacmanfx/resources/FondoNivel9.jpg");
-            img9.setImage(img99);
-        } catch (Exception e) {
-        }
-        Image img100;
-        try {
-            img100 = new Image("/pacmanfx/resources/FondoNivel10.jpg");
-            img10.setImage(img100);
-        } catch (Exception e) {
-        }
+
     }
 
     @FXML
@@ -134,125 +95,244 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel2(MouseEvent event) {
-        FlowController.getInstance().initialize();
-        FlowController.getInstance().goViewInStage("Nivel2", this.getStage());
+        if (n1 == 1) {
+            FlowController.getInstance().initialize();
+            FlowController.getInstance().goViewInStage("Nivel2", this.getStage());
+        }
     }
 
     @FXML
     private void Nivel3(MouseEvent event) {
-        FlowController.getInstance().initialize();
-        FlowController.getInstance().goViewInStage("Nivel3", this.getStage());
+        if (n2 == 1) {
+            FlowController.getInstance().initialize();
+            FlowController.getInstance().goViewInStage("Nivel3", this.getStage());
+        }
     }
 
     @FXML
     private void Nivel4(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel4");
-        this.getStage().close();
+        if (n3 == 1) {
+            FlowController.getInstance().goViewInWindowTransparent("Nivel4");
+            this.getStage().close();
+        }
     }
 
     @FXML
     private void Nivel5(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel5");
-        this.getStage().close();
+        if (n4 == 1) {
+            FlowController.getInstance().goViewInWindowTransparent("Nivel5");
+            this.getStage().close();
+        }
     }
 
     @FXML
     private void Nivel6(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel6");
-        this.getStage().close();
+        if (n5 == 1) {
+            FlowController.getInstance().goViewInWindowTransparent("Nivel6");
+            this.getStage().close();
+        }
     }
 
     @FXML
     private void Nivel7(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel7");
-        this.getStage().close();
+        if (n6 == 1) {
+            FlowController.getInstance().goViewInWindowTransparent("Nivel7");
+            this.getStage().close();
+        }
     }
 
     @FXML
     private void Nivel8(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel8");
-        this.getStage().close();
+        if (n7 == 1) {
+            FlowController.getInstance().goViewInWindowTransparent("Nivel8");
+            this.getStage().close();
+        }
     }
 
     @FXML
     private void Nivel9(MouseEvent event) {
-        FlowController.getInstance().goViewInWindowTransparent("Nivel9");
-        this.getStage().close();
+        if (n8 == 1) {
+            FlowController.getInstance().goViewInWindowTransparent("Nivel9");
+            this.getStage().close();
+        }
     }
 
     @FXML
     private void Nivel10(MouseEvent event) {
-        FlowController.getInstance().initialize();
-        FlowController.getInstance().goViewInStage("Nivel10", this.getStage());
+        if (n9 == 1) {
+            FlowController.getInstance().initialize();
+            FlowController.getInstance().goViewInStage("Nivel10", this.getStage());
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Image imgLogo;
         try {
-            imgLogo = new Image("/pacmanfx/resources/fondo8.jpg");
-            omg.setImage(imgLogo);
-        } catch (Exception e) {
+            File f = new File(".");
+            String dir = f.getAbsolutePath();
+            String fileName = dir + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt";
+            File file = new File(fileName);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                n1 = Integer.parseInt(line);
+            }
+            File f2 = new File(".");
+            String dir2 = f2.getAbsolutePath();
+            String fileName2 = dir2 + "\\src\\pacmanfx\\resources\\Nivel2Completado.txt";
+            File file2 = new File(fileName2);
+            FileReader fr2 = new FileReader(file2);
+            BufferedReader br2 = new BufferedReader(fr2);
+            String line2;
+            while ((line2 = br2.readLine()) != null) {
+                n2 = Integer.parseInt(line2);
+            }
+            File f3 = new File(".");
+            String dir3 = f3.getAbsolutePath();
+            String fileName3 = dir3 + "\\src\\pacmanfx\\resources\\Nivel3Completado.txt";
+            File file3 = new File(fileName3);
+            FileReader fr3 = new FileReader(file3);
+            BufferedReader br3 = new BufferedReader(fr3);
+            String line3;
+            while ((line3 = br3.readLine()) != null) {
+                n3 = Integer.parseInt(line3);
+            }
+            File f4 = new File(".");
+            String dir4 = f4.getAbsolutePath();
+            String fileName4 = dir4 + "\\src\\pacmanfx\\resources\\Nivel4Completado.txt";
+            File file4 = new File(fileName4);
+            FileReader fr4 = new FileReader(file4);
+            BufferedReader br4 = new BufferedReader(fr4);
+            String line4;
+            while ((line4 = br4.readLine()) != null) {
+                n4 = Integer.parseInt(line4);
+            }
+            File f5 = new File(".");
+            String dir5 = f5.getAbsolutePath();
+            String fileName5 = dir5 + "\\src\\pacmanfx\\resources\\Nivel5Completado.txt";
+            File file5 = new File(fileName5);
+            FileReader fr5 = new FileReader(file5);
+            BufferedReader br5 = new BufferedReader(fr5);
+            String line5;
+            while ((line5 = br5.readLine()) != null) {
+                n5 = Integer.parseInt(line5);
+            }
+            File f6 = new File(".");
+            String dir6 = f6.getAbsolutePath();
+            String fileName6 = dir6 + "\\src\\pacmanfx\\resources\\Nivel6Completado.txt";
+            File file6 = new File(fileName6);
+            FileReader fr6 = new FileReader(file6);
+            BufferedReader br6 = new BufferedReader(fr6);
+            String line6;
+            while ((line6 = br6.readLine()) != null) {
+                n6 = Integer.parseInt(line6);
+            }
+            File f7 = new File(".");
+            String dir7 = f7.getAbsolutePath();
+            String fileName7 = dir7 + "\\src\\pacmanfx\\resources\\Nivel7Completado.txt";
+            File file7 = new File(fileName7);
+            FileReader fr7 = new FileReader(file7);
+            BufferedReader br7 = new BufferedReader(fr7);
+            String line7;
+            while ((line7 = br7.readLine()) != null) {
+                n7 = Integer.parseInt(line7);
+            }
+            File f8 = new File(".");
+            String dir8 = f8.getAbsolutePath();
+            String fileName8 = dir8 + "\\src\\pacmanfx\\resources\\Nivel8Completado.txt";
+            File file8 = new File(fileName8);
+            FileReader fr8 = new FileReader(file8);
+            BufferedReader br8 = new BufferedReader(fr8);
+            String line8;
+            while ((line8 = br8.readLine()) != null) {
+                n8 = Integer.parseInt(line8);
+            }
+            File f9 = new File(".");
+            String dir9 = f9.getAbsolutePath();
+            String fileName9 = dir9 + "\\src\\pacmanfx\\resources\\Nivel9Completado.txt";
+            File file9 = new File(fileName9);
+            FileReader fr9 = new FileReader(file9);
+            BufferedReader br9 = new BufferedReader(fr9);
+            String line9;
+            while ((line9 = br9.readLine()) != null) {
+                n9 = Integer.parseInt(line9);
+            }
+            File f10 = new File(".");
+            String dir10 = f10.getAbsolutePath();
+            String fileName10 = dir10 + "\\src\\pacmanfx\\resources\\Nivel10Completado.txt";
+            File file10 = new File(fileName10);
+            FileReader fr10 = new FileReader(file10);
+            BufferedReader br10 = new BufferedReader(fr10);
+            String line10;
+            while ((line10 = br10.readLine()) != null) {
+                n10 = Integer.parseInt(line10);
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Image img11;
-        try {
-            img11 = new Image("/pacmanfx/resources/FondoNivel1.jpg");
-            img1.setImage(img11);
-        } catch (Exception e) {
+
+        omg.setImage(new Image("/pacmanfx/resources/fondo8.jpg"));
+
+        img1.setImage(new Image("/pacmanfx/resources/FondoNivel1.jpg"));
+
+        if (n1 == 0) {
+            img2.setImage(new Image("/pacmanfx/resources/FondoNivel2Lock.jpg"));
+            Lock2.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img2.setImage(new Image("/pacmanfx/resources/FondoNivel22.jpg"));
         }
-        Image img22;
-        try {
-            img22 = new Image("/pacmanfx/resources/FondoNivel22.jpg");
-            img2.setImage(img22);
-        } catch (Exception e) {
+        if (n2 == 0) {
+            img3.setImage(new Image("/pacmanfx/resources/FondoNivel3Lock.jpg"));
+            Lock3.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img3.setImage(new Image("/pacmanfx/resources/FondoNivel3.jpg"));
         }
-        Image img33;
-        try {
-            img33 = new Image("/pacmanfx/resources/FondoNivel3.jpg");
-            img3.setImage(img33);
-        } catch (Exception e) {
+        if (n3 == 0) {
+            img4.setImage(new Image("/pacmanfx/resources/FondoNivel4Lock.jpg"));
+            Lock4.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img4.setImage(new Image("/pacmanfx/resources/FondoNivel4.jpg"));
         }
-        Image img44;
-        try {
-            img44 = new Image("/pacmanfx/resources/FondoNivel4.jpg");
-            img4.setImage(img44);
-        } catch (Exception e) {
+
+        if (n4 == 0) {
+            img5.setImage(new Image("/pacmanfx/resources/FondoNivel5Lock.jpg"));
+            Lock5.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img5.setImage(new Image("/pacmanfx/resources/FondoNivel5.jpg"));
         }
-        Image img55;
-        try {
-            img55 = new Image("/pacmanfx/resources/FondoNivel5.jpg");
-            img5.setImage(img55);
-        } catch (Exception e) {
+        if (n5 == 0) {
+            img6.setImage(new Image("/pacmanfx/resources/FondoNivel6Lock.jpg"));
+            Lock6.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img6.setImage(new Image("/pacmanfx/resources/FondoNivel6.jpg"));
         }
-        Image img66;
-        try {
-            img66 = new Image("/pacmanfx/resources/FondoNivel6.jpg");
-            img6.setImage(img66);
-        } catch (Exception e) {
+        if (n6 == 0) {
+            img7.setImage(new Image("/pacmanfx/resources/FondoNivel7Lock.jpg"));
+            Lock7.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img7.setImage(new Image("/pacmanfx/resources/FondoNivel7.jpg"));
         }
-        Image img77;
-        try {
-            img77 = new Image("/pacmanfx/resources/FondoNivel7.jpg");
-            img7.setImage(img77);
-        } catch (Exception e) {
+        if (n7 == 0) {
+            img8.setImage(new Image("/pacmanfx/resources/FondoNivel8Lock.jpg"));
+            Lock8.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img8.setImage(new Image("/pacmanfx/resources/FondoNivel8.jpg"));
         }
-        Image img88;
-        try {
-            img88 = new Image("/pacmanfx/resources/FondoNivel8.jpg");
-            img8.setImage(img88);
-        } catch (Exception e) {
+        if (n8 == 0) {
+            img9.setImage(new Image("/pacmanfx/resources/FondoNivel9Lock.jpg"));
+            Lock9.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img9.setImage(new Image("/pacmanfx/resources/FondoNivel9.jpg"));
         }
-        Image img99;
-        try {
-            img99 = new Image("/pacmanfx/resources/FondoNivel9.jpg");
-            img9.setImage(img99);
-        } catch (Exception e) {
-        }
-        Image img100;
-        try {
-            img100 = new Image("/pacmanfx/resources/FondoNivel10.jpg");
-            img10.setImage(img100);
-        } catch (Exception e) {
+        if (n9 == 0) {
+            img10.setImage(new Image("/pacmanfx/resources/FondoNivel10Lock.jpg"));
+            Lock10.setImage(new Image("/pacmanfx/resources/lock2.png"));
+        } else {
+            img10.setImage(new Image("/pacmanfx/resources/FondoNivel10.jpg"));
         }
     }
 }

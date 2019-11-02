@@ -71,15 +71,14 @@ public class ConfiguracionController extends Controller implements Initializable
     private TextField txtCantVidas;
     @FXML
     private TextField txtEncierros;
+    @FXML
+    private Button btnDificultad;
+    @FXML
+    private Button btnEliminarTodo;
 
     @Override
     public void initialize() {
-        Image imgLogo;
-        try {
-            imgLogo = new Image("/pacmanfx/resources/fondo4.jpg");
-            omg.setImage(imgLogo);
-        } catch (Exception e) {
-        }
+
     }
 
     @FXML
@@ -92,7 +91,7 @@ public class ConfiguracionController extends Controller implements Initializable
     public void initialize(URL location, ResourceBundle resources) {
         Image imgLogo;
         try {
-            imgLogo = new Image("/pacmanfx/resources/fondo4.jpg");
+            imgLogo = new Image("/pacmanfx/resources/fondo8.jpg");
             omg.setImage(imgLogo);
         } catch (Exception e) {
         }
@@ -554,6 +553,16 @@ public class ConfiguracionController extends Controller implements Initializable
         } catch (Exception e) {
 
         }
+    }
+
+    @FXML
+    private void SeleccionDificultad(ActionEvent event) {
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("Dificultad", this.getStage());
+    }
+
+    @FXML
+    private void eliminar(ActionEvent event) {
     }
 
 }

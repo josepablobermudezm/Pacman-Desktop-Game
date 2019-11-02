@@ -1049,7 +1049,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                         //Cuando logra comerse todos los puntos en la pantalla
                         //quedan 8 porque aún no se han limpiado bien más adelante hay que cambiiarlo
                         int veces = 0;
-                        if (puntos.size() < 8) {
+                        if (puntos.size() <= 8) {
                             if (vidas == 6) {
                                 if (contVidas == 0) {
                                     /*
@@ -1111,7 +1111,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                                 String dir1 = f1.getAbsolutePath();
                                 String path = dir1 + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt";
                                 Files.write(Paths.get(path), content.getBytes());
-
+                                
                             } catch (IOException ex) {
                                 Logger.getLogger(MenuController.class
                                         .getName()).log(Level.SEVERE, null, ex);

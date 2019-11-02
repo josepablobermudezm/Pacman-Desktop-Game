@@ -16,16 +16,29 @@
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 25pt;
 }
+
+.lbl:hover{
+    -fx-font-family: "Decker";
+    -fx-font-size : 27pt;
+    -fx-text-fill : white;
+}
+#lblSelected{
+    -fx-font-family: "Decker";
+    -fx-text-fill: white;
+    /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
+    -fx-font-size: 27pt;
+}
+
+#lblSelected:hover{
+    -fx-font-family: "Decker";
+    -fx-font-size : 27pt;
+    -fx-text-fill : white;
+}
 .lblSmall{
     -fx-font-family: "Decker";
     -fx-text-fill: white;
     /*-fx-font-family: url("../fonts/SourceSansPro-Bold.ttf");*/
     -fx-font-size: 11pt;
-}
-.lbl:hover{
-    -fx-font-family: "Decker";
-    -fx-font-size : 27pt;
-    -fx-text-fill : white;
 }
 .lbl4{
     -fx-font-family: "Decker";

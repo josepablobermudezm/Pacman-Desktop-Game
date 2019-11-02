@@ -23,18 +23,21 @@
                                  <children>
                                     <ImageView fx:id="img1" fitHeight="122.0" fitWidth="169.0" layoutX="11.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" styleClass="lbl4" text="Nivel 1" />
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane onMouseClicked="#Nivel2" styleClass="anchorp">
                                  <children>
                                     <ImageView fx:id="img2" fitHeight="122.0" fitWidth="169.0" layoutX="11.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" styleClass="lbl4" text="Nivel 2" />
+                                    <ImageView fx:id="Lock2" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane onMouseClicked="#Nivel3" styleClass="anchorp">
                                  <children>
                                     <ImageView fx:id="img3" fitHeight="118.0" fitWidth="169.0" layoutX="11.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="3.0" styleClass="lbl4" text="Nivel 3" />
+                                    <ImageView fx:id="Lock3" fitHeight="75.0" fitWidth="75.0" layoutX="55.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                            </children>
@@ -45,18 +48,21 @@
                                  <children>
                                     <ImageView fx:id="img4" fitHeight="118.0" fitWidth="169.0" layoutX="11.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" styleClass="lbl4" text="Nivel 4" />
+                                    <ImageView fx:id="Lock4" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane onMouseClicked="#Nivel5" styleClass="anchorp">
                                  <children>
                                     <ImageView fx:id="img5" fitHeight="119.0" fitWidth="169.0" layoutX="11.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" styleClass="lbl4" text="Nivel 5" />
+                                    <ImageView fx:id="Lock5" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane onMouseClicked="#Nivel6" styleClass="anchorp">
                                  <children>
                                     <ImageView fx:id="img6" fitHeight="120.0" fitWidth="169.0" layoutX="11.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" styleClass="lbl4" text="Nivel 6" />
+                                    <ImageView fx:id="Lock6" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                            </children>
@@ -67,18 +73,21 @@
                                  <children>
                                     <ImageView fx:id="img7" fitHeight="121.0" fitWidth="169.0" layoutX="11.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" styleClass="lbl4" text="Nivel 7" />
+                                    <ImageView fx:id="Lock7" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane onMouseClicked="#Nivel8" styleClass="anchorp">
                                  <children>
                                     <ImageView fx:id="img8" fitHeight="122.0" fitWidth="169.0" layoutX="11.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" styleClass="lbl4" text="Nivel 8" />
+                                    <ImageView fx:id="Lock8" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane onMouseClicked="#Nivel9" styleClass="anchorp">
                                  <children>
                                     <ImageView fx:id="img9" fitHeight="121.0" fitWidth="169.0" layoutX="11.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" styleClass="lbl4" text="Nivel 9 " />
+                                    <ImageView fx:id="Lock9" fitHeight="75.0" fitWidth="75.0" layoutX="55.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                            </children>
@@ -89,6 +98,7 @@
                                  <children>
                                     <ImageView fx:id="img10" fitHeight="121.0" fitWidth="169.0" layoutX="11.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label layoutX="10.0" layoutY="2.0" onMouseClicked="#Nivel10" styleClass="lbl4" text="Nivel10" />
+                                    <ImageView fx:id="Lock10" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                            </children>
