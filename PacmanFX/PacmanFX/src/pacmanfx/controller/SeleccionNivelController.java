@@ -12,14 +12,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import pacmanfx.util.FlowController;
 
 /**
@@ -72,6 +78,11 @@ public class SeleccionNivelController extends Controller implements Initializabl
     private ImageView Lock9;
     @FXML
     private ImageView Lock10;
+    private Image image2;
+
+    public SeleccionNivelController() {
+        this.image2 = new Image("/pacmanfx/resources/pacmanSegundaOportunidad.gif");
+    }
 
     /**
      * Initializes the controller class.
@@ -87,81 +98,214 @@ public class SeleccionNivelController extends Controller implements Initializabl
         FlowController.getInstance().goViewInStage("Menu", this.getStage());
     }
 
+    /*
+     *  Los niveles tienen una condicicion antes para ver si estan desbloqueados 
+     */
     @FXML
     private void Nivel1(MouseEvent event) {
-        FlowController.getInstance().initialize();
-        FlowController.getInstance().goViewInStage("Nivel1", this.getStage());
+        /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel1", this.getStage());
+            });
     }
 
     @FXML
     private void Nivel2(MouseEvent event) {
         if (n1 == 1) {
-            FlowController.getInstance().initialize();
-            FlowController.getInstance().goViewInStage("Nivel2", this.getStage());
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel2", this.getStage());
+            });
         }
     }
 
     @FXML
     private void Nivel3(MouseEvent event) {
         if (n2 == 1) {
-            FlowController.getInstance().initialize();
-            FlowController.getInstance().goViewInStage("Nivel3", this.getStage());
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel3", this.getStage());
+            });
         }
     }
 
     @FXML
     private void Nivel4(MouseEvent event) {
         if (n3 == 1) {
-            FlowController.getInstance().goViewInWindowTransparent("Nivel4");
-            this.getStage().close();
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel4", this.getStage());
+            });
         }
     }
 
     @FXML
     private void Nivel5(MouseEvent event) {
         if (n4 == 1) {
-            FlowController.getInstance().goViewInWindowTransparent("Nivel5");
-            this.getStage().close();
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel5", this.getStage());
+            });
         }
     }
 
     @FXML
     private void Nivel6(MouseEvent event) {
         if (n5 == 1) {
-            FlowController.getInstance().goViewInWindowTransparent("Nivel6");
-            this.getStage().close();
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel6", this.getStage());
+            });
         }
     }
 
     @FXML
     private void Nivel7(MouseEvent event) {
         if (n6 == 1) {
-            FlowController.getInstance().goViewInWindowTransparent("Nivel7");
-            this.getStage().close();
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel7", this.getStage());
+            });
         }
     }
 
     @FXML
     private void Nivel8(MouseEvent event) {
         if (n7 == 1) {
-            FlowController.getInstance().goViewInWindowTransparent("Nivel8");
-            this.getStage().close();
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel8", this.getStage());
+            });
         }
     }
 
     @FXML
     private void Nivel9(MouseEvent event) {
         if (n8 == 1) {
-            FlowController.getInstance().goViewInWindowTransparent("Nivel9");
-            this.getStage().close();
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel9", this.getStage());
+            });
         }
     }
 
     @FXML
     private void Nivel10(MouseEvent event) {
         if (n9 == 1) {
-            FlowController.getInstance().initialize();
-            FlowController.getInstance().goViewInStage("Nivel10", this.getStage());
+            /*
+             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+             */
+            omg.toFront();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+            );
+            timeline.play();
+            timeline.setOnFinished(value -> {
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Nivel10", this.getStage());
+            });
         }
     }
 
@@ -181,8 +325,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
             File f = new File(".");
             String dir = f.getAbsolutePath();
             /*
-                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
-                y si es 3 leemos los niveles completados en difícil
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
              */
             String fileName = (dificultad == 1) ? (dir + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt")
                     : (dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel1Completado.txt")
@@ -197,8 +341,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
             File f2 = new File(".");
             String dir2 = f2.getAbsolutePath();
             /*
-                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
-                y si es 3 leemos los niveles completados en difícil
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
              */
             String fileName2 = (dificultad == 1) ? (dir2 + "\\src\\pacmanfx\\resources\\Nivel2Completado.txt")
                     : (dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel2Completado.txt")
@@ -213,8 +357,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
             File f3 = new File(".");
             String dir3 = f3.getAbsolutePath();
             /*
-                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
-                y si es 3 leemos los niveles completados en difícil
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
              */
             String fileName3 = (dificultad == 1) ? (dir3 + "\\src\\pacmanfx\\resources\\Nivel3Completado.txt")
                     : (dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel3Completado.txt")
@@ -229,8 +373,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
             File f4 = new File(".");
             String dir4 = f4.getAbsolutePath();
             /*
-                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
-                y si es 3 leemos los niveles completados en difícil
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
              */
             String fileName4 = (dificultad == 1) ? (dir4 + "\\src\\pacmanfx\\resources\\Nivel4Completado.txt")
                     : (dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel4Completado.txt")
@@ -245,8 +389,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
             File f5 = new File(".");
             String dir5 = f5.getAbsolutePath();
             /*
-                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
-                y si es 3 leemos los niveles completados en difícil
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
              */
             String fileName5 = (dificultad == 1) ? (dir + "\\src\\pacmanfx\\resources\\Nivel5Completado.txt")
                     : (dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel5Completado.txt")
@@ -261,8 +405,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
             File f6 = new File(".");
             String dir6 = f6.getAbsolutePath();
             /*
-                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
-                y si es 3 leemos los niveles completados en difícil
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
              */
             String fileName6 = (dificultad == 1) ? (dir6 + "\\src\\pacmanfx\\resources\\Nivel6Completado.txt")
                     : (dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel6Completado.txt")
@@ -277,8 +421,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
             File f7 = new File(".");
             String dir7 = f7.getAbsolutePath();
             /*
-                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
-                y si es 3 leemos los niveles completados en difícil
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
              */
             String fileName7 = (dificultad == 1) ? (dir7 + "\\src\\pacmanfx\\resources\\Nivel7Completado.txt")
                     : (dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel7Completado.txt")
@@ -293,8 +437,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
             File f8 = new File(".");
             String dir8 = f8.getAbsolutePath();
             /*
-                si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
-                y si es 3 leemos los niveles completados en difícil
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
              */
             String fileName8 = (dificultad == 1) ? (dir8 + "\\src\\pacmanfx\\resources\\Nivel8Completado.txt")
                     : (dificultad == 2) ? (dir + "\\src\\pacmanfx\\resources\\IntNivel8Completado.txt")
