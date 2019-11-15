@@ -78,6 +78,7 @@ public class Dijkstra {
                 aux = nodo;
             }
         }
+        
         return aux;
     }
 
@@ -120,15 +121,21 @@ public class Dijkstra {
 
     }
 
-    public ArrayList<Arista> marcarRutaCorta(Nodo nodoFinal) {
+    public ArrayList<Arista> generarRuta(Nodo nodoFinal) {
         if (nodoFinal != null) {
             rutaCorta(nodoFinal);
             aux.stream().forEach((t) -> {
+               // t.getDestino().setMarca(false);
+                //t.getOrigen().setMarca(false);
                 /*if (t != null) {
                     t.setStroke(color);
                     t.setStrokeWidth(5);
                 }*/
             });
+            /*
+            listaNodosAdyacentes.stream().forEach((t) -> {
+                t.setMarca(false);
+            });*/
 
             return aux;
         } else {
