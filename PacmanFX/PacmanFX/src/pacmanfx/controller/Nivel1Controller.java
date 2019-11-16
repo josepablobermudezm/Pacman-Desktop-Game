@@ -1387,7 +1387,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     }
 
     /*
-    Algortitmo de dijstra 
+     *  Algortitmo de dijstra 
      */
     Nodo inicial;
     Nodo auxInicial;
@@ -1428,7 +1428,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             LinkedList<Nodo> listEnlazada = new LinkedList();
             aristasAux.stream().forEach((t) -> {
                 /*
-            *   Si contiene origen guardamos destino, de lo contrario guardamos destino
+                 *   Si contiene origen guardamos destino, de lo contrario guardamos destino
                  */
                 if (listEnlazada.size() > 1) {
                     if (listEnlazada.contains(t.getDestino())) {
@@ -1545,7 +1545,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     }
 
     /*
-        este método lo que hace es aumentar la cantidad de fantasmas que se ha comido el usuario. Es para usarlo cuando ya funcione comer fantasmas
+     *   este método lo que hace es aumentar la cantidad de fantasmas que se ha comido el usuario. Es para usarlo cuando ya funcione comer fantasmas
      */
     public void ComerFantasmaGuardarArchivo() {
         int veces = 0;
@@ -1582,8 +1582,8 @@ public class Nivel1Controller extends Controller implements Initializable {
     }
 
     /*
-        Este método se utiliza como contador para saber si se ha usado la habilidad de encierro 5 o más veces,
-        en el caso que la condiciones sea positiva es necesario entregar un premio al usuario
+     *   Este método se utiliza como contador para saber si se ha usado la habilidad de encierro 5 o más veces,
+     *   en el caso que la condiciones sea positiva es necesario entregar un premio al usuario
      */
     public void UsarEncierroContador() {
         int veces = 0;
@@ -1621,9 +1621,9 @@ public class Nivel1Controller extends Controller implements Initializable {
 
     public boolean Encierro() {
         /*
-            condición para el encierro
-            Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
-            uso ese rango porque a veces no funciona si lo hago con ==
+         *   condición para el encierro
+         *   Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
+         *   uso ese rango porque a veces no funciona si lo hago con ==
          */
         return ((((puntos.size() - 8) > EncierroValor - 4) && ((puntos.size() - 8) < EncierroValor + 4)) && (vidas == 6));
     }

@@ -14,7 +14,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.TimerTask;
@@ -1364,6 +1368,89 @@ public class Nivel2Controller extends Controller implements Initializable {
     Nodo nodoOrigen;
     Nodo nFinal;
 
+    /*
+     *  Algortitmo de dijstra 
+     */
+    Nodo inicial;
+    Nodo auxInicial;
+    Nodo auxNodo5;
+
+    void moveRedGhost() {
+        Platform.runLater(() -> {
+            if (inicial == null) {
+                nodos.stream().forEach((t) -> {
+                    //System.out.println(t.getAristas_Adyacentes().size());
+                    if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
+                        inicial = t;
+                    }
+                });
+            }
+
+            Dijkstra dijkstra;
+            nodos.stream().forEach((t) -> {
+                t.setLongitud(0);
+                t.setMarca(false);
+                t.setNodoAntecesorDisjktra(null);
+            });
+
+            inicial.setMarca(false);
+            dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+            dijkstra.ejecutar(inicial);
+
+            List<Arista> aristasAux;
+
+            if (nodoDestino != null) {
+                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+            } else {
+                aristasAux = dijkstra.marcarRutaCorta(nodoOrigen);
+            }
+
+            //Doy vuelta a la lista 
+            Collections.reverse(aristasAux);
+            LinkedList<Nodo> listEnlazada = new LinkedList();
+            aristasAux.stream().forEach((t) -> {
+                /*
+                 *   Si contiene origen guardamos destino, de lo contrario guardamos destino
+                 */
+                if (listEnlazada.size() > 1) {
+                    if (listEnlazada.contains(t.getDestino())) {
+                        listEnlazada.add(t.getOrigen());
+                    } else /*if (listEnlazada.contains(t.getOrigen()))*/ {
+                        listEnlazada.add(t.getDestino());
+                    }
+                } else {
+                    if (t.getDestino().getPoint2D().getX() == inicial.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial.getPoint2D().getY()) {
+                        listEnlazada.add(t.getOrigen());
+                    } else {
+                        listEnlazada.add(t.getDestino());
+                    }
+                }
+            });
+
+            Queue<Nodo> cola = new LinkedList(listEnlazada);
+
+            auxNodo5 = cola.poll();
+
+            Timeline timeline = new Timeline();
+            Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
+            KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY()-14);
+            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX()-14);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+            timeline.getKeyFrames().addAll(kf2, kf);
+
+            timeline.play();
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            timeline.setOnFinished((event) -> {
+                Platform.runLater(() -> {
+                    inicial = auxNodo5;
+                    moveRedGhost();
+                });
+
+            });
+        });
+    }
+    
     //bdbd00
     @Override
 
@@ -1374,25 +1461,8 @@ public class Nivel2Controller extends Controller implements Initializable {
         movimientoOriginal = "RIGHT";
         pila.push("RIGHT");
         right(false);
+        moveRedGhost();
         EncierroValor = (puntos.size() - 9) / 2;
-        /*      nodos.stream().forEach((t) -> {
-            //System.out.println(t.getAristas_Adyacentes().size());
-            if (t.getPoint2D().getX() == 435.0 && t.getPoint2D().getY() == 223.0) {
-                inicio = t;
-            } else if (t.getPoint2D().getX() == 849.0 && t.getPoint2D().getY() == 515.0) {
-                nFinal = t;
-            }
-        });
-        Dijkstra dijkstra = new Dijkstra(new Grafo(nodos, aristas));
-        dijkstra.ejecutar(inicio);
-        ArrayList<Arista> aristasAux = dijkstra.marcarRutaCorta(nFinal);
-        aristasAux.stream().forEach((t) -> {
-            Line linea = new Line(t.getOrigen().getPoint2D().getX(), t.getOrigen().getPoint2D().getY(), t.getDestino().getPoint2D().getX(), t.getDestino().getPoint2D().getY());
-            linea.setStroke(Paint.valueOf("RED"));
-            linea.setStrokeWidth(3.00);
-            this.root.getChildren().add(linea);
-        });
-         */
         Hilo = new hiloTiempo();
         Hilo.correrHilo();
 
@@ -1521,8 +1591,8 @@ public class Nivel2Controller extends Controller implements Initializable {
 
     public boolean Encierro() {
         /*
-            condición para el encierro
-            Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
+         *   condición para el encierro
+         *   Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
          */
         return ((((puntos.size() - 9) > EncierroValor - 4) && ((puntos.size() - 9) < EncierroValor + 4)) && (vidas == 6));
     }
