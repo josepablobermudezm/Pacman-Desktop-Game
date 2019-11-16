@@ -13,11 +13,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.AbstractQueue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -1382,175 +1385,90 @@ public class Nivel1Controller extends Controller implements Initializable {
         });
 
     }
+
     /*
     Algortitmo de dijstra 
      */
-
     Nodo inicial;
     Nodo auxInicial;
+    Nodo auxNodo5;
 
     void moveRedGhost() {
+        Platform.runLater(() -> {
+            if (inicial == null) {
+                nodos.stream().forEach((t) -> {
+                    //System.out.println(t.getAristas_Adyacentes().size());
+                    if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
+                        inicial = t;
+                    }
+                });
+            }
 
-        if (inicial == null) {
+            Dijkstra dijkstra;
             nodos.stream().forEach((t) -> {
-                //System.out.println(t.getAristas_Adyacentes().size());
-                if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
-                    inicial = t;
+                t.setLongitud(0);
+                t.setMarca(false);
+                t.setNodoAntecesorDisjktra(null);
+            });
+
+            inicial.setMarca(false);
+            dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+            dijkstra.ejecutar(inicial);
+
+            List<Arista> aristasAux;
+
+            if (nodoDestino != null) {
+                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+            } else {
+                aristasAux = dijkstra.marcarRutaCorta(nodoOrigen);
+            }
+
+            //Doy vuelta a la lista 
+            Collections.reverse(aristasAux);
+            LinkedList<Nodo> listEnlazada = new LinkedList();
+            aristasAux.stream().forEach((t) -> {
+                /*
+            *   Si contiene origen guardamos destino, de lo contrario guardamos destino
+                 */
+                if (listEnlazada.size() > 1) {
+                    if (listEnlazada.contains(t.getDestino())) {
+                        listEnlazada.add(t.getOrigen());
+                    } else /*if (listEnlazada.contains(t.getOrigen()))*/ {
+                        listEnlazada.add(t.getDestino());
+                    }
+                } else {
+                    if (t.getDestino().getPoint2D().getX() == inicial.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial.getPoint2D().getY()) {
+                        listEnlazada.add(t.getOrigen());
+                    } else {
+                        listEnlazada.add(t.getDestino());
+                    }
                 }
             });
-        }
-        Dijkstra dijkstra;
-        dijkstra = new Dijkstra(new Grafo(nodos, aristas));
-        dijkstra.ejecutar(inicial);
 
-        List<Arista> aristasAux;
-        if (nodoDestino != null) {
-            aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
-        } else {
-            aristasAux = dijkstra.marcarRutaCorta(nodoOrigen);
-        }
+            Queue<Nodo> cola = new LinkedList(listEnlazada);
 
-        //Doy vuelta a la lista 
-        Collections.reverse(aristasAux);
-        /*
-        3 pixeles 
-         */
- /* Line linea = new Line(aristasAux.get(0).getOrigen().getPoint2D().getX(), aristasAux.get(0).getOrigen().getPoint2D().getY(), aristasAux.get(0).getDestino().getPoint2D().getX(), aristasAux.get(0).getDestino().getPoint2D().getY());
-        linea.setStroke(Paint.valueOf("RED"));
-        linea.setStrokeWidth(3.00);
-        this.root.getChildren().add(linea);*/
+            auxNodo5 = cola.poll();
 
-        Timeline timeline = new Timeline();
+            Timeline timeline = new Timeline();
+            Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
+            KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY()-14);
+            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX()-14);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+            timeline.getKeyFrames().addAll(kf2, kf);
 
-        ArrayList<Nodo> nodosAux2 = new ArrayList();
-
-        auxInicial = inicial;
-
-        aristasAux.stream().forEach(x -> {
-            if (x.getDestino().getPoint2D().getX() == auxInicial.getPoint2D().getX()) {
-                if (auxInicial.getPoint2D().getY() != x.getDestino().getPoint2D().getY()) {
-                    nodosAux2.add(x.getDestino());
-                    auxInicial = x.getDestino();
-                } else if (auxInicial.getPoint2D().getY() != x.getOrigen().getPoint2D().getY()) {
-                    nodosAux2.add(x.getOrigen());
-                    auxInicial = x.getOrigen();
-                }
-            } else if (x.getOrigen().getPoint2D().getX() == auxInicial.getPoint2D().getX()) {
-                if (auxInicial.getPoint2D().getY() != x.getDestino().getPoint2D().getY()) {
-                    nodosAux2.add(x.getDestino());
-                    auxInicial = x.getDestino();
-                } else if (auxInicial.getPoint2D().getY() != x.getOrigen().getPoint2D().getY()) {
-                    nodosAux2.add(x.getOrigen());
-                    auxInicial = x.getOrigen();
-                }
-            } else if (x.getDestino().getPoint2D().getY() == auxInicial.getPoint2D().getY()) {
-                if (auxInicial.getPoint2D().getX() != x.getDestino().getPoint2D().getX()) {
-                    nodosAux2.add(x.getDestino());
-                    auxInicial = x.getDestino();
-                } else if (auxInicial.getPoint2D().getX() != x.getOrigen().getPoint2D().getX()) {
-                    nodosAux2.add(x.getOrigen());
-                    auxInicial = x.getOrigen();
-                }
-            } else if (x.getOrigen().getPoint2D().getY() == auxInicial.getPoint2D().getY()) {
-                if (auxInicial.getPoint2D().getX() != x.getDestino().getPoint2D().getX()) {
-                    nodosAux2.add(x.getDestino());
-                    auxInicial = x.getDestino();
-                } else if (auxInicial.getPoint2D().getX() != x.getOrigen().getPoint2D().getX()) {
-                    nodosAux2.add(x.getOrigen());
-                    auxInicial = x.getOrigen();
-                }
-            }
-        });
-        //SSystem.out.println(nodosAux2.size());
-
-        //nodosAux2.remove(0);
-        Double distance = inicial.getPoint2D().distance(nodosAux2.get(0).getPoint2D());
-        /*
-            En el caso en que se mueva en Y
-         */
-
-        nodosAux2.forEach(x -> {
-            System.out.println(x.getPoint2D().getX() + " X " + x.getPoint2D().getY() + " Y ");
-        });
-
-        if (inicial.getPoint2D().getX() >= nodosAux2.get(0).getPoint2D().getX() - 3 && inicial.getPoint2D().getX() <= nodosAux2.get(0).getPoint2D().getX() + 3) {
-            KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), nodosAux2.get(0).getPoint2D().getY());
-            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 7.5) * 100), kv2);
-            timeline.getKeyFrames().add(kf2);
-            System.out.println("XXXX");
-        } else if (inicial.getPoint2D().getY() >= nodosAux2.get(0).getPoint2D().getY() - 3 && inicial.getPoint2D().getY() <= nodosAux2.get(0).getPoint2D().getY() + 3) {
-            /*
-                En el caso en el que se mueve en X
-             */
-            System.out.println("YYYYYY");
-            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), nodosAux2.get(0).getPoint2D().getX());
-            KeyFrame kf = new KeyFrame(Duration.millis((distance / 7.5) * 100), kv);
-            timeline.getKeyFrames().add(kf);
-        }
-
-        timeline.play();
-        //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
-        timeline.setOnFinished((event) -> {
-            inicial = nodosAux2.get(0);
-            moveRedGhost();
-        });
-
-        /*if (!aristasAux.isEmpty()) {
-            Arista arista = aristasAux.get(0);
-            if (inicial.getPoint2D().getX() != arista.getOrigen().getPoint2D().getX()) {
-                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), arista.getOrigen().getPoint2D().getX());
-                Double distance = inicial.getPoint2D().distance(arista.getOrigen().getPoint2D());
-                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
-                KeyFrame kf = new KeyFrame(Duration.millis((distance / 3) * 100), kv);
-                timeline.getKeyFrames().add(kf);
-                timeline.play();
-
-                timeline.setOnFinished((event) -> {
-                    if (inicial.getPoint2D().getX() == arista.getOrigen().getPoint2D().getX()) {
-                        inicial = arista.getOrigen();
-                    }else{
-                        inicial = arista.getDestino();
-                    }
+            timeline.play();
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            timeline.setOnFinished((event) -> {
+                Platform.runLater(() -> {
+                    inicial = auxNodo5;
                     moveRedGhost();
                 });
-            } else if (inicial.getPoint2D().getX() != arista.getDestino().getPoint2D().getX()) {
-                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), arista.getDestino().getPoint2D().getX());
-                Double distance = inicial.getPoint2D().distance(arista.getDestino().getPoint2D());
-                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
-                KeyFrame kf = new KeyFrame(Duration.millis((distance / 3) * 100), kv);
-                timeline.getKeyFrames().add(kf);
-                timeline.play();
 
-                timeline.setOnFinished((event) -> {
-                    if (inicial.getPoint2D().getX() == arista.getDestino().getPoint2D().getX()) {
-                        inicial = arista.getDestino();
-                    }else{
-                        inicial = arista.getOrigen();
-                    }
-                    moveRedGhost();
-                });
-            }
-            contasdf++;
-        } else {
-            /*
-                el pacman ha tocado un fantasma
-             
-            vidas--;
-            //FlowController.getInstance().initialize();
-            //CrearMapa();
-            //root.getChildren().clear();
-            //pacman.getpMan().setCenterX(447.0);
-            //pacman.getpMan().setCenterY(405.0);
-            //root.getChildren().remove(pacman.getpMan());
+            });
 
-            //Inicio();
-            Primero = false;
-            //Inicio();
-            if (vidas == 0) {
-                FlowController.getInstance().initialize();
-                FlowController.getInstance().goViewInStage("GameOver", this.getStage());
-            }
-        }*/
+        });
+
     }
 
     Nodo nodoOrigen;
