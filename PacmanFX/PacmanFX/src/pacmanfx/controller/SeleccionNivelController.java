@@ -141,8 +141,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();
@@ -162,8 +170,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();
@@ -183,8 +199,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();
@@ -204,8 +228,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();
@@ -225,8 +257,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();
@@ -246,8 +286,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();
@@ -267,8 +315,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();
@@ -288,8 +344,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();
@@ -309,8 +373,16 @@ public class SeleccionNivelController extends Controller implements Initializabl
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
                     new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
+                    new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
             );
+            /*
+             *  Audio de inicio del juego
+             */
+            Platform.runLater(() -> {
+                AudioClip sonido;
+                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+                sonido.play();
+            });
             timeline.play();
             timeline.setOnFinished(value -> {
                 FlowController.getInstance().initialize();

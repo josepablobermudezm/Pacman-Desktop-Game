@@ -1433,8 +1433,8 @@ public class Nivel2Controller extends Controller implements Initializable {
 
             Timeline timeline = new Timeline();
             Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
-            KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY()-14);
-            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX()-14);
+            KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
+            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
             KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
             KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
             timeline.getKeyFrames().addAll(kf2, kf);
@@ -1450,7 +1450,90 @@ public class Nivel2Controller extends Controller implements Initializable {
             });
         });
     }
-    
+
+    /*
+     *  Algortitmo de dijstra 
+     */
+    Nodo inicial2;
+    Nodo auxInicial2;
+    Nodo auxNodo6;
+
+    void movePinkGhost() {
+        Platform.runLater(() -> {
+            if (inicial2 == null) {
+                nodos.stream().forEach((t) -> {
+                    //System.out.println(t.getAristas_Adyacentes().size());
+                    if (t.getPoint2D().getX() == 527.0 && t.getPoint2D().getY() == 305.0) {
+                        inicial2 = t;
+                    }
+                });
+            }
+
+            Dijkstra dijkstra;
+            nodos.stream().forEach((t) -> {
+                t.setLongitud(0);
+                t.setMarca(false);
+                t.setNodoAntecesorDisjktra(null);
+            });
+
+            inicial2.setMarca(false);
+            dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+            dijkstra.ejecutar(inicial2);
+
+            List<Arista> aristasAux;
+
+            if (nodoDestino != null) {
+                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+            } else {
+                aristasAux = dijkstra.marcarRutaCorta(nodoOrigen);
+            }
+
+            //Doy vuelta a la lista 
+            Collections.reverse(aristasAux);
+            LinkedList<Nodo> listEnlazada = new LinkedList();
+            aristasAux.stream().forEach((t) -> {
+                /*
+                 *   Si contiene origen guardamos destino, de lo contrario guardamos destino
+                 */
+                if (listEnlazada.size() > 1) {
+                    if (listEnlazada.contains(t.getDestino())) {
+                        listEnlazada.add(t.getOrigen());
+                    } else /*if (listEnlazada.contains(t.getOrigen()))*/ {
+                        listEnlazada.add(t.getDestino());
+                    }
+                } else {
+                    if (t.getDestino().getPoint2D().getX() == inicial2.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial2.getPoint2D().getY()) {
+                        listEnlazada.add(t.getOrigen());
+                    } else {
+                        listEnlazada.add(t.getDestino());
+                    }
+                }
+            });
+
+            Queue<Nodo> cola = new LinkedList(listEnlazada);
+
+            auxNodo6 = cola.poll();
+
+            Timeline timeline = new Timeline();
+            Double distance = inicial2.getPoint2D().distance(auxNodo6.getPoint2D());
+            KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), auxNodo6.getPoint2D().getY() - 14);
+            KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), auxNodo6.getPoint2D().getX() - 14);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+            timeline.getKeyFrames().addAll(kf2, kf);
+
+            timeline.play();
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            timeline.setOnFinished((event) -> {
+                Platform.runLater(() -> {
+                    inicial2 = auxNodo6;
+                    movePinkGhost();
+                });
+
+            });
+        });
+    }
+
     //bdbd00
     @Override
 
@@ -1462,6 +1545,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         pila.push("RIGHT");
         right(false);
         moveRedGhost();
+        movePinkGhost();
         EncierroValor = (puntos.size() - 9) / 2;
         Hilo = new hiloTiempo();
         Hilo.correrHilo();
