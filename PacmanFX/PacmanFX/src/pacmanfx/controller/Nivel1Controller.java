@@ -5,6 +5,7 @@
  */
 package pacmanfx.controller;
 
+import java.applet.AudioClip;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -1063,7 +1064,17 @@ public class Nivel1Controller extends Controller implements Initializable {
                             Pelotas = false;
                         }
 
-                        puntos.remove(circle);
+                        if (puntos.remove(circle)) {
+                            /*Platform.runLater(() -> {
+                                AudioClip sonido;
+                                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/eating_dot_1(2).wav"));
+                                sonido.play();
+                            });*/
+                        }
+                        /*
+                         *  Audio cuando comes los puntos
+                         */
+
                         if (Encierro()) {
                             lblEncierro.setVisible(true);
                             EncierroBandera = true;
@@ -1076,8 +1087,8 @@ public class Nivel1Controller extends Controller implements Initializable {
                             if (vidas == 6) {
                                 if (contVidas == 0) {
                                     /*
-                                    Lo que hace esta parte es aumentar un contador en el texto para saber cual es la cantidad de juegos terminados sin perder vidas
-                                    la variable contVidas es porque el método se hace varias veces entonces es para que solo se haga una vez la suma del contador
+                                     *  Lo que hace esta parte es aumentar un contador en el texto para saber cual es la cantidad de juegos terminados sin perder vidas
+                                     *  la variable contVidas es porque el método se hace varias veces entonces es para que solo se haga una vez la suma del contador
                                      */
                                     try {
                                         File f = new File(".");
@@ -1183,12 +1194,18 @@ public class Nivel1Controller extends Controller implements Initializable {
                         });
                         if (Pelotas) {
                             /*
-                                envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                             *   envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
                              */
                             new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
                             Pelotas = false;
                         }
-                        puntos.remove(circle);
+                        if (puntos.remove(circle)) {
+                            /*Platform.runLater(() -> {
+                                AudioClip sonido;
+                                sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/eating_dot_1(2).wav"));
+                                sonido.play();
+                            });*/
+                        }
                         //Cuando se quita los puntos de la pantalla
 
                         circle = null;
@@ -1450,25 +1467,63 @@ public class Nivel1Controller extends Controller implements Initializable {
             auxNodo5 = cola.poll();
 
             Timeline timeline = new Timeline();
-            Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
-            KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY()-14);
-            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX()-14);
-            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
-            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
-            timeline.getKeyFrames().addAll(kf2, kf);
+            if (auxNodo5!=null) {
+                Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
 
-            timeline.play();
-            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
-            timeline.setOnFinished((event) -> {
-                Platform.runLater(() -> {
-                    inicial = auxNodo5;
-                    moveRedGhost();
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial = auxNodo5;
+                        moveRedGhost();
+                    });
+
                 });
-
-            });
+            }
 
         });
+    }
 
+    private void moveOrangeGhost() {
+        
+    }
+    /*
+    *Algortimo de Floyd Warshall
+    */
+    private Integer matPeso[][];
+    private void llenarMatPeso() {
+        StringBuilder sb = new StringBuilder();
+        //Se crea una matriz cuadrada del tamanno de los nodos totales
+       
+        matPeso = new Integer[nodos.size()][nodos.size()];
+        for (int i = 0; i < nodos.size(); i++) {
+            Nodo aux = nodos.get(i);//Ubicamos el nodo con el que vamos a comparar
+            for (int j = 0; j < nodos.size(); j++) {
+                matPeso[i][j] = 10000;
+                if (i != j) {// Si no se esta ubicado en la diagonal
+                    Nodo aux2 = nodos.get(j);
+
+                    for (Arista arista : aristas) {
+                        //Intentamos ubicar la arista que coincida con los nodos auxiliares para agregar el peso en la matriz
+                        if ((arista.getDestino().equals(aux) && arista.getOrigen().equals(aux2)) || (arista.getDestino().equals(aux2) && arista.getOrigen().equals(aux))) {
+                            matPeso[i][j] = arista.getPeso();
+                        }
+                    }
+                } //Si es la diagonal se llena la matriz con peso 0
+                else {
+                    matPeso[i][j] = 0;
+                }
+                sb.append(matPeso[i][j]);
+                sb.append("\t");
+            }
+            sb.append("\n");
+        }
+       // System.out.println(sb);
     }
 
     Nodo nodoOrigen;
@@ -1481,7 +1536,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
     public void Inicio() {
         CrearMapa();
-
+        llenarMatPeso();
         //Inicio el movimiento del PacMan hacia la derecha
         movimiento = "RIGHT";
         movimientoOriginal = "RIGHT";

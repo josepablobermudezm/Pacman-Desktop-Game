@@ -11,19 +11,44 @@ import javafx.scene.paint.Color;
 /**
  *
  * @author JORDI RODRIGUEZ
- *//*
+ */
 public class Floyd {
 
-    private ArrayList <Integer> rutInteger = new ArrayList<>();
-    private ArrayList <Nodo> nodosRuta = new ArrayList<>();
-    private ArrayList <Arista> aristaRuta = new ArrayList<>();
-    private Mapa grafo;
-
-    public Floyd(Mapa grafo) {
-        this.grafo = grafo;
+    private ArrayList<Integer> rutInteger = new ArrayList<>();
+    private ArrayList<Nodo> nodosRuta = new ArrayList<>();
+    private ArrayList<Arista> aristaRuta = new ArrayList<>();
+    private Integer n;
+    private Integer[][] D;
+    private Integer[][] traza;
+    
+    public Floyd(Integer n) {
+        this.n = n;
     }
 
-    public ArrayList <Integer> floyd_cam(Integer[][] mady, int ini, int fin) {
+    public void matrizAdyacencia(Integer[][] mady) {
+        int i, j, k;
+        
+        // Camino mínimo de un vértice a si mismo: 0
+        for (i = 0; i < n; i++) {
+            D[i][i] = 0;
+        }
+        /* En el caso de que no se realice esta inicialización el algoritmo
+	obtiene en la diagonal los ciclos o bucles de longitud mínima */
+        for (k = 0; k < n; k++) {
+            for (i = 0; i < n; i++) {
+                for (j = 0; j < n; j++) {
+                    if ((D[i][k] + D[k][j]) < D[i][j]) // nuevo mínimo
+                    {
+                        D[i][j] = D[i][k] + D[k][j];
+                        traza[i][j] = k;
+                    }
+                }
+            }
+        }
+
+    }
+
+    public ArrayList<Integer> floyd_cam(Integer[][] mady, int ini, int fin) {
 
         int aux;
 
@@ -36,10 +61,10 @@ public class Floyd {
             }
         }
 
-        for (int x = 0; x < mady.length; x++) {
-            for (int y = 0; y < mady.length; y++) {
+        for (int x = 0; x < n; x++) {
+            for (int y = 0; y < n; y++) {
                 if (x != y) {
-                    for (int z = 0; z < mady.length; z++) {
+                    for (int z = 0; z < n; z++) {
                         if (z != x) {
                             aux = mAux[x][y] + mAux[z][x];
                             if (aux < mAux[z][y]) {
@@ -54,7 +79,7 @@ public class Floyd {
 
         recuperaCamino(ini, fin, mCaminos);
 
-        rutInteger.stream().forEach((y) -> {
+  /*      rutInteger.stream().forEach((y) -> {
             grafo.getDestinos().stream().forEach((t) -> {
                 if (t.getNumNodo().equals(y)) {
                     t.setMarca(true);
@@ -68,15 +93,15 @@ public class Floyd {
                 int i = nodosRuta.indexOf(y) + 1;
                 if (i < nodosRuta.size()) {
                     Nodo auxNodo = nodosRuta.get(i);
-                    if (auxNodo.equals(t.getDestino()) && y.equals(t.getOrigen()) || auxNodo.equals(t.getOrigen()) && y.equals(t.getDestino())){
-                        aristaRuta.add(t); 
+                    if (auxNodo.equals(t.getDestino()) && y.equals(t.getOrigen()) || auxNodo.equals(t.getOrigen()) && y.equals(t.getDestino())) {
+                        aristaRuta.add(t);
                     }
                 }
             });
         });
-        
+*/
         return rutInteger;
-        
+
     }
 
     public void recuperaCamino(int i, int j, Integer[][] mRecorrido) {
@@ -97,8 +122,8 @@ public class Floyd {
 
     public void marcarRuta() {
         aristaRuta.stream().forEach((t) -> {
-            t.setStroke(Color.BLACK);
-            t.setStrokeWidth(5);
+            /*t.setStroke(Color.BLACK);
+            t.setStrokeWidth(5);*/
         });
     }
 
@@ -118,4 +143,4 @@ public class Floyd {
         this.aristaRuta = aristaRuta;
     }
 
-}*/
+}

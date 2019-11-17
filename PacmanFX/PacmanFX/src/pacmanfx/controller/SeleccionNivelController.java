@@ -5,6 +5,7 @@
  */
 package pacmanfx.controller;
 
+import java.applet.AudioClip;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -104,20 +106,28 @@ public class SeleccionNivelController extends Controller implements Initializabl
     @FXML
     private void Nivel1(MouseEvent event) {
         /*
-             *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
-             *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
-             */
-            omg.toFront();
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
-                    new KeyFrame(Duration.seconds(3), new KeyValue(omg.imageProperty(), null))
-            );
-            timeline.play();
-            timeline.setOnFinished(value -> {
-                FlowController.getInstance().initialize();
-                FlowController.getInstance().goViewInStage("Nivel1", this.getStage());
-            });
+         *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
+         *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
+         */
+        omg.toFront();
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(omg.imageProperty(), image2)),
+                new KeyFrame(Duration.seconds(1), new KeyValue(omg.imageProperty(), image2)),
+                new KeyFrame(Duration.seconds(5), new KeyValue(omg.imageProperty(), null))
+        );
+        /*
+         *  Audio de inicio del juego
+         */
+        Platform.runLater(() -> {
+            AudioClip sonido;
+            sonido = java.applet.Applet.newAudioClip(getClass().getResource("/pacmanfx/audio/start_music.wav"));
+            sonido.play();
+        });
+        timeline.play();
+        timeline.setOnFinished(value -> {
+            FlowController.getInstance().initialize();
+            FlowController.getInstance().goViewInStage("Nivel1", this.getStage());
+        });
     }
 
     @FXML
