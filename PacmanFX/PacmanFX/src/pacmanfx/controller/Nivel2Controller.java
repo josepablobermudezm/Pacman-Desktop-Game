@@ -50,6 +50,7 @@ import javafx.util.Duration;
 import pacmanfx.model.Arista;
 import pacmanfx.model.CyanGhost;
 import pacmanfx.model.Dijkstra;
+import pacmanfx.model.Floyd;
 import pacmanfx.model.Grafo;
 import pacmanfx.model.Nodo;
 import pacmanfx.model.OrangeGhost;
@@ -242,7 +243,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            MenuController.PuntosTotales += contPuntos*10;
+            MenuController.PuntosTotales += contPuntos * 10;
             int PuntosPorNivel = 0;
             try {
                 File f = new File(".");
@@ -1364,6 +1365,92 @@ public class Nivel2Controller extends Controller implements Initializable {
             }
         });
     }
+    Floyd floyd;
+    int index1 = 10000, index2;
+
+    private void moveOrangeGhost() {
+        Platform.runLater(() -> {
+            if (index1 == 10000) {
+                nodos.stream().forEach(x -> {
+                    if (x.getPoint2D().getX() == 450.0 && x.getPoint2D().getY() == 305.0) {
+                        index1 = nodos.indexOf(x);
+                    }
+                });
+            }
+
+            index2 = random();
+            floyd.recuperaCamino(index1, index2);
+            if (floyd.getCaminos().isEmpty()) {
+                moveOrangeGhost();
+            } else {
+                index2 = floyd.getCaminos().firstElement();
+
+                Timeline timeline = new Timeline();
+                Double distance = nodos.get(index1).getPoint2D().distance(nodos.get(index2).getPoint2D());
+                KeyValue kv2 = new KeyValue(orangeGhost.layoutYProperty(), nodos.get(index2).getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(orangeGhost.layoutXProperty(), nodos.get(index2).getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+
+                timeline.setOnFinished((event) -> {
+                    floyd.getCaminos().clear();
+                    index1 = index2;
+                    moveOrangeGhost();
+                });
+            }
+
+        });
+    }
+
+    private int random() {
+        int valorEntero = (int) Math.floor(Math.random() * (nodos.size()));
+        if (index1 != valorEntero) {
+            return valorEntero;
+        } else {
+            return random();
+        }
+    }
+    /*
+    *Algortimo de Floyd Warshall
+     */
+    private Integer matPeso[][];
+
+    private void llenarMatPeso() {
+        StringBuilder sb = new StringBuilder();
+        //Se crea una matriz cuadrada del tamanno de los nodos totales
+
+        matPeso = new Integer[nodos.size()][nodos.size()];
+        for (int i = 0; i < nodos.size(); i++) {
+            Nodo aux = nodos.get(i);//Ubicamos el nodo con el que vamos a comparar
+            for (int j = 0; j < nodos.size(); j++) {
+                matPeso[i][j] = 10000;
+                if (i != j) {// Si no se esta ubicado en la diagonal
+                    Nodo aux2 = nodos.get(j);
+
+                    for (Arista arista : aristas) {
+                        //Intentamos ubicar la arista que coincida con los nodos auxiliares para agregar el peso en la matriz
+                        if ((arista.getDestino().equals(aux) && arista.getOrigen().equals(aux2)) || (arista.getDestino().equals(aux2) && arista.getOrigen().equals(aux))) {
+                            matPeso[i][j] = arista.getPeso();
+                        }
+                    }
+                } //Si es la diagonal se llena la matriz con peso 0
+                else {
+                    matPeso[i][j] = 0;
+                }
+                sb.append(matPeso[i][j]);
+                sb.append("\t");
+            }
+            sb.append("\n");
+        }
+
+        floyd = new Floyd(nodos.size());
+        floyd.iniciarMatriz(matPeso);
+
+        // System.out.println(sb);
+    }
 
     Nodo nodoOrigen;
     Nodo nFinal;
@@ -1565,6 +1652,7 @@ public class Nivel2Controller extends Controller implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         CrearMapa();
+        llenarMatPeso();
         //Inicio el movimiento del PacMan hacia la derecha
         movimiento = "RIGHT";
         movimientoOriginal = "RIGHT";
@@ -1572,6 +1660,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         right(false);
         moveRedGhost();
         movePinkGhost();
+        moveOrangeGhost();
         EncierroValor = (puntos.size() - 9) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
