@@ -1374,6 +1374,7 @@ public class Nivel2Controller extends Controller implements Initializable {
     Nodo inicial;
     Nodo auxInicial;
     Nodo auxNodo5;
+    Stack<Nodo> pilaSuprema = new Stack<>();
 
     void moveRedGhost() {
         Platform.runLater(() -> {
@@ -1407,6 +1408,12 @@ public class Nivel2Controller extends Controller implements Initializable {
 
             //Doy vuelta a la lista 
             Collections.reverse(aristasAux);
+            /*
+             *  Bloqueamos a la primera arista del fantasma
+             */
+            if (aristasAux != null && !aristasAux.isEmpty()) {
+                aristasAux.get(0).setBloqueado(true);
+            }
             LinkedList<Nodo> listEnlazada = new LinkedList();
             aristasAux.stream().forEach((t) -> {
                 /*
@@ -1430,11 +1437,12 @@ public class Nivel2Controller extends Controller implements Initializable {
             Queue<Nodo> cola = new LinkedList(listEnlazada);
 
             auxNodo5 = cola.poll();
+
+            Timeline timeline = new Timeline();
             if (auxNodo5 == null) {
                 auxNodo5 = nodoOrigen;
             }
 
-            Timeline timeline = new Timeline();
             Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
             KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
             KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
@@ -1447,10 +1455,14 @@ public class Nivel2Controller extends Controller implements Initializable {
             timeline.setOnFinished((event) -> {
                 Platform.runLater(() -> {
                     inicial = auxNodo5;
+                    if (aristasAux != null && !aristasAux.isEmpty()) {
+                        aristasAux.get(0).setBloqueado(false);
+                    }
                     moveRedGhost();
                 });
 
             });
+
         });
     }
 
@@ -1464,7 +1476,6 @@ public class Nivel2Controller extends Controller implements Initializable {
     void movePinkGhost() {
         Platform.runLater(() -> {
             if (inicial2 == null) {
-                
                 nodos.stream().forEach((t) -> {
                     //System.out.println(t.getAristas_Adyacentes().size());
                     if (t.getPoint2D().getX() == 527.0 && t.getPoint2D().getY() == 305.0) {
@@ -1494,6 +1505,12 @@ public class Nivel2Controller extends Controller implements Initializable {
 
             //Doy vuelta a la lista 
             Collections.reverse(aristasAux);
+            /*
+             *  Bloqueamos a la primera arista del fantasma
+             */
+            if (aristasAux != null && !aristasAux.isEmpty()) {
+                aristasAux.get(0).setBloqueado(true);
+            }
             LinkedList<Nodo> listEnlazada = new LinkedList();
             aristasAux.stream().forEach((t) -> {
                 /*
@@ -1525,8 +1542,8 @@ public class Nivel2Controller extends Controller implements Initializable {
             Double distance = inicial2.getPoint2D().distance(auxNodo6.getPoint2D());
             KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), auxNodo6.getPoint2D().getY() - 14);
             KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), auxNodo6.getPoint2D().getX() - 14);
-            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
-            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
             timeline.getKeyFrames().addAll(kf2, kf);
 
             timeline.play();
@@ -1534,9 +1551,11 @@ public class Nivel2Controller extends Controller implements Initializable {
             timeline.setOnFinished((event) -> {
                 Platform.runLater(() -> {
                     inicial2 = auxNodo6;
+                    if (aristasAux != null && !aristasAux.isEmpty()) {
+                        aristasAux.get(0).setBloqueado(false);
+                    }
                     movePinkGhost();
                 });
-
             });
         });
     }
@@ -1555,6 +1574,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         movePinkGhost();
         EncierroValor = (puntos.size() - 9) / 2;
         Hilo = new hiloTiempo();
+        hiloTiempo.finalizado = false;
         Hilo.correrHilo();
 
         Image imgLogo;

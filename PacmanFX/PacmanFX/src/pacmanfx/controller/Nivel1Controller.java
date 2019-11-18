@@ -218,6 +218,8 @@ public class Nivel1Controller extends Controller implements Initializable {
             hiloTiempo.finalizado = true;
             int tiempo = Hilo.getTic();
             MenuController.TiempoTotalJuego += tiempo;
+            System.out.println(tiempo + "tiempo");
+            System.out.println(MenuController.TiempoTotalJuego + "tiempo total");
             int tiempoActual = 0;
             try {
                 File f = new File(".");
@@ -1681,6 +1683,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         EncierroValor = (puntos.size() - 8) / 2;
 
         Hilo = new hiloTiempo();
+        hiloTiempo.finalizado = false;
         Hilo.correrHilo();
 
         Image imgLogo;
