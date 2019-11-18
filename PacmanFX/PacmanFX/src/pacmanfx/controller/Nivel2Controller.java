@@ -256,7 +256,6 @@ public class Nivel2Controller extends Controller implements Initializable {
                 while ((line = br.readLine()) != null) {
                     PuntosPorNivel = Integer.parseInt(line);
                 }
-                System.out.println(contPuntos + " > " + PuntosPorNivel);
                 if (contPuntos > PuntosPorNivel) {
                     try {
                         String content = String.valueOf(contPuntos);
@@ -267,8 +266,6 @@ public class Nivel2Controller extends Controller implements Initializable {
                     } catch (IOException ex) {
                         Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else {
-                    System.out.println("no es mayor");
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
@@ -1414,7 +1411,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         }
     }
     /*
-    *Algortimo de Floyd Warshall
+     *  Algortimo de Floyd Warshall
      */
     private Integer matPeso[][];
 
@@ -1545,11 +1542,14 @@ public class Nivel2Controller extends Controller implements Initializable {
                     if (aristasAux != null && !aristasAux.isEmpty()) {
                         aristasAux.get(0).setBloqueado(false);
                     }
-                    moveRedGhost();
+                    if (!muerto) {
+                        moveRedGhost();
+                    } else {
+                        devolverRojo();
+                        System.out.println("está muerto");
+                    }
                 });
-
             });
-
         });
     }
 
@@ -1647,6 +1647,134 @@ public class Nivel2Controller extends Controller implements Initializable {
         });
     }
 
+    Nodo nodoAux7;
+
+    public void GameOver() {
+        redGhost.layoutXProperty().addListener((x) -> {
+            int x1 = (int) redGhost.getLayoutX() + 12;
+            int x2 = (int) redGhost.getLayoutX() + 16;
+            int y1 = (int) redGhost.getLayoutY() + 12;
+            int y2 = (int) redGhost.getLayoutY() + 16;
+            if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
+                    && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
+                root.getChildren().remove(pacman.getpMan());
+                pacman.getpMan().setCenterX(447.0);
+                pacman.getpMan().setCenterY(405.0);
+                muerto = true;
+            }
+        });
+        redGhost.layoutYProperty().addListener((x) -> {
+            int x1 = (int) redGhost.getLayoutX() + 12;
+            int x2 = (int) redGhost.getLayoutX() + 16;
+            int y1 = (int) redGhost.getLayoutY() + 12;
+            int y2 = (int) redGhost.getLayoutY() + 16;
+            if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
+                    && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
+                root.getChildren().remove(pacman.getpMan());
+                pacman.getpMan().setCenterX(447.0);
+                pacman.getpMan().setCenterY(405.0);
+                muerto = true;
+            }
+        });
+    }
+
+    public void devolverRojo() {
+
+        Platform.runLater(() -> {
+
+            nodos.stream().forEach((t) -> {
+                //System.out.println(t.getAristas_Adyacentes().size());
+                if (t.getPoint2D().getX() == 527.0 && t.getPoint2D().getY() == 305.0) {
+                    nodoDestino = t;
+                }
+            });
+            
+            nodos.stream().forEach((t) -> {
+                //System.out.println(t.getAristas_Adyacentes().size());
+                if (t.getPoint2D().getX() == redGhost.getLayoutX() && t.getPoint2D().getY() == redGhost.getLayoutY()) {
+                    inicial2 = t;
+                }
+            });
+          
+
+            Dijkstra dijkstra;
+            nodos.stream().forEach((t) -> {
+                t.setLongitud(0);
+                t.setMarca(false);
+                t.setNodoAntecesorDisjktra(null);
+            });
+
+            inicial2.setMarca(false);
+            dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+            dijkstra.ejecutar(inicial2);
+
+            List<Arista> aristasAux;
+
+            if (nodoDestino != null) {
+                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+            } else {
+                aristasAux = dijkstra.marcarRutaCorta(nodoOrigen);
+            }
+
+            //Doy vuelta a la lista 
+            Collections.reverse(aristasAux);
+            /*
+             *  Bloqueamos a la primera arista del fantasma
+             */
+            if (aristasAux != null && !aristasAux.isEmpty()) {
+                aristasAux.get(0).setBloqueado(true);
+            }
+            LinkedList<Nodo> listEnlazada = new LinkedList();
+            aristasAux.stream().forEach((t) -> {
+                /*
+                 *   Si contiene origen guardamos destino, de lo contrario guardamos destino
+                 */
+                if (listEnlazada.size() > 1) {
+                    if (listEnlazada.contains(t.getDestino())) {
+                        listEnlazada.add(t.getOrigen());
+                    } else{
+                        listEnlazada.add(t.getDestino());
+                    }
+                } else {
+                    if (t.getDestino().getPoint2D().getX() == inicial2.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial2.getPoint2D().getY()) {
+                        listEnlazada.add(t.getOrigen());
+                    } else {
+                        listEnlazada.add(t.getDestino());
+                    }
+                }
+            });
+
+            Queue<Nodo> cola = new LinkedList(listEnlazada);
+
+            nodoAux7 = cola.poll();
+            if (nodoAux7 == null) {
+                nodoAux7 = nodoOrigen;
+            }
+
+            Timeline timeline = new Timeline();
+            Double distance = inicial2.getPoint2D().distance(nodoAux7.getPoint2D());
+            KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), nodoAux7.getPoint2D().getY() - 14);
+            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), nodoAux7.getPoint2D().getX() - 14);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+            timeline.getKeyFrames().addAll(kf2, kf);
+
+            timeline.play();
+            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+            timeline.setOnFinished((event) -> {
+                Platform.runLater(() -> {
+                    inicial2 = nodoAux7;
+                    if (aristasAux != null && !aristasAux.isEmpty()) {
+                        aristasAux.get(0).setBloqueado(false);
+                    }
+                    moveRedGhost();
+                });
+            });
+        });
+    }
+
+    boolean muerto = false;
+
     //bdbd00
     @Override
 
@@ -1661,6 +1789,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         moveRedGhost();
         movePinkGhost();
         moveOrangeGhost();
+        GameOver();
         EncierroValor = (puntos.size() - 9) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
