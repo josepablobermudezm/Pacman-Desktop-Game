@@ -110,7 +110,7 @@ public class Floyd {
 
     public void recupera(int i, int j, Integer[][] mRecorrido) {
         int k = mRecorrido[i][j];
-        if (k != i) {
+        if (k != -1) {
             recupera(i, k, mRecorrido);
             caminos.push(k);
             rutInteger.add(k);
