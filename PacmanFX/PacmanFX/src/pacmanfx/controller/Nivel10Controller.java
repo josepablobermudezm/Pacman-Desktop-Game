@@ -1087,8 +1087,8 @@ public class Nivel10Controller extends Controller implements Initializable {
                                 if (contVidas == 0) {
                                     System.out.println("Si cumple");
                                     /*
-                                    Lo que hace esta parte es aumentar un contador en el texto para saber cual es la cantidad de juegos terminados sin perder vidas
-                                    la variable contVidas es porque el método se hace varias veces entonces es para que solo se haga una vez la suma del contador
+                                     *  Lo que hace esta parte es aumentar un contador en el texto para saber cual es la cantidad de juegos terminados sin perder vidas
+                                     *  la variable contVidas es porque el método se hace varias veces entonces es para que solo se haga una vez la suma del contador
                                      */
                                     try {
                                         File f = new File(".");

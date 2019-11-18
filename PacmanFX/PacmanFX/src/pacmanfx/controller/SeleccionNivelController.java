@@ -83,6 +83,26 @@ public class SeleccionNivelController extends Controller implements Initializabl
     private ImageView Lock10;
     private Image image2;
     private int totalPuntos;
+    @FXML
+    private ImageView GIF;
+    @FXML
+    private Label lbl1;
+    @FXML
+    private Label lbl2;
+    @FXML
+    private Label lbl3;
+    @FXML
+    private Label lbl4;
+    @FXML
+    private Label lbl5;
+    @FXML
+    private Label lbl6;
+    @FXML
+    private Label lbl7;
+    @FXML
+    private Label lbl8;
+    @FXML
+    private Label lbl9;
 
     public SeleccionNivelController() {
         this.image2 = new Image("/pacmanfx/resources/pacmanSegundaOportunidad.gif");
@@ -597,57 +617,75 @@ public class SeleccionNivelController extends Controller implements Initializabl
         if (totalPuntos+MenuController.PuntosTotales < 1000) {
             img2.setImage(new Image("/pacmanfx/resources/FondoNivel2Lock.jpg"));
             Lock2.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl1.setVisible(true);
         } else {
             img2.setImage(new Image("/pacmanfx/resources/FondoNivel22.jpg"));
+            lbl1.setVisible(false);
         }
         if (totalPuntos+MenuController.PuntosTotales < 2000) {
             img3.setImage(new Image("/pacmanfx/resources/FondoNivel3Lock.jpg"));
             Lock3.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl2.setVisible(true);
         } else {
             img3.setImage(new Image("/pacmanfx/resources/FondoNivel3.jpg"));
+            lbl2.setVisible(false);
         }
         if (totalPuntos+MenuController.PuntosTotales < 3000) {
             img4.setImage(new Image("/pacmanfx/resources/FondoNivel4Lock.jpg"));
             Lock4.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl3.setVisible(true);
         } else {
             img4.setImage(new Image("/pacmanfx/resources/FondoNivel4.jpg"));
+            lbl3.setVisible(false);
         }
 
         if (totalPuntos+MenuController.PuntosTotales < 4000) {
             img5.setImage(new Image("/pacmanfx/resources/FondoNivel5Lock.jpg"));
             Lock5.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl4.setVisible(true);
         } else {
             img5.setImage(new Image("/pacmanfx/resources/FondoNivel5.jpg"));
+            lbl4.setVisible(false);
         }
         if (totalPuntos+MenuController.PuntosTotales < 5000) {
             img6.setImage(new Image("/pacmanfx/resources/FondoNivel6Lock.jpg"));
             Lock6.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl5.setVisible(true);
         } else {
             img6.setImage(new Image("/pacmanfx/resources/FondoNivel6.jpg"));
+            lbl5.setVisible(false);
         }
         if (totalPuntos+MenuController.PuntosTotales < 6000) {
             img7.setImage(new Image("/pacmanfx/resources/FondoNivel7Lock.jpg"));
             Lock7.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl6.setVisible(true);
         } else {
             img7.setImage(new Image("/pacmanfx/resources/FondoNivel7.jpg"));
+            lbl6.setVisible(false);
         }
         if (totalPuntos+MenuController.PuntosTotales < 7000) {
             img8.setImage(new Image("/pacmanfx/resources/FondoNivel8Lock.jpg"));
             Lock8.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl7.setVisible(true);
         } else {
             img8.setImage(new Image("/pacmanfx/resources/FondoNivel8.jpg"));
+            lbl7.setVisible(false);
         }
         if (totalPuntos+MenuController.PuntosTotales < 8000) {
             img9.setImage(new Image("/pacmanfx/resources/FondoNivel9Lock.jpg"));
             Lock9.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl8.setVisible(true);
         } else {
             img9.setImage(new Image("/pacmanfx/resources/FondoNivel9.jpg"));
+            lbl8.setVisible(false);
         }
         if (totalPuntos+MenuController.PuntosTotales < 9000) {
             img10.setImage(new Image("/pacmanfx/resources/FondoNivel10Lock.jpg"));
             Lock10.setImage(new Image("/pacmanfx/resources/lock2.png"));
+            lbl9.setVisible(true);
         } else {
             img10.setImage(new Image("/pacmanfx/resources/FondoNivel10.jpg"));
+            lbl9.setVisible(false);
         }
     }
 }
