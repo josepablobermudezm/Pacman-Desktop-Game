@@ -1152,7 +1152,7 @@ public class Nivel10Controller extends Controller implements Initializable {
 
                             }
                             FlowController.getInstance().initialize();
-                            FlowController.getInstance().goViewInStage("Nivel10", this.getStage());
+                            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
                         }
 
                         circle = null;

@@ -1137,7 +1137,7 @@ public class Nivel2Controller extends Controller implements Initializable {
 
                             }
                             FlowController.getInstance().initialize();
-                            FlowController.getInstance().goViewInStage("Nivel3", this.getStage());
+                            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
                         }
                         //Cuando se quita los puntos de la pantalla
 
