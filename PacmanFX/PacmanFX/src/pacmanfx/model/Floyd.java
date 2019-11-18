@@ -6,6 +6,7 @@
 package pacmanfx.model;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import javafx.scene.paint.Color;
 
 /**
@@ -18,22 +19,23 @@ public class Floyd {
     private ArrayList<Nodo> nodosRuta = new ArrayList<>();
     private ArrayList<Arista> aristaRuta = new ArrayList<>();
     private Integer n;
-    private Integer[][] D;
-    private Integer[][] traza;
+    private Integer[][] mCaminos;
+    private Integer[][] mAux;
+    private Stack <Integer> caminos = new Stack();
     
     public Floyd(Integer n) {
         this.n = n;
     }
 
-    public void matrizAdyacencia(Integer[][] mady) {
+    /*public void matrizAdyacencia(Integer[][] mady) {
         int i, j, k;
-        
+
         // Camino mínimo de un vértice a si mismo: 0
         for (i = 0; i < n; i++) {
             D[i][i] = 0;
         }
         /* En el caso de que no se realice esta inicialización el algoritmo
-	obtiene en la diagonal los ciclos o bucles de longitud mínima */
+	obtiene en la diagonal los ciclos o bucles de longitud mínima 
         for (k = 0; k < n; k++) {
             for (i = 0; i < n; i++) {
                 for (j = 0; j < n; j++) {
@@ -45,41 +47,38 @@ public class Floyd {
                 }
             }
         }
-
-    }
-
-    public ArrayList<Integer> floyd_cam(Integer[][] mady, int ini, int fin) {
+    }*/
+    public void iniciarMatriz(Integer[][] mady) {
 
         int aux;
 
-        Integer mCaminos[][] = new Integer[mady.length][mady.length];
-        Integer mAux[][] = new Integer[mady.length][mady.length];
-        for (int x = 0; x < mady.length; x++) {
-            for (int y = 0; y < mady.length; y++) {
-                mCaminos[y][x] = y;
-                mAux[x][y] = mady[x][y];
+        mCaminos = new Integer[mady.length][mady.length];
+        mAux = new Integer[mady.length][mady.length];
+
+        for (int i = 0; i < mady.length; i++) {
+            for (int j = 0; j < mady.length; j++) {
+                mCaminos[i][j] = -1;
+                mAux[i][j] = mady[i][j];
             }
         }
 
-        for (int x = 0; x < n; x++) {
-            for (int y = 0; y < n; y++) {
-                if (x != y) {
-                    for (int z = 0; z < n; z++) {
-                        if (z != x) {
-                            aux = mAux[x][y] + mAux[z][x];
-                            if (aux < mAux[z][y]) {
-                                mAux[z][y] = aux;
-                                mCaminos[z][y] = x;
-                            }
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                if (k != i) {
+                    for (int j = 0; j < n; j++) {
+                        aux = mAux[k][i] + mAux[j][k];
+                        if (aux < mAux[i][j]) {
+                            mAux[i][j] = aux;
+                            mCaminos[i][j] = k;
                         }
                     }
                 }
             }
         }
 
-        recuperaCamino(ini, fin, mCaminos);
+//        recuperaCamino(ini, fin, mCaminos);
 
-  /*      rutInteger.stream().forEach((y) -> {
+        /*      rutInteger.stream().forEach((y) -> {
             grafo.getDestinos().stream().forEach((t) -> {
                 if (t.getNumNodo().equals(y)) {
                     t.setMarca(true);
@@ -99,14 +98,13 @@ public class Floyd {
                 }
             });
         });
-*/
-        return rutInteger;
-
+         */
+        // return rutInteger;
     }
 
-    public void recuperaCamino(int i, int j, Integer[][] mRecorrido) {
+    public void recuperaCamino(int i, int j) {
         rutInteger.add(i);
-        recupera(i, j, mRecorrido);
+        recupera(i, j, mCaminos);
         rutInteger.add(j);
     }
 
@@ -114,7 +112,7 @@ public class Floyd {
         int k = mRecorrido[i][j];
         if (k != i) {
             recupera(i, k, mRecorrido);
-            System.out.println(k);
+            caminos.push(k);
             rutInteger.add(k);
             recupera(k, j, mRecorrido);
         }
@@ -141,6 +139,10 @@ public class Floyd {
 
     public void setAristaRuta(ArrayList<Arista> aristaRuta) {
         this.aristaRuta = aristaRuta;
+    }
+
+    public Stack<Integer> getCaminos() {
+        return caminos;
     }
 
 }
