@@ -54,21 +54,21 @@ public class hiloTiempo {
     TimerTask task = new TimerTask() {
         @Override
         public void run() {
-            if (finalizado) {
-                Platform.runLater(() -> {
-                    tic++;
+            Platform.runLater(() -> {
+                if (finalizado) {
                     timer.cancel();
                     task.cancel();
                     finalizado = false;
-                });
-            }
+                }
+                tic++;
+            });
         }
-    };    
+    };
 
     TimerTask task2 = new TimerTask() {
         @Override
         public void run() {
-            if (tic2 == 8 || finalizado) {
+            if (tic2 == 8) {
                 Platform.runLater(() -> {
                     timer2.cancel();
                     task2.cancel();

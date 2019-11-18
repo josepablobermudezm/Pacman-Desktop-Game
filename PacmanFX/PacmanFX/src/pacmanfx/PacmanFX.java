@@ -24,10 +24,6 @@ public class PacmanFX extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setOnHidden((event) -> {
-            hiloTiempo.finalizado = true;
-            hiloTiempo.finalizado2 = true;
-        });
         primaryStage.setResizable(true);
         FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInWindowTransparent("Menu");

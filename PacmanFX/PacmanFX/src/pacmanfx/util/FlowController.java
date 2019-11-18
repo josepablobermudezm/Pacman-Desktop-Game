@@ -164,10 +164,6 @@ public class FlowController {
         Controller controller = loader.getController();
         controller.setStage(stage);
         stage.getScene().setRoot(loader.getRoot());
-        stage.setOnHidden((WindowEvent event) -> {
-            hiloTiempo.finalizado = true;
-            hiloTiempo.finalizado2 = true;
-        });
     }
 
     public void goViewInWindow(String viewName) {
