@@ -249,7 +249,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            MenuController.PuntosTotales += contPuntos;
+            MenuController.PuntosTotales += contPuntos*10;
             int PuntosPorNivel = 0;
             try {
                 File f = new File(".");
@@ -311,7 +311,6 @@ public class Nivel1Controller extends Controller implements Initializable {
             case "RIGHT":
                 right(false);
                 break;
-
         }
     }
 
@@ -1162,7 +1161,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                                         .getName()).log(Level.SEVERE, null, ex);
                             }
                             FlowController.getInstance().initialize();
-                            FlowController.getInstance().goViewInStage("Nivel2", this.getStage());
+                            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
                         }
                         circle = null;
                         pacman.getNodo().setPoint2D(new Point2D(pacman.getpMan().getCenterX(), pacman.getpMan().getCenterY()));
