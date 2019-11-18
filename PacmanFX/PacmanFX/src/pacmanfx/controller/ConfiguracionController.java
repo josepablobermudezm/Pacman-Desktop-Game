@@ -124,7 +124,9 @@ public class ConfiguracionController extends Controller implements Initializable
             BufferedReader br = new BufferedReader(fr);
             String line;
             while ((line = br.readLine()) != null) {
-                txtPuntosTotales.setText(line);
+                int line2 = Integer.parseInt(line);
+                line2 += MenuController.PuntosTotales;
+                txtPuntosTotales.setText(String.valueOf(line2));
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
@@ -372,6 +374,7 @@ public class ConfiguracionController extends Controller implements Initializable
             String dir1 = f1.getAbsolutePath();
             String path = dir1 + "\\src\\pacmanfx\\resources\\TotalPuntosGanados.txt";
             Files.write(Paths.get(path), content.getBytes());
+            MenuController.PuntosTotales = 0;
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class
                     .getName()).log(Level.SEVERE, null, ex);

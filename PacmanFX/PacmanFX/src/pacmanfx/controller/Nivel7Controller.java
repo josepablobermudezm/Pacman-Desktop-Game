@@ -243,7 +243,7 @@ public class Nivel7Controller extends Controller implements Initializable {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            MenuController.PuntosTotales += contPuntos;
+            MenuController.PuntosTotales += contPuntos*10;
             int PuntosPorNivel = 0;
             try {
                 File f = new File(".");
@@ -1571,6 +1571,7 @@ public class Nivel7Controller extends Controller implements Initializable {
         pila.push("RIGHT");
         right(false);
         moveRedGhost();
+        movePinkGhost();
         EncierroValor = (puntos.size() - 8) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
