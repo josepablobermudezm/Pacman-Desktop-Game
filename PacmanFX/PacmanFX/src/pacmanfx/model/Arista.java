@@ -18,6 +18,7 @@ public class Arista {
     private Nodo origen;
     private Nodo destino;
     private Integer pesoCambio;
+    private boolean bloqueado = false;
 
     public Arista() {
     }
@@ -85,9 +86,16 @@ public class Arista {
                 nodo.getAristas_Adyacentes().add(this);
             }
         }
-
     }
 
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
+    }
+    
     @Override
     public String toString() {
         return "Arista{" + "peso=" + peso + ", pesoOriginal=" + pesoOriginal + ", origen=" + origen.getPoint2D() + ", destino=" + destino.getPoint2D() + ", pesoCambio=" + pesoCambio + '}';

@@ -29,7 +29,7 @@ public class hiloTiempo {
     private Timer timer2 = new Timer();
     public int tic2 = 1;
     public static boolean finalizado2 = false;
-    
+
     private RedGhost redGhost;
     private CyanGhost cyanGhost;
     private OrangeGhost orangeGhost;
@@ -54,22 +54,21 @@ public class hiloTiempo {
     TimerTask task = new TimerTask() {
         @Override
         public void run() {
-            Platform.runLater(() -> {
-                tic++;
-                if (finalizado) {
+            if (finalizado) {
+                Platform.runLater(() -> {
+                    tic++;
                     timer.cancel();
                     task.cancel();
                     finalizado = false;
-                }
-            });
-
+                });
+            }
         }
-    };
+    };    
 
     TimerTask task2 = new TimerTask() {
         @Override
         public void run() {
-            if (tic2 == 8) {
+            if (tic2 == 8 || finalizado) {
                 Platform.runLater(() -> {
                     timer2.cancel();
                     task2.cancel();
@@ -81,7 +80,6 @@ public class hiloTiempo {
                 });
             }
             tic2++;
-            
         }
     };
 

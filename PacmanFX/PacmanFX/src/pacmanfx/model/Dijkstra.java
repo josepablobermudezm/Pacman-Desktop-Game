@@ -48,9 +48,10 @@ public class Dijkstra {
                     } else {
                         aux2 = enlace.getOrigen();
                     }
-
-                    if (!aux2.isMarca()) {
-
+                    /*
+                     *  Se evita que el fantasmas rosa utilice la misma ruta que está utilizando el fantasma rojo
+                     */
+                    if (!aux2.isMarca() && !enlace.isBloqueado()) {
                         if (isContenido(aux2)) {
                             int longitud = nodo.getLongitud() + enlace.getPeso();
                             if (aux2.getLongitud() > longitud) {
@@ -103,15 +104,6 @@ public class Dijkstra {
     private void rutaCorta(Nodo nodoFinal) {
         aux.clear();
         Nodo nAux = nodoFinal;
-        /*for (int i = 0; i < PantPrincipalController.accidentes.size(); i++) {
-            Arista accidente = PantPrincipalController.accidentes.get(i);
-            for (Arista arista : aux) {
-                if(arista.equals(accidente)){
-                    aux.remove(accidente);
-                }
-                
-            }
-        }*/
         while (nAux.getNodoAntecesorDisjktra() != null) {
             aux.add(grafo.getArista(nAux,
                     nAux.getNodoAntecesorDisjktra()));

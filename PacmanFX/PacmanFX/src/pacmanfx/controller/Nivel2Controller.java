@@ -1430,6 +1430,9 @@ public class Nivel2Controller extends Controller implements Initializable {
             Queue<Nodo> cola = new LinkedList(listEnlazada);
 
             auxNodo5 = cola.poll();
+            if (auxNodo5 == null) {
+                auxNodo5 = nodoOrigen;
+            }
 
             Timeline timeline = new Timeline();
             Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
@@ -1461,6 +1464,7 @@ public class Nivel2Controller extends Controller implements Initializable {
     void movePinkGhost() {
         Platform.runLater(() -> {
             if (inicial2 == null) {
+                
                 nodos.stream().forEach((t) -> {
                     //System.out.println(t.getAristas_Adyacentes().size());
                     if (t.getPoint2D().getX() == 527.0 && t.getPoint2D().getY() == 305.0) {
@@ -1513,6 +1517,9 @@ public class Nivel2Controller extends Controller implements Initializable {
             Queue<Nodo> cola = new LinkedList(listEnlazada);
 
             auxNodo6 = cola.poll();
+            if (auxNodo6 == null) {
+                auxNodo6 = nodoOrigen;
+            }
 
             Timeline timeline = new Timeline();
             Double distance = inicial2.getPoint2D().distance(auxNodo6.getPoint2D());

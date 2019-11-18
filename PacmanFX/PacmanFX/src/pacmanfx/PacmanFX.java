@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import pacmanfx.util.FlowController;
+import pacmanfx.util.hiloTiempo;
 
 /**
  *
@@ -23,6 +24,10 @@ public class PacmanFX extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        primaryStage.setOnHidden((event) -> {
+            hiloTiempo.finalizado = true;
+            hiloTiempo.finalizado2 = true;
+        });
         primaryStage.setResizable(true);
         FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInWindowTransparent("Menu");

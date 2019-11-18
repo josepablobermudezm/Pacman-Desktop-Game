@@ -29,6 +29,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import pacmanfx.util.FlowController;
+import pacmanfx.util.hiloTiempo;
 
 /**
  * FXML Controller class
@@ -393,6 +394,8 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        hiloTiempo.finalizado = true;
+        hiloTiempo.finalizado2 = true;
         try {
             File f11 = new File(".");
             String dir11 = f11.getAbsolutePath();
