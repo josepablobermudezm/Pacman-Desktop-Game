@@ -54,6 +54,7 @@ import pacmanfx.model.Nodo;
 import pacmanfx.model.Arista;
 import pacmanfx.model.CyanGhost;
 import pacmanfx.model.Dijkstra;
+import pacmanfx.model.Floyd;
 import pacmanfx.model.Grafo;
 import pacmanfx.model.OrangeGhost;
 import pacmanfx.model.PinkGhost;
@@ -1602,7 +1603,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             });
         });
     }
-
+    Floyd floyd;
     private void moveOrangeGhost() {
 
     }
@@ -1638,6 +1639,9 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
             sb.append("\n");
         }
+        floyd = new Floyd(nodos.size());
+        floyd.iniciarMatriz(matPeso);
+        floyd.recuperaCamino(15, 10);
         // System.out.println(sb);
     }
 
