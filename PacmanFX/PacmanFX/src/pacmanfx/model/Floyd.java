@@ -6,6 +6,8 @@
 package pacmanfx.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 import javafx.scene.paint.Color;
 
@@ -21,7 +23,7 @@ public class Floyd {
     private Integer n;
     private Integer[][] mCaminos;
     private Integer[][] mAux;
-    private Stack <Integer> caminos = new Stack();
+    private Queue <Integer> caminos = new LinkedList();
     
     public Floyd(Integer n) {
         this.n = n;
@@ -112,7 +114,7 @@ public class Floyd {
         int k = mRecorrido[i][j];
         if (k != -1) {
             recupera(i, k, mRecorrido);
-            caminos.push(k);
+            caminos.add(k);
             rutInteger.add(k);
             recupera(k, j, mRecorrido);
         }
@@ -141,7 +143,7 @@ public class Floyd {
         this.aristaRuta = aristaRuta;
     }
 
-    public Stack<Integer> getCaminos() {
+    public Queue <Integer> getCaminos() {
         return caminos;
     }
 

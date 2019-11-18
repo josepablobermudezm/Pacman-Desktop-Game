@@ -249,7 +249,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            MenuController.PuntosTotales += contPuntos*10;
+            MenuController.PuntosTotales += contPuntos * 10;
             int PuntosPorNivel = 0;
             try {
                 File f = new File(".");
@@ -1609,20 +1609,8 @@ public class Nivel1Controller extends Controller implements Initializable {
 
     private void moveOrangeGhost() {
         Platform.runLater(() -> {
-            if (index1 == 10000) {
-                nodos.stream().forEach(x -> {
-                    if (x.getPoint2D().getX() == 450.0 && x.getPoint2D().getY() == 305.0) {
-                        index1 = nodos.indexOf(x);
-                    }
-                });
-            }
-
-            index2 = random();
-            floyd.recuperaCamino(index1, index2);
-            if (floyd.getCaminos().isEmpty()) {
-                moveOrangeGhost();
-            } else {
-                index2 = floyd.getCaminos().firstElement();
+            if (!floyd.getCaminos().isEmpty()) {
+                index2 = floyd.getCaminos().poll();
 
                 Timeline timeline = new Timeline();
                 Double distance = nodos.get(index1).getPoint2D().distance(nodos.get(index2).getPoint2D());
@@ -1633,14 +1621,44 @@ public class Nivel1Controller extends Controller implements Initializable {
                 timeline.getKeyFrames().addAll(kf2, kf);
 
                 timeline.play();
-
                 timeline.setOnFinished((event) -> {
-                    floyd.getCaminos().clear();
+                    //floyd.getCaminos().clear();
                     index1 = index2;
                     moveOrangeGhost();
                 });
-            }
+            } else {
+                if (index1 == 10000) {
+                    nodos.stream().forEach(x -> {
+                        if (x.getPoint2D().getX() == 450.0 && x.getPoint2D().getY() == 305.0) {
+                            index1 = nodos.indexOf(x);
+                        }
+                    });
+                }
 
+                index2 = random();
+                floyd.recuperaCamino(index1, index2);
+                if (floyd.getCaminos().isEmpty()) {
+                    moveOrangeGhost();
+                } else {
+                    index2 = floyd.getCaminos().poll();
+
+                    Timeline timeline = new Timeline();
+                    Double distance = nodos.get(index1).getPoint2D().distance(nodos.get(index2).getPoint2D());
+                    KeyValue kv2 = new KeyValue(orangeGhost.layoutYProperty(), nodos.get(index2).getPoint2D().getY() - 14);
+                    KeyValue kv = new KeyValue(orangeGhost.layoutXProperty(), nodos.get(index2).getPoint2D().getX() - 14);
+                    KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+                    KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+                    timeline.getKeyFrames().addAll(kf2, kf);
+
+                    timeline.play();
+
+                    timeline.setOnFinished((event) -> {
+                        //floyd.getCaminos().clear();
+                        index1 = index2;
+                        moveOrangeGhost();
+                    });
+                }
+            }
         });
     }
 
@@ -1687,8 +1705,247 @@ public class Nivel1Controller extends Controller implements Initializable {
 
         floyd = new Floyd(nodos.size());
         floyd.iniciarMatriz(matPeso);
-      
+        floyd2 = new Floyd(nodos.size());
+        floyd2.iniciarMatriz(matPeso);
         // System.out.println(sb);
+    }
+    Floyd floyd2;
+
+    private void moveCyanGhost() {
+        int caso = RandomCian();
+        switch (caso) {
+            case 1: // Caso en el que buscamos nodos aleatorios
+                caso1();
+                break;
+            case 2: // caso en el que se persigue al pacman
+                caso2();
+                break;
+            case 3: // caso en el que se persigue a un fantasma
+                caso3();
+                break;
+        }
+    }
+    
+    int ind1 = 10000, ind2;
+
+    private void caso1() {
+        Platform.runLater(() -> {
+            if (!floyd2.getCaminos().isEmpty()) {
+                ind2 = floyd2.getCaminos().poll();
+
+                Timeline timeline = new Timeline();
+                Double distance = nodos.get(ind1).getPoint2D().distance(nodos.get(ind2).getPoint2D());
+                KeyValue kv2 = new KeyValue(cyanGhost.layoutYProperty(), nodos.get(ind2).getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(cyanGhost.layoutXProperty(), nodos.get(ind2).getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                timeline.setOnFinished((event) -> {
+                    //floyd.getCaminos().clear();
+
+                    ind1 = ind2;
+                    if (floyd2.getCaminos().isEmpty()) {
+                        moveCyanGhost();
+                    } else {
+                        caso1();
+                    }
+
+                });
+            } else {
+                if (ind1 == 10000) {
+                    nodos.stream().forEach(x -> {
+                        if (x.getPoint2D().getX() == 367.0 && x.getPoint2D().getY() == 305.0) {
+                            ind1 = nodos.indexOf(x);
+                        }
+                    });
+                }
+
+                ind2 = random();
+                floyd2.recuperaCamino(ind1, ind2);
+                if (floyd2.getCaminos().isEmpty()) {
+                    caso1();
+                } else {
+                    ind2 = floyd2.getCaminos().poll();
+
+                    Timeline timeline = new Timeline();
+                    Double distance = nodos.get(ind1).getPoint2D().distance(nodos.get(ind2).getPoint2D());
+                    KeyValue kv2 = new KeyValue(cyanGhost.layoutYProperty(), nodos.get(ind2).getPoint2D().getY() - 14);
+                    KeyValue kv = new KeyValue(cyanGhost.layoutXProperty(), nodos.get(ind2).getPoint2D().getX() - 14);
+                    KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+                    KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+                    timeline.getKeyFrames().addAll(kf2, kf);
+
+                    timeline.play();
+
+                    timeline.setOnFinished((event) -> {
+                        //floyd.getCaminos().clear();
+                        ind1 = ind2;
+                        if(floyd2.getCaminos().isEmpty()){
+                            moveCyanGhost();
+                        }else{
+                            caso1();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void caso2() {
+        Platform.runLater(() -> {
+            if (!floyd2.getCaminos().isEmpty()) {
+                ind2 = floyd2.getCaminos().poll();
+
+                Timeline timeline = new Timeline();
+                Double distance = nodos.get(ind1).getPoint2D().distance(nodos.get(ind2).getPoint2D());
+                KeyValue kv2 = new KeyValue(cyanGhost.layoutYProperty(), nodos.get(ind2).getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(cyanGhost.layoutXProperty(), nodos.get(ind2).getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                timeline.setOnFinished((event) -> {
+                    //floyd.getCaminos().clear();
+
+                    ind1 = ind2;
+                    if (floyd2.getCaminos().isEmpty()) {
+                        moveCyanGhost();
+                    } else {
+                        caso2();
+                    }
+
+                });
+            } else {
+                if (ind1 == 10000) {
+                    nodos.stream().forEach(x -> {
+                        if (x.getPoint2D().getX() == 367.0 && x.getPoint2D().getY() == 305.0) {
+                            ind1 = nodos.indexOf(x);
+                        }
+                    });
+                }
+
+                ind2 = nodos.indexOf(nodoOrigen);
+                floyd2.recuperaCamino(ind1, ind2);
+                if (floyd2.getCaminos().isEmpty()) {
+                    caso2();
+                } else {
+                    floyd2.getCaminos().add(ind2);
+                    ind2 = floyd2.getCaminos().poll();
+
+                    Timeline timeline = new Timeline();
+                    Double distance = nodos.get(ind1).getPoint2D().distance(nodos.get(ind2).getPoint2D());
+                    KeyValue kv2 = new KeyValue(cyanGhost.layoutYProperty(), nodos.get(ind2).getPoint2D().getY() - 14);
+                    KeyValue kv = new KeyValue(cyanGhost.layoutXProperty(), nodos.get(ind2).getPoint2D().getX() - 14);
+                    KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+                    KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+                    timeline.getKeyFrames().addAll(kf2, kf);
+
+                    timeline.play();
+
+                    timeline.setOnFinished((event) -> {
+                        //floyd.getCaminos().clear();
+                        ind1 = ind2;
+                        if(floyd2.getCaminos().isEmpty()){
+                            moveCyanGhost();
+                        }else{
+                            caso2();
+                        }
+                    });
+                }
+            }
+        });
+    }
+    
+    private void caso3(){
+         Platform.runLater(() -> {
+            if (!floyd2.getCaminos().isEmpty()) {
+                ind2 = floyd2.getCaminos().poll();
+
+                Timeline timeline = new Timeline();
+                Double distance = nodos.get(ind1).getPoint2D().distance(nodos.get(ind2).getPoint2D());
+                KeyValue kv2 = new KeyValue(cyanGhost.layoutYProperty(), nodos.get(ind2).getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(cyanGhost.layoutXProperty(), nodos.get(ind2).getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                timeline.setOnFinished((event) -> {
+                    //floyd.getCaminos().clear();
+
+                    ind1 = ind2;
+                    if (floyd2.getCaminos().isEmpty()) {
+                        moveCyanGhost();
+                    } else {
+                        caso3();
+                    }
+
+                });
+            } else {
+                if (ind1 == 10000) {
+                    nodos.stream().forEach(x -> {
+                        if (x.getPoint2D().getX() == 367.0 && x.getPoint2D().getY() == 305.0) {
+                            ind1 = nodos.indexOf(x);
+                        }
+                    });
+                }
+
+                ind2 = GhostsRandom();
+                
+                floyd2.recuperaCamino(ind1, ind2);
+                if (floyd2.getCaminos().isEmpty()) {
+                    caso3();
+                } else {
+                    floyd2.getCaminos().add(ind2);
+                    ind2 = floyd2.getCaminos().poll();
+
+                    Timeline timeline = new Timeline();
+                    Double distance = nodos.get(ind1).getPoint2D().distance(nodos.get(ind2).getPoint2D());
+                    KeyValue kv2 = new KeyValue(cyanGhost.layoutYProperty(), nodos.get(ind2).getPoint2D().getY() - 14);
+                    KeyValue kv = new KeyValue(cyanGhost.layoutXProperty(), nodos.get(ind2).getPoint2D().getX() - 14);
+                    KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
+                    KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
+                    timeline.getKeyFrames().addAll(kf2, kf);
+
+                    timeline.play();
+
+                    timeline.setOnFinished((event) -> {
+                        //floyd.getCaminos().clear();
+                        ind1 = ind2;
+                        if(floyd2.getCaminos().isEmpty()){
+                            moveCyanGhost();
+                        }else{
+                            caso3();
+                        }
+                        
+                    });
+                }
+            }
+        });
+    }
+    private int GhostsRandom(){
+        int fantasma=0;
+        int valorEntero = (int) Math.floor(Math.random() * (3) + 1);
+        switch(valorEntero){
+            case 1:            // RED GHOST
+                fantasma = nodos.indexOf(auxNodo5);
+                break;
+            case 2:            // ORANGE GHOST
+                fantasma = index2;
+                break;
+            case 3:            // PINK GHOST
+                fantasma = nodos.indexOf(auxNodo6);
+                break; 
+        }
+        return fantasma;
+    }
+
+    private int RandomCian() {
+        int valorEntero = (int) Math.floor(Math.random() * (3) + 1);
+        return valorEntero;
     }
 
     Nodo nodoOrigen;
@@ -1710,6 +1967,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         moveRedGhost();
         movePinkGhost();
         moveOrangeGhost();
+        moveCyanGhost();
         EncierroValor = (puntos.size() - 8) / 2;
 
         Hilo = new hiloTiempo();
