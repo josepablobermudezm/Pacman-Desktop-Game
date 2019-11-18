@@ -244,7 +244,7 @@ public class Nivel8Controller extends Controller implements Initializable {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            MenuController.PuntosTotales += contPuntos;
+            MenuController.PuntosTotales += contPuntos*10;
             int PuntosPorNivel = 0;
             try {
                 File f = new File(".");
@@ -1138,7 +1138,7 @@ public class Nivel8Controller extends Controller implements Initializable {
 
                             }
                             FlowController.getInstance().initialize();
-                            FlowController.getInstance().goViewInStage("Nivel9", this.getStage());
+                            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
                         }
 
                         circle = null;
@@ -1564,6 +1564,7 @@ public class Nivel8Controller extends Controller implements Initializable {
         pila.push("RIGHT");
         right(false);
         moveRedGhost();
+        movePinkGhost();
         EncierroValor = (puntos.size() - 8) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;

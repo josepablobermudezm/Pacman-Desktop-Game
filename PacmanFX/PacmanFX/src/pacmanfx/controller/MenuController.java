@@ -101,6 +101,7 @@ public class MenuController extends Controller implements Initializable {
             String line;
             while ((line = br.readLine()) != null) {
                 PuntosTotales += Integer.parseInt(line);
+                System.out.println(PuntosTotales);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);

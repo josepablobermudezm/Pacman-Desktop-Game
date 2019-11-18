@@ -82,6 +82,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
     @FXML
     private ImageView Lock10;
     private Image image2;
+    private int totalPuntos;
 
     public SeleccionNivelController() {
         this.image2 = new Image("/pacmanfx/resources/pacmanSegundaOportunidad.gif");
@@ -133,7 +134,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel2(MouseEvent event) {
-        if (n1 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 1000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -162,7 +163,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel3(MouseEvent event) {
-        if (n2 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 2000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -191,7 +192,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel4(MouseEvent event) {
-        if (n3 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 3000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -220,7 +221,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel5(MouseEvent event) {
-        if (n4 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 4000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -249,7 +250,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel6(MouseEvent event) {
-        if (n5 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 5000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -278,7 +279,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel7(MouseEvent event) {
-        if (n6 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 6000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -307,7 +308,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel8(MouseEvent event) {
-        if (n7 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 7000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -336,7 +337,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel9(MouseEvent event) {
-        if (n8 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 8000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -365,7 +366,7 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
     @FXML
     private void Nivel10(MouseEvent event) {
-        if (n9 == 1) {
+        if (totalPuntos+MenuController.PuntosTotales >= 9000) {
             /*
              *  pongo la imagen de fondo en el frente para que no se vean los botones y demmas
              *  le cambio la imagen al fondo por un gif y cuando termina el tiempo llamo a la otra vista
@@ -567,6 +568,21 @@ public class SeleccionNivelController extends Controller implements Initializabl
             while ((line10 = br10.readLine()) != null) {
                 n10 = Integer.parseInt(line10);
             }
+            
+            File f12 = new File(".");
+            String dir12 = f12.getAbsolutePath();
+            /*
+             *   si la dificultad es 1 entonces leemoos los niveles completados en facil, si es 2 leemos los niveles completados en intermedio
+             *   y si es 3 leemos los niveles completados en difícil
+             */
+            String fileName12 = dir12 + "\\src\\pacmanfx\\resources\\TotalPuntosGanados.txt";
+            File file12 = new File(fileName12);
+            FileReader fr12 = new FileReader(file12);
+            BufferedReader br12 = new BufferedReader(fr12);
+            String line12;
+            while ((line12 = br12.readLine()) != null) {
+                totalPuntos = Integer.parseInt(line12);
+            }
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
@@ -578,56 +594,56 @@ public class SeleccionNivelController extends Controller implements Initializabl
 
         img1.setImage(new Image("/pacmanfx/resources/FondoNivel1.jpg"));
 
-        if (n1 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 1000) {
             img2.setImage(new Image("/pacmanfx/resources/FondoNivel2Lock.jpg"));
             Lock2.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {
             img2.setImage(new Image("/pacmanfx/resources/FondoNivel22.jpg"));
         }
-        if (n2 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 2000) {
             img3.setImage(new Image("/pacmanfx/resources/FondoNivel3Lock.jpg"));
             Lock3.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {
             img3.setImage(new Image("/pacmanfx/resources/FondoNivel3.jpg"));
         }
-        if (n3 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 3000) {
             img4.setImage(new Image("/pacmanfx/resources/FondoNivel4Lock.jpg"));
             Lock4.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {
             img4.setImage(new Image("/pacmanfx/resources/FondoNivel4.jpg"));
         }
 
-        if (n4 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 4000) {
             img5.setImage(new Image("/pacmanfx/resources/FondoNivel5Lock.jpg"));
             Lock5.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {
             img5.setImage(new Image("/pacmanfx/resources/FondoNivel5.jpg"));
         }
-        if (n5 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 5000) {
             img6.setImage(new Image("/pacmanfx/resources/FondoNivel6Lock.jpg"));
             Lock6.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {
             img6.setImage(new Image("/pacmanfx/resources/FondoNivel6.jpg"));
         }
-        if (n6 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 6000) {
             img7.setImage(new Image("/pacmanfx/resources/FondoNivel7Lock.jpg"));
             Lock7.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {
             img7.setImage(new Image("/pacmanfx/resources/FondoNivel7.jpg"));
         }
-        if (n7 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 7000) {
             img8.setImage(new Image("/pacmanfx/resources/FondoNivel8Lock.jpg"));
             Lock8.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {
             img8.setImage(new Image("/pacmanfx/resources/FondoNivel8.jpg"));
         }
-        if (n8 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 8000) {
             img9.setImage(new Image("/pacmanfx/resources/FondoNivel9Lock.jpg"));
             Lock9.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {
             img9.setImage(new Image("/pacmanfx/resources/FondoNivel9.jpg"));
         }
-        if (n9 == 0) {
+        if (totalPuntos+MenuController.PuntosTotales < 9000) {
             img10.setImage(new Image("/pacmanfx/resources/FondoNivel10Lock.jpg"));
             Lock10.setImage(new Image("/pacmanfx/resources/lock2.png"));
         } else {

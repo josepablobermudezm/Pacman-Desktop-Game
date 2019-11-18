@@ -242,7 +242,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            MenuController.PuntosTotales += contPuntos;
+            MenuController.PuntosTotales += contPuntos*10;
             int PuntosPorNivel = 0;
             try {
                 File f = new File(".");
@@ -1137,7 +1137,7 @@ public class Nivel2Controller extends Controller implements Initializable {
 
                             }
                             FlowController.getInstance().initialize();
-                            FlowController.getInstance().goViewInStage("Nivel3", this.getStage());
+                            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
                         }
                         //Cuando se quita los puntos de la pantalla
 
