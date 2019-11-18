@@ -1605,6 +1605,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         });
     }
     Floyd floyd;
+
     private void moveOrangeGhost() {
 
     }
@@ -1640,9 +1641,23 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
             sb.append("\n");
         }
+
         floyd = new Floyd(nodos.size());
         floyd.iniciarMatriz(matPeso);
-        floyd.recuperaCamino(15, 10);
+        floyd.recuperaCamino(30, 10);
+        ArrayList<Nodo> caminos = new ArrayList<>();
+        Circle inicioC = new Circle(nodos.get(30).getPoint2D().getX(), nodos.get(30).getPoint2D().getY(), 6, Paint.valueOf("RED"));
+        Circle finC = new Circle(nodos.get(10).getPoint2D().getX(), nodos.get(10).getPoint2D().getY(), 6, Paint.valueOf("WHITE"));
+        root.getChildren().addAll(inicioC, finC);
+        
+        while (!floyd.getCaminos().isEmpty()) {
+
+            int i = floyd.getCaminos().pop();
+            caminos.add(nodos.get(i));
+            Circle circle = new Circle(nodos.get(i).getPoint2D().getX(), nodos.get(i).getPoint2D().getY(), 6, Paint.valueOf("BLUE"));
+            root.getChildren().add(circle);
+        }
+
         // System.out.println(sb);
     }
 
