@@ -79,6 +79,8 @@ public class ConfiguracionController extends Controller implements Initializable
     @FXML
     private Button btnEliminarTodo;
     private int Dificultad = 0;
+    @FXML
+    private TextField txtFantasmas;
 
     @Override
     public void initialize() {
@@ -708,7 +710,7 @@ public class ConfiguracionController extends Controller implements Initializable
     private void eliminar(ActionEvent event) {
         /*
          *  Le consulto al usuario si de verdad desea eliminar todos sus datos
-        */
+         */
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Mensaje de Confirmación");
         alert.setContentText("¿Estas seguro de que quieres eliminar todos los datos?");
@@ -852,7 +854,6 @@ public class ConfiguracionController extends Controller implements Initializable
                 alert1.setContentText("Error al editar los juegos consecutivos");
                 alert1.showAndWait();
             }
-        } else {
         }
     }
 }
