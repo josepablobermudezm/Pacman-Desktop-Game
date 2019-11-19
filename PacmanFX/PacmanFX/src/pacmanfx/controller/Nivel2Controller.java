@@ -165,9 +165,38 @@ public class Nivel2Controller extends Controller implements Initializable {
                 lblEncierro.setVisible(false);
                 UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
                 EncierroBandera = false;
+                for (int i = 0; i < 2; i++) {
+                    int valorEntero = (int) Math.floor(Math.random() * (4) + 1);
+                    switch (valorEntero) {
+                        case 1:
+                            Platform.runLater(() -> {
+                                estadoInicialRojo();
+                            });
+                            break;
+                        case 2:
+                            Platform.runLater(() -> {
+                                estadoInicialOrange();
+                            });
+                            break;
+                        case 3:
+                            Platform.runLater(() -> {
+                                estadoInicialPink();
+                            });
+                            break;
+                        case 4:
+                            /*
+                        Platform.runLater(() -> {
+                            estadoInicialCyan();
+                        });
+                             */
+                            break;
+                    }
+                }
+
+                pacman.getpMan().setFocusTraversable(true);
                 /*
                 
-                Método a realizar
+                    Método a realizar
                 
                  */
                 contadorEncierro++;
@@ -2321,7 +2350,7 @@ public class Nivel2Controller extends Controller implements Initializable {
     Nodo destinoPink = null;
 
     private void estadoInicialPink() {
-        
+
         Platform.runLater(() -> {
             if (!pilaPink.isEmpty()) {
                 //Saca el primer valor de la cola 
@@ -2420,7 +2449,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             }
         });
     }
-    
+
     boolean existe = false;
 
     boolean contenido(Nodo nodo, Stack<Nodo> listEnlazada) {
@@ -2537,6 +2566,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             }
         });
     }
+
     /*
     Stack<Nodo> pilaOrange = new Stack<>();
     Nodo destinoOrange = null;
@@ -2643,10 +2673,10 @@ public class Nivel2Controller extends Controller implements Initializable {
         });
     }
     
-    */
-
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        contadorEncierro = 0;
         Top10();
         CrearMapa();
         llenarMatPeso();
@@ -2660,7 +2690,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         moveOrangeGhost();
         moveCyanGhost();
         GameOver();
-        EncierroValor = (puntos.size() - 9) / 2;
+        EncierroValor = (puntos.size()) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
         Hilo.correrHilo();

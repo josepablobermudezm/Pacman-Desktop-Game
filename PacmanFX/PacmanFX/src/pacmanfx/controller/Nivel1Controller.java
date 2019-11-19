@@ -1988,6 +1988,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     }
 
     public void Inicio() {
+        contadorEncierro = 0;
         Top10();
         CrearMapa();
         llenarMatPeso();
