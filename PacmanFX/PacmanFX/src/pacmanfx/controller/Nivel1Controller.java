@@ -1491,7 +1491,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             LinkedList<Nodo> listEnlazada = new LinkedList();
             aristasAux.stream().forEach((t) -> {
                 /*
-                 *   Si contiene origen guardamos destino, de lo contrario guardamos destino
+                 *   Si contiene origen guardamos destino, de lo contrario guardamos origen
                  */
                 if (listEnlazada.size() > 1) {
                     if (listEnlazada.contains(t.getDestino())) {
@@ -1633,6 +1633,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             });
         });
     }
+    
     Floyd floyd;
     int index1 = 10000, index2;
 

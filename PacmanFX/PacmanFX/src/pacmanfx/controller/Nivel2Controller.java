@@ -1786,6 +1786,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         int valorEntero = (int) Math.floor(Math.random() * (3) + 1);
         return valorEntero;
     }
+
     Nodo nodoOrigen;
     Nodo nFinal;
 
@@ -1872,6 +1873,17 @@ public class Nivel2Controller extends Controller implements Initializable {
             timeline.getKeyFrames().addAll(kf2, kf);
 
             timeline.play();
+            timeline.currentTimeProperty().addListener((observable) -> {
+                Platform.runLater(() -> {
+                    if (muerto) {
+                        //inicial = auxNodo5;
+                        colaRed.clear();
+                        timeline.stop();
+                        estadoInicialRojo();
+                    }
+                });
+
+            });
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             timeline.setOnFinished((event) -> {
                 Platform.runLater(() -> {
@@ -1879,11 +1891,11 @@ public class Nivel2Controller extends Controller implements Initializable {
                     if (aristasAux != null && !aristasAux.isEmpty()) {
                         aristasAux.get(0).setBloqueado(false);
                     }
+
                     if (!muerto) {
                         moveRedGhost();
                     } else {
-                        devolverRojo();
-                        System.out.println("está muerto");
+                     //   estadoInicialRojo();
                     }
                 });
             });
@@ -1898,6 +1910,7 @@ public class Nivel2Controller extends Controller implements Initializable {
     Nodo auxNodo6;
 
     void movePinkGhost() {
+
         Platform.runLater(() -> {
             if (inicial2 == null) {
                 nodos.stream().forEach((t) -> {
@@ -1988,132 +2001,278 @@ public class Nivel2Controller extends Controller implements Initializable {
 
     public void GameOver() {
         redGhost.layoutXProperty().addListener((x) -> {
-            int x1 = (int) redGhost.getLayoutX() + 12;
-            int x2 = (int) redGhost.getLayoutX() + 16;
-            int y1 = (int) redGhost.getLayoutY() + 12;
-            int y2 = (int) redGhost.getLayoutY() + 16;
-            if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                    && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-                root.getChildren().remove(pacman.getpMan());
-                pacman.getpMan().setCenterX(447.0);
-                pacman.getpMan().setCenterY(405.0);
-                muerto = true;
+            if (!muerto) {
+                fantasma();
             }
+
         });
+
         redGhost.layoutYProperty().addListener((x) -> {
-            int x1 = (int) redGhost.getLayoutX() + 12;
-            int x2 = (int) redGhost.getLayoutX() + 16;
-            int y1 = (int) redGhost.getLayoutY() + 12;
-            int y2 = (int) redGhost.getLayoutY() + 16;
-            if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                    && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-                root.getChildren().remove(pacman.getpMan());
-                pacman.getpMan().setCenterX(447.0);
-                pacman.getpMan().setCenterY(405.0);
-                muerto = true;
+            if (!muerto) {
+                fantasma();
             }
         });
     }
 
-    public void devolverRojo() {
+    private void fantasma() {
+        int x1 = (int) redGhost.getLayoutX() + 12;
+        int x2 = (int) redGhost.getLayoutX() + 16;
+        int y1 = (int) redGhost.getLayoutY() + 12;
+        int y2 = (int) redGhost.getLayoutY() + 16;
+        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
+                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
+            root.getChildren().remove(pacman.getpMan());
+            pacman.getpMan().setCenterX(447.0);
+            pacman.getpMan().setCenterY(405.0);
+            muerto = true;
+        }
+    }
 
+    Queue<Nodo> colaRed = new LinkedList<>();
+    Queue<Nodo> colaPink = new LinkedList<>();
+    Queue<Nodo> colaOrange = new LinkedList<>();
+    Queue<Nodo> colaCyan = new LinkedList<>();
+
+    public void estadoInicialRojo() {
         Platform.runLater(() -> {
+            if (!colaRed.isEmpty()) {
+                //Saca el primer valor de la pila 
+                auxNodo5 = colaRed.poll();
+                Timeline timeline = new Timeline();
+                Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
 
-            nodos.stream().forEach((t) -> {
-                //System.out.println(t.getAristas_Adyacentes().size());
-                if (t.getPoint2D().getX() == 527.0 && t.getPoint2D().getY() == 305.0) {
-                    nodoDestino = t;
-                }
-            });
-
-            nodos.stream().forEach((t) -> {
-                //System.out.println(t.getAristas_Adyacentes().size());
-                if (t.getPoint2D().getX() == redGhost.getLayoutX() && t.getPoint2D().getY() == redGhost.getLayoutY()) {
-                    inicial2 = t;
-                }
-            });
-
-            Dijkstra dijkstra;
-            nodos.stream().forEach((t) -> {
-                t.setLongitud(0);
-                t.setMarca(false);
-                t.setNodoAntecesorDisjktra(null);
-            });
-
-            inicial2.setMarca(false);
-            dijkstra = new Dijkstra(new Grafo(nodos, aristas));
-            dijkstra.ejecutar(inicial2);
-
-            List<Arista> aristasAux;
-
-            if (nodoDestino != null) {
-                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
-            } else {
-                aristasAux = dijkstra.marcarRutaCorta(nodoOrigen);
-            }
-
-            //Doy vuelta a la lista 
-            Collections.reverse(aristasAux);
-            /*
-             *  Bloqueamos a la primera arista del fantasma
-             */
-            if (aristasAux != null && !aristasAux.isEmpty()) {
-                aristasAux.get(0).setBloqueado(true);
-            }
-            LinkedList<Nodo> listEnlazada = new LinkedList();
-            aristasAux.stream().forEach((t) -> {
-                /*
-                 *   Si contiene origen guardamos destino, de lo contrario guardamos destino
-                 */
-                if (listEnlazada.size() > 1) {
-                    if (listEnlazada.contains(t.getDestino())) {
-                        listEnlazada.add(t.getOrigen());
-                    } else {
-                        listEnlazada.add(t.getDestino());
-                    }
-                } else {
-                    if (t.getDestino().getPoint2D().getX() == inicial2.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial2.getPoint2D().getY()) {
-                        listEnlazada.add(t.getOrigen());
-                    } else {
-                        listEnlazada.add(t.getDestino());
-                    }
-                }
-            });
-
-            Queue<Nodo> cola = new LinkedList(listEnlazada);
-
-            nodoAux7 = cola.poll();
-            if (nodoAux7 == null) {
-                nodoAux7 = nodoOrigen;
-            }
-
-            Timeline timeline = new Timeline();
-            Double distance = inicial2.getPoint2D().distance(nodoAux7.getPoint2D());
-            KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), nodoAux7.getPoint2D().getY() - 14);
-            KeyValue kv = new KeyValue(redGhost.layoutXProperty(), nodoAux7.getPoint2D().getX() - 14);
-            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 8) * 100), kv2);
-            KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
-            timeline.getKeyFrames().addAll(kf2, kf);
-
-            timeline.play();
-            //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
-            timeline.setOnFinished((event) -> {
-                Platform.runLater(() -> {
-                    inicial2 = nodoAux7;
-                    if (aristasAux != null && !aristasAux.isEmpty()) {
-                        aristasAux.get(0).setBloqueado(false);
-                    }
-                    moveRedGhost();
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial = auxNodo5;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!colaRed.isEmpty()) {
+                            estadoInicialRojo();
+                        }
+                    });
                 });
-            });
+            } else {
+                // inicial = auxNodo5;
+                nodos.stream().forEach((t) -> {
+                    t.setLongitud(0);
+                    t.setMarca(false);
+                    t.setNodoAntecesorDisjktra(null);
+                });
+           
+
+                aristas.stream().forEach((t) -> {
+                    t.setBloqueado(false);
+                });
+
+                nodos.stream().forEach((t) -> {
+                    //System.out.println(t.getAristas_Adyacentes().size());
+                    if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
+                        nodoDestino = t;
+                    }
+                });
+
+                /*nodos.stream().forEach((t) -> {
+                    //System.out.println(t.getAristas_Adyacentes().size());
+                    if (t.getPoint2D().getX() == redGhost.getLayoutX() && t.getPoint2D().getY() == redGhost.getLayoutY()) {
+                        inicial2 = t;
+                    }
+                });*/
+                Dijkstra dijkstra;
+
+                inicial.setMarca(false);
+                inicial.setNodoAntecesorDisjktra(null);
+                inicial.setLongitud(0);
+                dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+                dijkstra.ejecutar(inicial);
+
+                List<Arista> aristasAux;
+                /*   System.out.println("Inicial "+ inicial2);
+                System.out.println("Origen "+ nodoOrigen);
+                
+                nodoOrigen.setLongitud(0);
+                nodoOrigen.setMarca(false);
+                nodoOrigen.setNodoAntecesorDisjktra(null);
+                System.out.println("Destino "+ nodoDestino);*/
+                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+
+                //Doy vuelta a la lista 
+                Collections.reverse(aristasAux);
+                /*
+             *  Bloqueamos a la primera arista del fantasma
+                 */
+                //System.out.println(aristasAux.size());
+                LinkedList<Nodo> listEnlazada = new LinkedList();
+                aristasAux.stream().forEach((t) -> {
+                    /*
+                 *   Si contiene origen guardamos destino, de lo contrario guardamos destino
+                     */
+                    if (listEnlazada.size() > 1) {
+                        if (listEnlazada.contains(t.getDestino())) {
+                            listEnlazada.add(t.getOrigen());
+                        } else {
+                            listEnlazada.add(t.getDestino());
+                        }
+                    } else {
+                        if (t.getDestino().getPoint2D().getX() == inicial.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial.getPoint2D().getY()) {
+                            listEnlazada.add(t.getOrigen());
+                        } else {
+                            listEnlazada.add(t.getDestino());
+                        }
+                    }
+                });
+                
+                colaRed = new LinkedList(listEnlazada);
+                //Saca el primer valor de la pila 
+                auxNodo5 = colaRed.poll();
+                System.out.println("Cola "+ colaRed.size());
+                Timeline timeline = new Timeline();
+                Double distance = new Point2D(redGhost.getLayoutX(), redGhost.getLayoutY()).distance(auxNodo5.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial = auxNodo5;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!colaRed.isEmpty()) {
+                            estadoInicialRojo();
+                        }
+                    });
+                });
+            }
         });
     }
 
+    public void estadoInicialOrange() {
+        Platform.runLater(() -> {
+            if (!colaOrange.isEmpty()) {
+                //Saca el primer valor de la pila 
+                auxNodo5 = colaRed.poll();
+                Timeline timeline = new Timeline();
+                Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial = auxNodo5;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!colaOrange.isEmpty()) {
+                            estadoInicialRojo();
+                        }
+                    });
+                });
+            } else {
+                // inicial = auxNodo5;
+                nodos.stream().forEach((t) -> {
+                    t.setLongitud(0);
+                    t.setMarca(false);
+                    t.setNodoAntecesorDisjktra(null);
+                });
+
+                aristas.stream().forEach((t) -> {
+                    t.setBloqueado(false);
+                });
+
+                nodos.stream().forEach((t) -> {
+                    //System.out.println(t.getAristas_Adyacentes().size());
+                    if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
+                        nodoDestino = t;
+                    }
+                });
+
+                /*nodos.stream().forEach((t) -> {
+                    //System.out.println(t.getAristas_Adyacentes().size());
+                    if (t.getPoint2D().getX() == redGhost.getLayoutX() && t.getPoint2D().getY() == redGhost.getLayoutY()) {
+                        inicial2 = t;
+                    }
+                });*/
+                Dijkstra dijkstra;
+
+                inicial.setMarca(false);
+                dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+                dijkstra.ejecutar(inicial);
+
+                List<Arista> aristasAux;
+                /*   System.out.println("Inicial "+ inicial2);
+                System.out.println("Origen "+ nodoOrigen);
+                
+                nodoOrigen.setLongitud(0);
+                nodoOrigen.setMarca(false);
+                nodoOrigen.setNodoAntecesorDisjktra(null);
+                System.out.println("Destino "+ nodoDestino);*/
+                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+
+                //Doy vuelta a la lista 
+                Collections.reverse(aristasAux);
+                /*
+             *  Bloqueamos a la primera arista del fantasma
+                 */
+                //System.out.println(aristasAux.size());
+                LinkedList<Nodo> listEnlazada = new LinkedList();
+                aristasAux.stream().forEach((t) -> {
+                    /*
+                 *   Si contiene origen guardamos destino, de lo contrario guardamos destino
+                     */
+                    if (listEnlazada.size() > 1) {
+                        if (listEnlazada.contains(t.getDestino())) {
+                            listEnlazada.add(t.getOrigen());
+                        } else {
+                            listEnlazada.add(t.getDestino());
+                        }
+                    } else {
+                        if (t.getDestino().getPoint2D().getX() == inicial.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial.getPoint2D().getY()) {
+                            listEnlazada.add(t.getOrigen());
+                        } else {
+                            listEnlazada.add(t.getDestino());
+                        }
+                    }
+                });
+                colaOrange = new LinkedList(listEnlazada);
+                //Saca el primer valor de la pila 
+                auxNodo5 = colaOrange.poll();
+                Timeline timeline = new Timeline();
+                Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial = auxNodo5;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!colaOrange.isEmpty()) {
+                            estadoInicialRojo();
+                        }
+                    });
+                });
+            }
+        });
+
+    }
     boolean muerto = false;
 
-    //bdbd00
     @Override
-
     public void initialize(URL location, ResourceBundle resources) {
         Top10();
         CrearMapa();
@@ -2126,8 +2285,8 @@ public class Nivel2Controller extends Controller implements Initializable {
         moveRedGhost();
         movePinkGhost();
         moveOrangeGhost();
-        GameOver();
         moveCyanGhost();
+        GameOver();
         EncierroValor = (puntos.size() - 9) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
