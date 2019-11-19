@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -703,6 +706,153 @@ public class ConfiguracionController extends Controller implements Initializable
 
     @FXML
     private void eliminar(ActionEvent event) {
-    }
+        /*
+         *  Le consulto al usuario si de verdad desea eliminar todos sus datos
+        */
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Mensaje de Confirmación");
+        alert.setContentText("¿Estas seguro de que quieres eliminar todos los datos?");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            try {
+                String content = "0";
+                String content2 = "";
+                File f1 = new File(".");
+                String dir1 = f1.getAbsolutePath();
+                String path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\CantidadNivelesCompletados.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Datos.txt";
+                Files.write(Paths.get(path), content2.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel10Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel1Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel2Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel3Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel4Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel5Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel6Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel7Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel8Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\DifNivel9Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Encierro5Veces.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Encierro5VecesCont.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\FantasmasComidos.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel10Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel1Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel2Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel3Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel4Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel5Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel6Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel7Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel8Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\IntNivel9Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel10Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel2Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel3Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel4Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel5Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel6Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel7Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel8Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Nivel9Completado.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo1.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo2.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo3.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo4.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo5.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo6.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo7.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo8.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo9.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo10.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidasCont.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas1.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas2.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas3.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas4.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas5.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas6.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas7.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas8.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas9.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\Partidas10.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\TiempoTotalJuego.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\TotalPuntosGanados.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                path = dir1 + "\\src\\pacmanfx\\resources\\NoPerderVidas.txt";
+                Files.write(Paths.get(path), content.getBytes());
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("Menu", this.getStage());
+            } catch (Exception ex) {
+                Logger.getLogger(MenuController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+                Alert alert1 = new Alert(Alert.AlertType.ERROR);
+                alert1.setTitle("Edición Juegos Consecutivos");
+                alert1.setContentText("Error al editar los juegos consecutivos");
+                alert1.showAndWait();
+            }
+        } else {
+        }
+    }
 }
