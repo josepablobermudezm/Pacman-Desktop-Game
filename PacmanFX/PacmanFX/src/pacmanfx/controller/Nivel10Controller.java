@@ -1501,6 +1501,18 @@ public class Nivel10Controller extends Controller implements Initializable {
             timeline.getKeyFrames().addAll(kf2, kf);
 
             timeline.play();
+            timeline.currentTimeProperty().addListener((observable) -> {
+                Platform.runLater(() -> {
+                    if (muertoRed) {
+                        inicial = auxNodo5;
+                        pilaRed.clear();
+                        timeline.stop();
+                        muertoRed = false;
+                        estadoInicialRojo();
+                    }
+                });
+
+            });
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             timeline.setOnFinished((event) -> {
                 Platform.runLater(() -> {
@@ -1508,9 +1520,17 @@ public class Nivel10Controller extends Controller implements Initializable {
                     if (aristasAux != null && !aristasAux.isEmpty()) {
                         aristasAux.get(0).setBloqueado(false);
                     }
-                    moveRedGhost();
-                });
 
+                    if (!muertoRed) {
+                        moveRedGhost();
+                    } else {
+                        inicial = auxNodo5;
+                        pilaRed.clear();
+                        timeline.stop();
+                        muertoRed = false;
+                        estadoInicialRojo();
+                    }
+                });
             });
 
         });
@@ -1596,6 +1616,19 @@ public class Nivel10Controller extends Controller implements Initializable {
             KeyFrame kf = new KeyFrame(Duration.millis((distance / 8) * 100), kv);
             timeline.getKeyFrames().addAll(kf2, kf);
 
+            //Mientras se esta moviendo
+            timeline.currentTimeProperty().addListener((observable) -> {
+                Platform.runLater(() -> {
+                    if (muertoPink) {
+                        inicial2 = auxNodo6;
+                        pilaPink.clear();
+                        timeline.stop();
+                        muertoPink = false;
+                        estadoInicialPink();
+                    }
+                });
+            });
+
             timeline.play();
             //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
             timeline.setOnFinished((event) -> {
@@ -1604,7 +1637,15 @@ public class Nivel10Controller extends Controller implements Initializable {
                     if (aristasAux != null && !aristasAux.isEmpty()) {
                         aristasAux.get(0).setBloqueado(false);
                     }
-                    movePinkGhost();
+
+                    if (!muertoPink) {
+                        movePinkGhost();
+                    } else {
+                        inicial2 = auxNodo6;
+                        pilaPink.clear();
+                        muertoPink = false;
+                        estadoInicialPink();
+                    }
                 });
             });
         });
@@ -1634,7 +1675,13 @@ public class Nivel10Controller extends Controller implements Initializable {
                 timeline.setOnFinished((event) -> {
                     //floyd.getCaminos().clear();
                     index1 = index2;
-                    moveOrangeGhost();
+                    if (!muertoOrange) {
+                        moveOrangeGhost();
+                    } else {
+                        pilaOrange.clear();
+                        muertoOrange = false;
+                        estadoInicialOrange();
+                    }
                 });
             } else {
                 if (index1 == 10000) {
@@ -1661,11 +1708,30 @@ public class Nivel10Controller extends Controller implements Initializable {
                     timeline.getKeyFrames().addAll(kf2, kf);
 
                     timeline.play();
+                    //Mientras se esta moviendo
+                    timeline.currentTimeProperty().addListener((observable) -> {
+                        Platform.runLater(() -> {
+                            if (muertoOrange) {
+                                index1 = index2;
+                                timeline.stop();
+                                pilaOrange.clear();
+                                muertoOrange = false;
+                                estadoInicialOrange();
+                            }
+                        });
+
+                    });
 
                     timeline.setOnFinished((event) -> {
                         //floyd.getCaminos().clear();
                         index1 = index2;
-                        moveOrangeGhost();
+                        if (!muertoOrange) {
+                            moveOrangeGhost();
+                        } else {
+                            pilaOrange.clear();
+                            muertoOrange = false;
+                            estadoInicialOrange();
+                        }
                     });
                 }
             }
@@ -1752,14 +1818,33 @@ public class Nivel10Controller extends Controller implements Initializable {
                 timeline.getKeyFrames().addAll(kf2, kf);
 
                 timeline.play();
+                //Mientras se esta moviendo
+                timeline.currentTimeProperty().addListener((observable) -> {
+                    Platform.runLater(() -> {
+                        if (muertoCyan) {
+                            ind1 = ind2;
+                            pilaCyan.clear();
+                            timeline.stop();
+                            muertoCyan = false;
+                            estadoInicialCyan();
+                        }
+                    });
+                });
+
                 timeline.setOnFinished((event) -> {
                     //floyd.getCaminos().clear();
 
                     ind1 = ind2;
-                    if (floyd2.getCaminos().isEmpty()) {
-                        moveCyanGhost();
+                    if (muertoCyan) {
+                        pilaCyan.clear();
+                        muertoCyan = false;
+                        estadoInicialCyan();
                     } else {
-                        caso1();
+                        if (floyd2.getCaminos().isEmpty()) {
+                            moveCyanGhost();
+                        } else {
+                            caso1();
+                        }
                     }
 
                 });
@@ -1788,14 +1873,31 @@ public class Nivel10Controller extends Controller implements Initializable {
                     timeline.getKeyFrames().addAll(kf2, kf);
 
                     timeline.play();
-
+                    //Mientras se esta moviendo
+                    timeline.currentTimeProperty().addListener((observable) -> {
+                        Platform.runLater(() -> {
+                            if (muertoCyan) {
+                                ind1 = ind2;
+                                pilaCyan.clear();
+                                timeline.stop();
+                                muertoCyan = false;
+                                estadoInicialCyan();
+                            }
+                        });
+                    });
                     timeline.setOnFinished((event) -> {
                         //floyd.getCaminos().clear();
                         ind1 = ind2;
-                        if (floyd2.getCaminos().isEmpty()) {
-                            moveCyanGhost();
+                        if (muertoCyan) {
+                            pilaCyan.clear();
+                            muertoCyan = false;
+                            estadoInicialCyan();
                         } else {
-                            caso1();
+                            if (floyd2.getCaminos().isEmpty()) {
+                                moveCyanGhost();
+                            } else {
+                                caso1();
+                            }
                         }
                     });
                 }
@@ -1817,14 +1919,33 @@ public class Nivel10Controller extends Controller implements Initializable {
                 timeline.getKeyFrames().addAll(kf2, kf);
 
                 timeline.play();
+                //Mientras se esta moviendo
+                timeline.currentTimeProperty().addListener((observable) -> {
+                    Platform.runLater(() -> {
+                        if (muertoCyan) {
+                            ind1 = ind2;
+                            pilaCyan.clear();
+                            timeline.stop();
+                            muertoCyan = false;
+                            estadoInicialCyan();
+                        }
+                    });
+                });
+
                 timeline.setOnFinished((event) -> {
                     //floyd.getCaminos().clear();
 
                     ind1 = ind2;
-                    if (floyd2.getCaminos().isEmpty()) {
-                        moveCyanGhost();
+                    if (muertoCyan) {
+                        pilaCyan.clear();
+                        muertoCyan = false;
+                        estadoInicialCyan();
                     } else {
-                        caso2();
+                        if (floyd2.getCaminos().isEmpty()) {
+                            moveCyanGhost();
+                        } else {
+                            caso2();
+                        }
                     }
 
                 });
@@ -1854,14 +1975,32 @@ public class Nivel10Controller extends Controller implements Initializable {
                     timeline.getKeyFrames().addAll(kf2, kf);
 
                     timeline.play();
+                    //Mientras se esta moviendo
+                    timeline.currentTimeProperty().addListener((observable) -> {
+                        Platform.runLater(() -> {
+                            if (muertoCyan) {
+                                ind1 = ind2;
+                                pilaCyan.clear();
+                                timeline.stop();
+                                muertoCyan = false;
+                                estadoInicialCyan();
+                            }
+                        });
+                    });
 
                     timeline.setOnFinished((event) -> {
                         //floyd.getCaminos().clear();
                         ind1 = ind2;
-                        if (floyd2.getCaminos().isEmpty()) {
-                            moveCyanGhost();
+                        if (muertoCyan) {
+                            pilaCyan.clear();
+                            muertoCyan = false;
+                            estadoInicialCyan();
                         } else {
-                            caso2();
+                            if (floyd2.getCaminos().isEmpty()) {
+                                moveCyanGhost();
+                            } else {
+                                caso2();
+                            }
                         }
                     });
                 }
@@ -1883,16 +2022,35 @@ public class Nivel10Controller extends Controller implements Initializable {
                 timeline.getKeyFrames().addAll(kf2, kf);
 
                 timeline.play();
+                //Mientras se esta moviendo
+                timeline.currentTimeProperty().addListener((observable) -> {
+                    Platform.runLater(() -> {
+                        if (muertoCyan) {
+                            ind1 = ind2;
+                            pilaCyan.clear();
+                            timeline.stop();
+                            muertoCyan = false;
+                            estadoInicialCyan();
+                        }
+                    });
+
+                });
                 timeline.setOnFinished((event) -> {
                     //floyd.getCaminos().clear();
 
+                    //floyd.getCaminos().clear();
                     ind1 = ind2;
-                    if (floyd2.getCaminos().isEmpty()) {
-                        moveCyanGhost();
+                    if (muertoCyan) {
+                        pilaCyan.clear();
+                        muertoCyan = false;
+                        estadoInicialCyan();
                     } else {
-                        caso3();
+                        if (floyd2.getCaminos().isEmpty()) {
+                            moveCyanGhost();
+                        } else {
+                            caso3();
+                        }
                     }
-
                 });
             } else {
                 if (ind1 == 10000) {
@@ -1921,14 +2079,31 @@ public class Nivel10Controller extends Controller implements Initializable {
                     timeline.getKeyFrames().addAll(kf2, kf);
 
                     timeline.play();
-
+                    //Mientras se esta moviendo
+                    timeline.currentTimeProperty().addListener((observable) -> {
+                        Platform.runLater(() -> {
+                            if (muertoCyan) {
+                                ind1 = ind2;
+                                pilaCyan.clear();
+                                timeline.stop();
+                                muertoCyan = false;
+                                estadoInicialCyan();
+                            }
+                        });
+                    });
                     timeline.setOnFinished((event) -> {
                         //floyd.getCaminos().clear();
                         ind1 = ind2;
-                        if (floyd2.getCaminos().isEmpty()) {
-                            moveCyanGhost();
+                        if (muertoCyan) {
+                            pilaCyan.clear();
+                            muertoCyan = false;
+                            estadoInicialCyan();
                         } else {
-                            caso3();
+                            if (floyd2.getCaminos().isEmpty()) {
+                                moveCyanGhost();
+                            } else {
+                                caso3();
+                            }
                         }
 
                     });
@@ -1959,8 +2134,568 @@ public class Nivel10Controller extends Controller implements Initializable {
         return valorEntero;
     }
 
+            
+    public void GameOver() {
+        redGhost.layoutXProperty().addListener((x) -> {
+            if (!muertoRed) {
+                fantasma();
+            }
+        });
+
+        redGhost.layoutYProperty().addListener((x) -> {
+            if (!muertoRed) {
+                fantasma();
+            }
+        });
+
+        cyanGhost.layoutXProperty().addListener((x) -> {
+            if (!muertoCyan) {
+                fantasma();
+            }
+
+        });
+
+        cyanGhost.layoutYProperty().addListener((x) -> {
+            if (!muertoCyan) {
+                fantasma();
+            }
+        });
+
+        orangeGhost.layoutXProperty().addListener((x) -> {
+            if (!muertoOrange) {
+                fantasma();
+            }
+
+        });
+
+        orangeGhost.layoutYProperty().addListener((x) -> {
+            if (!muertoOrange) {
+                fantasma();
+            }
+        });
+
+        pinkGhost.layoutXProperty().addListener((x) -> {
+            if (!muertoPink) {
+                fantasma();
+            }
+
+        });
+
+        pinkGhost.layoutYProperty().addListener((x) -> {
+            if (!muertoPink) {
+                fantasma();
+            }
+        });
+
+    }
+    //Fantasma Rojo
+    boolean muertoRed = false;
+    //Pink
+    boolean muertoPink = false;
+    //Cyan
+    boolean muertoCyan = false;
+    //Anaranjado
+    boolean muertoOrange = false;
+
+    private void fantasma() {
+        int x1 = (int) redGhost.getLayoutX() + 12;
+        int x2 = (int) redGhost.getLayoutX() + 16;
+        int y1 = (int) redGhost.getLayoutY() + 12;
+        int y2 = (int) redGhost.getLayoutY() + 16;
+        //Hacer para 
+        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
+                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
+            root1.getChildren().remove(pacman.getpMan());
+            pacman.getpMan().setCenterX(447.0);
+            pacman.getpMan().setCenterY(405.0);
+            muertoPink = true;
+            muertoRed = true;
+            muertoCyan = true;
+            muertoOrange = true;
+        }
+
+        x1 = (int) cyanGhost.getLayoutX() + 12;
+        x2 = (int) cyanGhost.getLayoutX() + 16;
+        y1 = (int) cyanGhost.getLayoutY() + 12;
+        y2 = (int) cyanGhost.getLayoutY() + 16;
+
+        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
+                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
+            root1.getChildren().remove(pacman.getpMan());
+            pacman.getpMan().setCenterX(447.0);
+            pacman.getpMan().setCenterY(405.0);
+            muertoPink = true;
+            muertoRed = true;
+            muertoCyan = true;
+            muertoOrange = true;
+        }
+
+        x1 = (int) orangeGhost.getLayoutX() + 12;
+        x2 = (int) orangeGhost.getLayoutX() + 16;
+        y1 = (int) orangeGhost.getLayoutY() + 12;
+        y2 = (int) orangeGhost.getLayoutY() + 16;
+
+        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
+                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
+            root1.getChildren().remove(pacman.getpMan());
+            pacman.getpMan().setCenterX(447.0);
+            pacman.getpMan().setCenterY(405.0);
+            muertoPink = true;
+            muertoRed = true;
+            muertoCyan = true;
+            muertoOrange = true;
+        }
+
+        int x1p = (int) pinkGhost.getLayoutX() + 12;
+        int x2p = (int) pinkGhost.getLayoutX() + 16;
+        int y1p = (int) pinkGhost.getLayoutY() + 12;
+        int y2p = (int) pinkGhost.getLayoutY() + 16;
+
+        if ((x1p <= (int) pacman.getpMan().getCenterX() && x2p >= (int) pacman.getpMan().getCenterX())
+                && (y1p <= (int) pacman.getpMan().getCenterY() && y2p >= (int) pacman.getpMan().getCenterY())) {
+            root1.getChildren().remove(pacman.getpMan());
+            pacman.getpMan().setCenterX(447.0);
+            pacman.getpMan().setCenterY(405.0);
+            muertoPink = true;
+            muertoRed = true;
+            muertoCyan = true;
+            muertoOrange = true;
+        }
+    }
+
+    Queue<Nodo> colaRed = new LinkedList<>();
+    Queue<Nodo> colaPink = new LinkedList<>();
+    Queue<Nodo> colaOrange = new LinkedList<>();
+    Queue<Nodo> colaCyan = new LinkedList<>();
+    Stack<Nodo> pilaRed = new Stack<>();
+
+    public void estadoInicialRojo() {
+        Platform.runLater(() -> {
+            if (!pilaRed.isEmpty()) {
+                //Saca el primer valor de la cola 
+                auxNodo5 = pilaRed.pop();
+
+                Timeline timeline = new Timeline();
+                Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial = auxNodo5;
+                        //Si la pila no esta vacia, hacemos recursividad
+                        if (!pilaRed.isEmpty()) {
+                            estadoInicialRojo();
+                        } else {
+
+                        }
+                    });
+                });
+            } else {
+                nodos.stream().forEach((t) -> {
+                    t.setLongitud(0);
+                    t.setMarca(false);
+                    t.setNodoAntecesorDisjktra(null);
+                });
+
+                aristas.stream().forEach((t) -> {
+                    t.setBloqueado(false);
+                });
+
+                nodos.stream().forEach((t) -> {
+                    if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
+                        nodoDestino = t;
+                    }
+                });
+
+                Dijkstra dijkstra;
+
+                inicial.setMarca(false);
+                inicial.setNodoAntecesorDisjktra(null);
+                inicial.setLongitud(0);
+                dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+                dijkstra.ejecutar(inicial);
+
+                List<Arista> aristasAux;
+                pilaRed = new Stack<>();
+                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+                aristasAux.stream().forEach((t) -> {
+                    if (!pilaRed.isEmpty()) {
+                        if (!contenido(t.getDestino(), pilaRed)) {
+                            pilaRed.add(t.getDestino());
+                        } else if (!contenido(t.getOrigen(), pilaRed)) {
+                            pilaRed.add(t.getOrigen());
+                        }
+                    } else {
+                        if (t.getDestino().getPoint2D().getX() == this.nodoDestino.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == this.nodoDestino.getPoint2D().getY()) {
+                            pilaRed.add(t.getDestino());
+                            pilaRed.add(t.getOrigen());
+                        } else {
+                            pilaRed.add(t.getOrigen());
+                            pilaRed.add(t.getDestino());
+                        }
+                    }
+                });
+
+                //Saca el primer valor de la pila 
+                auxNodo5 = pilaRed.pop();
+
+                Timeline timeline = new Timeline();
+                Double distance = new Point2D(redGhost.getLayoutX(), redGhost.getLayoutY()).distance(auxNodo5.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial = auxNodo5;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!pilaRed.isEmpty()) {
+                            estadoInicialRojo();
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    Stack<Nodo> pilaPink = new Stack<>();
+    Nodo destinoPink = null;
+
+    private void estadoInicialPink() {
+
+        Platform.runLater(() -> {
+            if (!pilaPink.isEmpty()) {
+                //Saca el primer valor de la cola 
+                auxNodo6 = pilaPink.pop();
+
+                Timeline timeline = new Timeline();
+                Double distance = inicial2.getPoint2D().distance(auxNodo6.getPoint2D());
+                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), auxNodo6.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), auxNodo6.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial2 = auxNodo6;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!pilaPink.isEmpty()) {
+                            estadoInicialPink();
+                        } else {
+
+                        }
+                    });
+                });
+            } else {
+                nodos.stream().forEach((t) -> {
+                    t.setLongitud(0);
+                    t.setMarca(false);
+                    t.setNodoAntecesorDisjktra(null);
+                });
+
+                aristas.stream().forEach((t) -> {
+                    t.setBloqueado(false);
+                });
+
+                nodos.stream().forEach((t) -> {
+                    if (t.getPoint2D().getX() == 527.0 && t.getPoint2D().getY() == 305.0) {
+                        destinoPink = t;
+                    }
+                });
+
+                Dijkstra dijkstra;
+
+                inicial2.setMarca(false);
+                inicial2.setNodoAntecesorDisjktra(null);
+                inicial2.setLongitud(0);
+                dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+                dijkstra.ejecutar(inicial2);
+
+                List<Arista> aristasAux;
+                pilaPink = new Stack<>();
+                aristasAux = dijkstra.marcarRutaCorta(destinoPink);
+
+                aristasAux.stream().forEach((t) -> {
+                    if (!pilaPink.isEmpty()) {
+                        if (!contenido(t.getDestino(), pilaPink)) {
+                            pilaPink.add(t.getDestino());
+                        } else if (!contenido(t.getOrigen(), pilaPink)) {
+                            pilaPink.add(t.getOrigen());
+                        }
+                    } else {
+                        if (t.getDestino().getPoint2D().getX() == this.destinoPink.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == this.destinoPink.getPoint2D().getY()) {
+                            pilaPink.add(t.getDestino());
+                            pilaPink.add(t.getOrigen());
+                        } else {
+                            pilaPink.add(t.getOrigen());
+                            pilaPink.add(t.getDestino());
+                        }
+                    }
+                });
+
+                //Saca el primer valor de la pila 
+                auxNodo6 = pilaPink.pop();
+
+                Timeline timeline = new Timeline();
+                Double distance = new Point2D(pinkGhost.getLayoutX(), pinkGhost.getLayoutY()).distance(auxNodo6.getPoint2D());
+                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), auxNodo6.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), auxNodo6.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicial2 = auxNodo6;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!pilaPink.isEmpty()) {
+                            estadoInicialPink();
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    boolean existe = false;
+
+    boolean contenido(Nodo nodo, Stack<Nodo> listEnlazada) {
+        existe = false;
+        listEnlazada.stream().forEach((t) -> {
+            if (t.getPoint2D().getX() == nodo.getPoint2D().getX() && t.getPoint2D().getY() == nodo.getPoint2D().getY()) {
+                existe = true;
+            }
+        });
+        return existe;
+    }
+
+    Stack<Nodo> pilaOrange = new Stack<>();
+    Nodo destinoOrange = null;
+    Nodo inicialOrange = null;
+
+    public void estadoInicialOrange() {
+        Platform.runLater(() -> {
+            if (!pilaOrange.isEmpty()) {
+                //Saca el primer valor de la cola 
+                destinoOrange = pilaOrange.pop();
+
+                Timeline timeline = new Timeline();
+                Double distance = inicialOrange.getPoint2D().distance(destinoOrange.getPoint2D());
+                KeyValue kv2 = new KeyValue(orangeGhost.layoutYProperty(), destinoOrange.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(orangeGhost.layoutXProperty(), destinoOrange.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicialOrange = destinoOrange;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!pilaOrange.isEmpty()) {
+                            estadoInicialOrange();
+                        } else {
+
+                        }
+                    });
+                });
+            } else {
+                inicialOrange = nodos.get(index2);
+                nodos.stream().forEach((t) -> {
+                    t.setLongitud(0);
+                    t.setMarca(false);
+                    t.setNodoAntecesorDisjktra(null);
+                });
+
+                aristas.stream().forEach((t) -> {
+                    t.setBloqueado(false);
+                });
+
+                nodos.stream().forEach((t) -> {
+                    if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 305.0) {
+                        destinoOrange = t;
+                    }
+                });
+
+                Dijkstra dijkstra;
+
+                inicialOrange.setMarca(false);
+                inicialOrange.setNodoAntecesorDisjktra(null);
+                inicialOrange.setLongitud(0);
+                dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+                dijkstra.ejecutar(inicialOrange);
+
+                List<Arista> aristasAux;
+                pilaOrange = new Stack<>();
+                aristasAux = dijkstra.marcarRutaCorta(destinoOrange);
+
+                aristasAux.stream().forEach((t) -> {
+                    if (!pilaOrange.isEmpty()) {
+                        if (!contenido(t.getDestino(), pilaOrange)) {
+                            pilaOrange.add(t.getDestino());
+                        } else if (!contenido(t.getOrigen(), pilaOrange)) {
+                            pilaOrange.add(t.getOrigen());
+                        }
+                    } else {
+                        if (t.getDestino().getPoint2D().getX() == this.destinoOrange.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == this.destinoOrange.getPoint2D().getY()) {
+                            pilaOrange.add(t.getDestino());
+                            pilaOrange.add(t.getOrigen());
+                        } else {
+                            pilaOrange.add(t.getOrigen());
+                            pilaOrange.add(t.getDestino());
+                        }
+                    }
+                });
+
+                //Saca el primer valor de la pila 
+                destinoOrange = pilaOrange.pop();
+
+                Timeline timeline = new Timeline();
+                Double distance = new Point2D(orangeGhost.getLayoutX(), orangeGhost.getLayoutY()).distance(destinoOrange.getPoint2D());
+                KeyValue kv2 = new KeyValue(orangeGhost.layoutYProperty(), destinoOrange.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(orangeGhost.layoutXProperty(), destinoOrange.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicialOrange = destinoOrange;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!pilaOrange.isEmpty()) {
+                            estadoInicialOrange();
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    Stack<Nodo> pilaCyan = new Stack<>();
+    Nodo destinoCyan = null;
+    Nodo inicialCyan = null;
+
+    public void estadoInicialCyan() {
+        Platform.runLater(() -> {
+            if (!pilaCyan.isEmpty()) {
+                //Saca el primer valor de la cola 
+                destinoCyan = pilaCyan.pop();
+
+                Timeline timeline = new Timeline();
+                Double distance = inicialCyan.getPoint2D().distance(destinoCyan.getPoint2D());
+                KeyValue kv2 = new KeyValue(cyanGhost.layoutYProperty(), destinoCyan.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(cyanGhost.layoutXProperty(), destinoCyan.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicialCyan = destinoCyan;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!pilaCyan.isEmpty()) {
+                            estadoInicialCyan();
+                        } else {
+
+                        }
+                    });
+                });
+            } else {
+                inicialCyan = nodos.get(ind2);
+                nodos.stream().forEach((t) -> {
+                    t.setLongitud(0);
+                    t.setMarca(false);
+                    t.setNodoAntecesorDisjktra(null);
+                });
+
+                aristas.stream().forEach((t) -> {
+                    t.setBloqueado(false);
+                });
+
+                nodos.stream().forEach((t) -> {
+                    if (t.getPoint2D().getX() == 367.0 && t.getPoint2D().getY() == 305.0) {
+                        destinoCyan = t;
+                    }
+                });
+
+                Dijkstra dijkstra;
+
+                inicialCyan.setMarca(false);
+                inicialCyan.setNodoAntecesorDisjktra(null);
+                inicialCyan.setLongitud(0);
+                dijkstra = new Dijkstra(new Grafo(nodos, aristas));
+                dijkstra.ejecutar(inicialCyan);
+
+                List<Arista> aristasAux;
+                pilaCyan = new Stack();
+                aristasAux = dijkstra.marcarRutaCorta(destinoCyan);
+
+                aristasAux.stream().forEach((t) -> {
+                    if (!pilaCyan.isEmpty()) {
+                        if (!contenido(t.getDestino(), pilaCyan)) {
+                            pilaCyan.add(t.getDestino());
+                        } else if (!contenido(t.getOrigen(), pilaCyan)) {
+                            pilaCyan.add(t.getOrigen());
+                        }
+                    } else {
+                        if (t.getDestino().getPoint2D().getX() == this.destinoCyan.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == this.destinoCyan.getPoint2D().getY()) {
+                            pilaCyan.add(t.getDestino());
+                            pilaCyan.add(t.getOrigen());
+                        } else {
+                            pilaCyan.add(t.getOrigen());
+                            pilaCyan.add(t.getDestino());
+                        }
+                    }
+                });
+
+                //Saca el primer valor de la pila 
+                destinoCyan = pilaCyan.pop();
+
+                Timeline timeline = new Timeline();
+                Double distance = new Point2D(cyanGhost.getLayoutX(), cyanGhost.getLayoutY()).distance(destinoCyan.getPoint2D());
+                KeyValue kv2 = new KeyValue(cyanGhost.layoutYProperty(), destinoCyan.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(cyanGhost.layoutXProperty(), destinoCyan.getPoint2D().getX() - 14);
+                KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
+                KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
+                timeline.getKeyFrames().addAll(kf2, kf);
+
+                timeline.play();
+                //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
+                timeline.setOnFinished((event) -> {
+                    Platform.runLater(() -> {
+                        inicialCyan = destinoCyan;
+                        //Si la cola no esta vacia, hacemos recursividad
+                        if (!pilaCyan.isEmpty()) {
+                            estadoInicialCyan();
+                        }
+                    });
+                });
+            }
+        });
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        contadorEncierro = 0;
         Top10();
         CrearMapa();
         llenarMatPeso();
@@ -1973,6 +2708,7 @@ public class Nivel10Controller extends Controller implements Initializable {
         movePinkGhost();
         moveOrangeGhost();
         moveCyanGhost();
+        GameOver();
         EncierroValor = (puntos.size()) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
