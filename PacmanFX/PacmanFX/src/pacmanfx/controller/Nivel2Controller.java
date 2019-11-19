@@ -32,6 +32,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -153,127 +154,138 @@ public class Nivel2Controller extends Controller implements Initializable {
     Stack<String> pila = new Stack<>();
     private boolean EncierroBandera = false;
 
-    private EventHandler<KeyEvent> moverPacman = event -> {
-        /*
+    private EventHandler<KeyEvent> moverPacman = new EventHandler<KeyEvent>() {
+        @Override
+        public void handle(KeyEvent event) {
+            /*
             Se activa el encierro en el caso que la habilidad este activa
             La condición es: que se presiona le tecla E y que se cumplan las condiciones de Encierro
-         */
-        if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0) {
-            lblEncierro.setVisible(false);
-            UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
-            EncierroBandera = false;
-            /*
+             */
+            if ((event.getCode() == event.getCode().E) && EncierroBandera && contadorEncierro == 0) {
+                lblEncierro.setVisible(false);
+                UsarEncierroContador();//contador para saber si se usa la habilidad al menos 5 veces y entregar premio respectivo
+                EncierroBandera = false;
+                /*
                 
                 Método a realizar
-            
-             */
-            contadorEncierro++;
-        } else if (event.getCode() == event.getCode().DOWN) {
-            if (nodoDestino == null) {
-                movimiento = "DOWN";
-                movimientoOriginal = "DOWN";
-                pila.push("DOWN");
-                down(false);
-            } else {
-                pila.push("DOWN");
-                movimiento = "DOWN";
-            }
-        } else if (event.getCode() == event.getCode().LEFT) {
-            if (nodoDestino == null) {
-                movimiento = "LEFT";
-                movimientoOriginal = "LEFT";
-                pila.push("LEFT");
-                left(false);
-            } else {
-                movimiento = "LEFT";
-                pila.push("LEFT");
-            }
-
-        } else if (event.getCode() == event.getCode().UP) {
-            if (nodoDestino == null) {
-                movimiento = "UP";
-                movimientoOriginal = "UP";
-                pila.push("UP");
-                up(false);
-            } else {
-                movimiento = "UP";
-                pila.push("UP");
-            }
-        } else if (event.getCode() == event.getCode().RIGHT) {
-            if (nodoDestino == null) {
-                movimiento = "RIGHT";
-                movimientoOriginal = "RIGHT";
-                pila.push("RIGHT");
-                right(false);
-            } else {
-                movimiento = "RIGHT";
-                pila.push("RIGHT");
-            }
-        } else if (event.getCode() == event.getCode().ESCAPE) {
-            //aquí se mide guarda el dato con el tiempo que tarda en finalizar un nivel
-            hiloTiempo.finalizado = true;
-            int tiempo = Hilo.getTic();
-            MenuController.TiempoTotalJuego += tiempo;
-            int tiempoActual = 0;
-            try {
-                File f = new File(".");
-                String dir = f.getAbsolutePath();
-                String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo2.txt";
-                File file = new File(fileName);
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
-                String line;
-                while ((line = br.readLine()) != null) {
-                    tiempoActual = Integer.parseInt(line);
+                
+                 */
+                contadorEncierro++;
+            } else if (event.getCode() == event.getCode().DOWN) {
+                if (nodoDestino == null) {
+                    movimiento = "DOWN";
+                    movimientoOriginal = "DOWN";
+                    pila.push("DOWN");
+                    down(false);
+                } else {
+                    pila.push("DOWN");
+                    movimiento = "DOWN";
                 }
-                if (tiempo > tiempoActual) {
-                    try {
-                        String content = String.valueOf(tiempo);
-                        File f1 = new File(".");
-                        String dir1 = f1.getAbsolutePath();
-                        String path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo2.txt";
-                        Files.write(Paths.get(path), content.getBytes());
-                    } catch (IOException ex) {
-                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            } else if (event.getCode() == event.getCode().LEFT) {
+                if (nodoDestino == null) {
+                    movimiento = "LEFT";
+                    movimientoOriginal = "LEFT";
+                    pila.push("LEFT");
+                    left(false);
+                } else {
+                    movimiento = "LEFT";
+                    pila.push("LEFT");
+                }
+            } else if (event.getCode() == event.getCode().UP) {
+                if (nodoDestino == null) {
+                    movimiento = "UP";
+                    movimientoOriginal = "UP";
+                    pila.push("UP");
+                    up(false);
+                } else {
+                    movimiento = "UP";
+                    pila.push("UP");
+                }
+            } else if (event.getCode() == event.getCode().RIGHT) {
+                if (nodoDestino == null) {
+                    movimiento = "RIGHT";
+                    movimientoOriginal = "RIGHT";
+                    pila.push("RIGHT");
+                    right(false);
+                } else {
+                    movimiento = "RIGHT";
+                    pila.push("RIGHT");
+                }
+            } else if (event.getCode() == event.getCode().ESCAPE) {
+                //aquí se mide guarda el dato con el tiempo que tarda en finalizar un nivel
+                hiloTiempo.finalizado = true;
+                int tiempo = Hilo.getTic();
+                MenuController.TiempoTotalJuego += tiempo;
+                int tiempoActual = 0;
+                try {
+                    File f = new File(".");
+                    String dir = f.getAbsolutePath();
+                    String fileName = dir + "\\src\\pacmanfx\\resources\\Mejor_Tiempo2.txt";
+                    File file = new File(fileName);
+                    FileReader fr = new FileReader(file);
+                    BufferedReader br = new BufferedReader(fr);
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        tiempoActual = Integer.parseInt(line);
                     }
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            MenuController.PuntosTotales += contPuntos * 10;
-            int PuntosPorNivel = 0;
-            try {
-                File f = new File(".");
-                String dir = f.getAbsolutePath();
-                String fileName = dir + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
-                File file = new File(fileName);
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
-                String line;
-                while ((line = br.readLine()) != null) {
-                    PuntosPorNivel = Integer.parseInt(line);
-                }
-                if (contPuntos > PuntosPorNivel) {
-                    try {
-                        String content = String.valueOf(contPuntos);
-                        File f1 = new File(".");
-                        String dir1 = f1.getAbsolutePath();
-                        String path = dir1 + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
-                        Files.write(Paths.get(path), content.getBytes());
-                    } catch (IOException ex) {
-                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    if (tiempo > tiempoActual) {
+                        try {
+                            String content = String.valueOf(tiempo);
+                            File f1 = new File(".");
+                            String dir1 = f1.getAbsolutePath();
+                            String path = dir1 + "\\src\\pacmanfx\\resources\\Mejor_Tiempo2.txt";
+                            Files.write(Paths.get(path), content.getBytes());
+                        } catch (IOException ex) {
+                            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+                MenuController.PuntosTotales += contPuntos * 10;
+                int PuntosPorNivel = 0;
+                try {
+                    File f = new File(".");
+                    String dir = f.getAbsolutePath();
+                    String fileName = dir + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                    File file = new File(fileName);
+                    FileReader fr = new FileReader(file);
+                    BufferedReader br = new BufferedReader(fr);
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        PuntosPorNivel = Integer.parseInt(line);
+                    }
+                    if (contPuntos > PuntosPorNivel) {
+                        try {
+                            String content = String.valueOf(contPuntos);
+                            File f1 = new File(".");
+                            String dir1 = f1.getAbsolutePath();
+                            String path = dir1 + "\\src\\pacmanfx\\resources\\MayorCantidadDePuntosPartida.txt";
+                            Files.write(Paths.get(path), content.getBytes());
+                        } catch (IOException ex) {
+                            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                /*
+                 *  Guardamos el puntaje en el arrayList, lo acomodamos de mayor a menos y cojemos los primeros 10
+                 */
+
+                TopList.add(contPuntos*10);
+                
+                Collections.sort(TopList);
+                Collections.reverse(TopList);
+                OrganizarTop();
+                
+                FlowController.getInstance().initialize();
+                FlowController.getInstance().goViewInStage("SeleccionNivel", Nivel2Controller.this.getStage());
             }
-            FlowController.getInstance().initialize();
-            FlowController.getInstance().goViewInStage("SeleccionNivel", this.getStage());
         }
     };
 
@@ -1986,6 +1998,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                     t.setMarca(false);
                     t.setNodoAntecesorDisjktra(null);
                 });
+           
 
                 aristas.stream().forEach((t) -> {
                     t.setBloqueado(false);
@@ -2195,6 +2208,7 @@ public class Nivel2Controller extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Top10();
         CrearMapa();
         llenarMatPeso();
         //Inicio el movimiento del PacMan hacia la derecha
@@ -2341,5 +2355,140 @@ public class Nivel2Controller extends Controller implements Initializable {
          *   Que el pacman se haya comido la mitad de los puntos del mapa y que no haya perdido ninguna vida
          */
         return ((((puntos.size() - 9) > EncierroValor - 4) && ((puntos.size() - 9) < EncierroValor + 4)) && (vidas == 6));
+    }
+
+    private ArrayList<Integer> TopList = new ArrayList();
+
+    public void Top10() {
+        /*
+         * Basicamente lleno el ArrayList con los datos Top que tengo en los txt
+         */
+        try {
+            File f13 = new File(".");
+            String dir13 = f13.getAbsolutePath();
+            String fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top1.txt";
+            File file13 = new File(fileName13);
+            FileReader fr13 = new FileReader(file13);
+            BufferedReader br13 = new BufferedReader(fr13);
+            String line13;
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top2.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top3.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top4.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top5.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top6.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top7.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top8.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top9.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+            fileName13 = dir13 + "\\src\\pacmanfx\\resources\\Top10.txt";
+            file13 = new File(fileName13);
+            fr13 = new FileReader(file13);
+            br13 = new BufferedReader(fr13);
+            while ((line13 = br13.readLine()) != null) {
+                TopList.add(Integer.parseInt(line13));
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        TopList.stream().forEach(c -> {
+            System.out.println(c);
+        });
+    }
+    
+    private void OrganizarTop(){
+        try {
+            String content = String.valueOf(TopList.get(0));
+            File f1 = new File(".");
+            String dir1 = f1.getAbsolutePath();
+            String path = dir1 + "\\src\\pacmanfx\\resources\\Top1.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(1));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top2.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(2));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top3.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(3));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top4.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(4));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top5.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(5));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top6.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(6));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top7.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(7));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top8.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(8));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top9.txt";
+            Files.write(Paths.get(path), content.getBytes());
+            content = String.valueOf(TopList.get(9));
+            path = dir1 + "\\src\\pacmanfx\\resources\\Top10.txt";
+            Files.write(Paths.get(path), content.getBytes());
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Editar Puntos Totales");
+            alert.setContentText("Error al editar Puntos totales");
+            alert.showAndWait();
+        }
     }
 }

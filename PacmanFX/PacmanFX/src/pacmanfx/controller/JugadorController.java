@@ -58,11 +58,27 @@ public class JugadorController extends Controller {
     private ImageView logro5;
     @FXML
     private ImageView logro6;
-
+    private boolean img1 = false, img2 = false, img3 = false, img4 = false, img5 = false, img6 = false;
     int Nivel1 = 0, Nivel2 = 0, Nivel3 = 0, Nivel4 = 0, Nivel5 = 0, Nivel6 = 0, Nivel7 = 0, Nivel8 = 0, Nivel9 = 0, Nivel10 = 0,
             Nivel11 = 0, Nivel22 = 0, Nivel33 = 0, Nivel44 = 0, Nivel55 = 0, Nivel66 = 0, Nivel77 = 0, Nivel88 = 0, Nivel99 = 0, Nivel100 = 0,
             Nivel111 = 0, Nivel222 = 0, Nivel333 = 0, Nivel444 = 0, Nivel555 = 0, Nivel666 = 0, Nivel777 = 0, Nivel888 = 0, Nivel999 = 0, Nivel1000 = 0,
             cantFantasmas = 0, vidasConsecutivas = 0, vidasConsecutivasAux = 0, EncierroCont = 0;
+    @FXML
+    private Label lbl8;
+    @FXML
+    private Label lbl1;
+    @FXML
+    private Label lbl2;
+    @FXML
+    private Label lbl3;
+    @FXML
+    private Label lbl4;
+    @FXML
+    private Label lbl5;
+    @FXML
+    private Label lbl6;
+    @FXML
+    private Label lbl7;
 
     /**
      * Initializes the controller class.
@@ -71,13 +87,6 @@ public class JugadorController extends Controller {
     public void initialize() {
         Image imgLogo;
         omg.setImage(new Image("/pacmanfx/resources/fondo8.jpg"));
-        /*logro1.setImage(new Image("/pacmanfx/resources/premio.png"));
-        logro2.setImage(new Image("/pacmanfx/resources/premio.png"));
-        logro3.setImage(new Image("/pacmanfx/resources/premio.png"));
-        logro4.setImage(new Image("/pacmanfx/resources/premio.png"));
-        logro5.setImage(new Image("/pacmanfx/resources/premio.png"));
-        logro6.setImage(new Image("/pacmanfx/resources/premio.png"));
-         */
         try {
             try {
                 File f = new File(".");
@@ -95,7 +104,7 @@ public class JugadorController extends Controller {
             } catch (IOException ex) {
                 Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             File f = new File(".");
             String dir = f.getAbsolutePath();
             String fileName = (dir + "\\src\\pacmanfx\\resources\\Nivel1Completado.txt");
@@ -196,7 +205,7 @@ public class JugadorController extends Controller {
             while ((line10 = br10.readLine()) != null) {
                 Nivel10 = Integer.parseInt(line10);
             }
-            
+
             String fileName20 = (dir + "\\src\\pacmanfx\\resources\\IntNivel1Completado.txt");
             File file20 = new File(fileName20);
             FileReader fr20 = new FileReader(file20);
@@ -205,7 +214,7 @@ public class JugadorController extends Controller {
             while ((line20 = br20.readLine()) != null) {
                 Nivel11 = Integer.parseInt(line20);
             }
-            
+
             String fileName21 = (dir2 + "\\src\\pacmanfx\\resources\\IntNivel2Completado.txt");
             File file21 = new File(fileName21);
             FileReader fr21 = new FileReader(file21);
@@ -246,7 +255,7 @@ public class JugadorController extends Controller {
             while ((line25 = br6.readLine()) != null) {
                 Nivel66 = Integer.parseInt(line25);
             }
-            String fileName26= (dir7 + "\\src\\pacmanfx\\resources\\IntNivel7Completado.txt");
+            String fileName26 = (dir7 + "\\src\\pacmanfx\\resources\\IntNivel7Completado.txt");
             File file26 = new File(fileName26);
             FileReader fr26 = new FileReader(file26);
             BufferedReader br26 = new BufferedReader(fr26);
@@ -278,7 +287,7 @@ public class JugadorController extends Controller {
             while ((line100 = br100.readLine()) != null) {
                 Nivel100 = Integer.parseInt(line100);
             }
-            
+
             String fileName31 = (dir2 + "\\src\\pacmanfx\\resources\\DifNivel1Completado.txt");
             File file31 = new File(fileName31);
             FileReader fr31 = new FileReader(file31);
@@ -359,8 +368,7 @@ public class JugadorController extends Controller {
             while ((line40 = br40.readLine()) != null) {
                 Nivel1000 = Integer.parseInt(line40);
             }
-            
-            
+
             File f11 = new File(".");
             String dir11 = f11.getAbsolutePath();
             String fileName11 = dir11 + "\\src\\pacmanfx\\resources\\FantasmasComidos.txt";
@@ -439,34 +447,44 @@ public class JugadorController extends Controller {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
         if ((Nivel1 == 1 && Nivel2 == 1 && Nivel3 == 1 && Nivel4 == 1 && Nivel5 == 1 && Nivel6 == 1 && Nivel7 == 1 && Nivel8 == 1 && Nivel9 == 1 && Nivel10 == 1)
-            || (Nivel11 == 1 && Nivel22 == 1 && Nivel33 == 1 && Nivel44 == 1 && Nivel55 == 1 && Nivel66 == 1 && Nivel77 == 1 && Nivel88 == 1 && Nivel99 == 1 && Nivel100 == 1) 
-            || (Nivel111 == 1 && Nivel222 == 1 && Nivel333 == 1 && Nivel444 == 1 && Nivel555 == 1 && Nivel666 == 1 && Nivel777 == 1 && Nivel888 == 1 && Nivel999 == 1 && Nivel1000 == 1) ) {
-           logro1.setImage(new Image("/pacmanfx/resources/premio.png"));
+                || (Nivel11 == 1 && Nivel22 == 1 && Nivel33 == 1 && Nivel44 == 1 && Nivel55 == 1 && Nivel66 == 1 && Nivel77 == 1 && Nivel88 == 1 && Nivel99 == 1 && Nivel100 == 1)
+                || (Nivel111 == 1 && Nivel222 == 1 && Nivel333 == 1 && Nivel444 == 1 && Nivel555 == 1 && Nivel666 == 1 && Nivel777 == 1 && Nivel888 == 1 && Nivel999 == 1 && Nivel1000 == 1)) {
+            logro1.setImage(new Image("/pacmanfx/resources/premio.png"));
+            img1 = true;
         } else {
             logro1.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
+            img1 = false;
         }
         if (cantFantasmas >= 5) {
             logro2.setImage(new Image("/pacmanfx/resources/premio.png"));
+            img2 = true;
         } else {
             logro2.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
+            img2 = false;
         }
         if (vidasConsecutivas == 1) {
             logro3.setImage(new Image("/pacmanfx/resources/premio.png"));
+            img3 = true;
         } else {
             logro3.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
+            img3 = false;
         }
         if (EncierroCont >= 5) {
             logro4.setImage(new Image("/pacmanfx/resources/premio.png"));
+            img4 = true;
         } else {
             logro4.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
+            img4 = false;
         }
         logro5.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
-        
+
         if (Nivel111 == 1 && Nivel222 == 1 && Nivel333 == 1 && Nivel444 == 1
                 && Nivel555 == 1 && Nivel666 == 1 && Nivel777 == 1 && Nivel888 == 1 && Nivel999 == 1 && Nivel1000 == 1) {
             logro6.setImage(new Image("/pacmanfx/resources/premio.png"));
+            img6 = true;
         } else {
             logro6.setImage(new Image("/pacmanfx/resources/premiowhite.png"));
+            img6 = false;
         }
 
         try {
@@ -484,6 +502,26 @@ public class JugadorController extends Controller {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /*
+         *  En el caso el usuario no tenga ningún trofeo entonces no le mostramos nada
+         */
+        Image image = new Image("/pacmanfx/resources/premiowhite.png");
+        if (!img1 && !img2 && !img3 && !img4 && !img5 && !img6) {
+            logro1.setVisible(false);
+            logro2.setVisible(false);
+            logro3.setVisible(false);
+            logro4.setVisible(false);
+            logro5.setVisible(false);
+            logro6.setVisible(false);
+            lbl1.setVisible(false);
+            lbl2.setVisible(false);
+            lbl3.setVisible(false);
+            lbl4.setVisible(false);
+            lbl5.setVisible(false);
+            lbl6.setVisible(false);
+            lbl7.setVisible(false);
+            lbl8.setVisible(false);
         }
     }
 

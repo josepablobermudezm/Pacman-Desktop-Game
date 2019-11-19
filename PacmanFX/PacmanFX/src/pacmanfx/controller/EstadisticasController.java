@@ -95,6 +95,8 @@ public class EstadisticasController extends Controller implements Initializable 
     int txtPuntosTotales = 0, txtTiempoTotal = 0, aux1 = 0, ContNivel1 = 0, ContNivel2 = 0, ContNivel3 = 0, ContNivel4 = 0, ContNivel5 = 0, ContNivel6 = 0, ContNivel7 = 0,
             ContNivel8 = 0, ContNivel9 = 0, ContNivel10 = 0;
     int tiempo1 = 0, tiempo2 = 0, tiempo3 = 0, tiempo4 = 0, tiempo5 = 0, tiempo6 = 0, tiempo7 = 0, tiempo8 = 0, tiempo9 = 0, tiempo10 = 0;
+    @FXML
+    private Label lblTop;
 
     /**
      * Initializes the controller class.
@@ -567,6 +569,12 @@ public class EstadisticasController extends Controller implements Initializable 
     private void Volver(MouseEvent event) {
         FlowController.getInstance().initialize();
         FlowController.getInstance().goViewInStage("Jugador", this.getStage());
+    }
+
+    @FXML
+    private void Top(MouseEvent event) {
+        FlowController.getInstance().initialize();
+        FlowController.getInstance().goViewInStage("Top10", this.getStage());
     }
 
 }

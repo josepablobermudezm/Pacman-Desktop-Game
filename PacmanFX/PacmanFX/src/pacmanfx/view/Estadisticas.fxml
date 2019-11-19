@@ -59,6 +59,7 @@
                   <Label fx:id="lblFantasmasComidos" layoutX="637.0" layoutY="179.0" prefHeight="19.0" prefWidth="102.0" styleClass="lblSmall" />
                   <Label layoutX="59.0" layoutY="210.0" styleClass="lblSmall" text="Tiempo Total de Juego:" />
                   <Label fx:id="lblTiempoTotalJuego" layoutX="637.0" layoutY="210.0" prefHeight="19.0" prefWidth="102.0" styleClass="lblSmall" />
+                  <Label fx:id="lblTop" layoutX="782.0" layoutY="591.0" onMouseClicked="#Top" styleClass="lbl" text="Top 10" />
                </children>
             </AnchorPane>
          </children>

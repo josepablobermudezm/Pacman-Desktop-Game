@@ -51,6 +51,8 @@
                   <TextField fx:id="txtEncierros" layoutX="684.0" layoutY="141.0" maxWidth="100.0" />
                   <Button fx:id="btnDificultad" layoutX="403.0" layoutY="554.0" mnemonicParsing="false" onAction="#SeleccionDificultad" text="Seleccionar Dificultad" />
                   <Button fx:id="btnEliminarTodo" layoutX="673.0" layoutY="554.0" mnemonicParsing="false" onAction="#eliminar" text="Reiniciar Juego" />
+                  <Label layoutX="464.0" layoutY="95.0" prefHeight="19.0" prefWidth="218.0" styleClass="lblSmall" text="Cantidad de fantasmas Comidos" />
+                  <TextField fx:id="txtFantasmas" layoutX="689.0" layoutY="89.0" maxWidth="100.0" />
                </children>
             </AnchorPane>
          </children>
