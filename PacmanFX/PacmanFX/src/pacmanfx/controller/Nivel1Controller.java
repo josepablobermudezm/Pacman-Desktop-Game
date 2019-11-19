@@ -1293,7 +1293,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                     && ((xOrigen != 633.0 && yOrigen != 240.0) || (xDestino != 633.0 && yDestino != 240.0))
                     && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                     && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
-                    && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {
+                    && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
+                    && ((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                    && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                    && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                    && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                 Circle origen = new Circle(xDestino, yDestino, 3, Paint.valueOf("#127041"));
                 puntos.add(origen);
                 root.getChildren().add(origen);//
@@ -1303,7 +1307,11 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
 
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
-                if (((xOrigen != 512.0 && yOrigen != 240.0) || (xDestino != 512.0 && yDestino != 240.0))) {
+                if (((xOrigen != 512.0 && yOrigen != 240.0) || (xDestino != 512.0 && yDestino != 240.0))
+                        && ((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                        && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                     yDestino += 29;
                     while (yDestino < yOrigen) {
                         if (yDestino <= yOrigen - 13) {
@@ -1319,7 +1327,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                         && ((xOrigen != 633.0 && yOrigen != 240.0) || (xDestino != 633.0 && yDestino != 240.0))
                         && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
                         && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
-                        && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {
+                        && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
+                        && ((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                        && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                     yOrigen += 29;
                     while (yOrigen < yDestino) {
                         if (yOrigen <= yDestino - 13) {
@@ -1332,7 +1344,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                 }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
                 if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
-                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {
+                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))
+                        && ((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                        && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                     xDestino += 31;
                     while (xDestino < xOrigen) {
                         if (xDestino <= xOrigen - 16) {
@@ -1345,7 +1361,11 @@ public class Nivel1Controller extends Controller implements Initializable {
                 }
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
                 if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
-                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {
+                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))
+                        && ((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                        && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                     xOrigen += 31;
                     while (xOrigen <= xDestino) {
                         if (xOrigen <= xDestino - 16) {
