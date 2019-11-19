@@ -1967,6 +1967,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     }
 
     public void Inicio() {
+        Top10();
         CrearMapa();
         llenarMatPeso();
         //Inicio el movimiento del PacMan hacia la derecha

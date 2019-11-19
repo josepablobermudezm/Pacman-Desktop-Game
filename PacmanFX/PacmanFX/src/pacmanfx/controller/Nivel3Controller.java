@@ -1895,8 +1895,8 @@ public class Nivel3Controller extends Controller implements Initializable {
     Nodo nFinal;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources
-    ) {
+    public void initialize(URL location, ResourceBundle resources) {
+        Top10();
         CrearMapa();
         llenarMatPeso();
         //Inicio el movimiento del PacMan hacia la derecha

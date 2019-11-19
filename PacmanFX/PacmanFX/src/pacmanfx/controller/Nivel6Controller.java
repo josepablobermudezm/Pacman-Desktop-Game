@@ -1912,6 +1912,7 @@ public class Nivel6Controller extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Top10();
         CrearMapa();
         llenarMatPeso();
         //Inicio el movimiento del PacMan hacia la derecha
