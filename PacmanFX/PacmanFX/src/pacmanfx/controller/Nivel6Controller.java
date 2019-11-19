@@ -2665,6 +2665,7 @@ public class Nivel6Controller extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        contadorEncierro = 0;
         Top10();
         CrearMapa();
         llenarMatPeso();

@@ -2665,6 +2665,7 @@ int ind1 = 10000, ind2;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        contadorEncierro = 0;
         Top10();
         CrearMapa();
         llenarMatPeso();
