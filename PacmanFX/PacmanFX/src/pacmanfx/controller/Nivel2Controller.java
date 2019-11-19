@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1021,6 +1022,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                     rec.setFill(Paint.valueOf("#bd0d2b"));
                     root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
+                    System.out.println((Double) x + " " + (Double) y);
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
@@ -1440,6 +1442,7 @@ public class Nivel2Controller extends Controller implements Initializable {
             }
         });
     }
+
     Floyd floyd;
     int index1 = 10000, index2;
 
@@ -1447,7 +1450,6 @@ public class Nivel2Controller extends Controller implements Initializable {
         Platform.runLater(() -> {
             if (!floyd.getCaminos().isEmpty()) {
                 index2 = floyd.getCaminos().poll();
-
                 Timeline timeline = new Timeline();
                 Double distance = nodos.get(index1).getPoint2D().distance(nodos.get(index2).getPoint2D());
                 KeyValue kv2 = new KeyValue(orangeGhost.layoutYProperty(), nodos.get(index2).getPoint2D().getY() - 14);
@@ -1934,7 +1936,7 @@ public class Nivel2Controller extends Controller implements Initializable {
     }
 
     Nodo nodoOrigen;
-    Nodo nFinal;
+
 
     /*
      *  Algortitmo de dijstra 
@@ -2168,6 +2170,35 @@ public class Nivel2Controller extends Controller implements Initializable {
         });
     }
 
+    private void limpiarValores() {
+        floyd2.getCaminos().clear();
+        floyd.getCaminos().clear();
+        auxNodo5 = null;
+        inicial = null;
+        nodoDestino = null;
+        destinoPink = null;
+        auxNodo6 = null;
+        inicial2 = null;
+        nodosAux.clear();
+        posX = null;
+        posY = null;
+        auxNodo = null;
+        yAux2 = null;
+        xAux2 = null;
+        pila.clear();
+        movimiento = "";
+        movimientoOriginal = "";
+        movimientoPrevio = "";
+        index1 = 10000;
+        ind1 = 10000;
+        nodoOrigen = null;
+        pilaCyan.clear();
+        pilaOrange.clear();
+        pilaRed.clear();
+        pilaSuprema.clear();
+        pilaPink.clear();
+    }
+
     Nodo nodoAux7;
 
     public void GameOver() {
@@ -2232,21 +2263,59 @@ public class Nivel2Controller extends Controller implements Initializable {
     //Anaranjado
     boolean muertoOrange = false;
 
+    int tic = 0;
+
+    private Timer timer;
+
+    void hiloInicio() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (tic == 4) {
+                    Platform.runLater(() -> {
+                        timer.cancel();
+//                        task.cancel();
+                        tic = 0;
+                        limpiarValores();
+                        root.getChildren().add(pacman.getpMan());
+                        pacman.getpMan().setFocusTraversable(true);
+                        nodos.stream().forEach((nodo) -> {
+                            if (nodo.getPoint2D().getX() == 447.0 && nodo.getPoint2D().getY() == 407.0) {
+                                nodoOrigen = nodo;
+                            }
+                        });
+
+                        inicioJuego();
+
+                    });
+                }
+                tic++;
+            }
+        };
+        
+        Platform.runLater(() -> {
+            timer = new Timer();
+            timer.schedule(task, 10, 1000);
+        });
+
+    }
+
     private void fantasma() {
         int x1 = (int) redGhost.getLayoutX() + 12;
         int x2 = (int) redGhost.getLayoutX() + 16;
         int y1 = (int) redGhost.getLayoutY() + 12;
         int y2 = (int) redGhost.getLayoutY() + 16;
-        //Hacer para 
+
         if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
                 && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
             root.getChildren().remove(pacman.getpMan());
             pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
+            pacman.getpMan().setCenterY(407.0);
             muertoPink = true;
             muertoRed = true;
             muertoCyan = true;
             muertoOrange = true;
+            hiloInicio();
         }
 
         x1 = (int) cyanGhost.getLayoutX() + 12;
@@ -2258,11 +2327,12 @@ public class Nivel2Controller extends Controller implements Initializable {
                 && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
             root.getChildren().remove(pacman.getpMan());
             pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
+            pacman.getpMan().setCenterY(407.0);
             muertoPink = true;
             muertoRed = true;
             muertoCyan = true;
             muertoOrange = true;
+            hiloInicio();
         }
 
         x1 = (int) orangeGhost.getLayoutX() + 12;
@@ -2274,11 +2344,12 @@ public class Nivel2Controller extends Controller implements Initializable {
                 && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
             root.getChildren().remove(pacman.getpMan());
             pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
+            pacman.getpMan().setCenterY(407.0);
             muertoPink = true;
             muertoRed = true;
             muertoCyan = true;
             muertoOrange = true;
+            hiloInicio();
         }
 
         int x1p = (int) pinkGhost.getLayoutX() + 12;
@@ -2290,18 +2361,15 @@ public class Nivel2Controller extends Controller implements Initializable {
                 && (y1p <= (int) pacman.getpMan().getCenterY() && y2p >= (int) pacman.getpMan().getCenterY())) {
             root.getChildren().remove(pacman.getpMan());
             pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
+            pacman.getpMan().setCenterY(407.0);
             muertoPink = true;
             muertoRed = true;
             muertoCyan = true;
             muertoOrange = true;
+            hiloInicio();
         }
     }
 
-    Queue<Nodo> colaRed = new LinkedList<>();
-    Queue<Nodo> colaPink = new LinkedList<>();
-    Queue<Nodo> colaOrange = new LinkedList<>();
-    Queue<Nodo> colaCyan = new LinkedList<>();
     Stack<Nodo> pilaRed = new Stack<>();
 
     public void estadoInicialRojo() {
@@ -2729,11 +2797,7 @@ public class Nivel2Controller extends Controller implements Initializable {
         });
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Top10();
-        CrearMapa();
-        llenarMatPeso();
+    private void inicioJuego() {
         //Inicio el movimiento del PacMan hacia la derecha
         movimiento = "RIGHT";
         movimientoOriginal = "RIGHT";
@@ -2744,6 +2808,17 @@ public class Nivel2Controller extends Controller implements Initializable {
         moveOrangeGhost();
         moveCyanGhost();
         GameOver();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Top10();
+        CrearMapa();
+        llenarMatPeso();
+
+        //Inicia el juego
+        inicioJuego();
+
         EncierroValor = (puntos.size() - 9) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
