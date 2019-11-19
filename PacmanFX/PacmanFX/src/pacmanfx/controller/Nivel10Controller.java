@@ -1352,7 +1352,33 @@ public class Nivel10Controller extends Controller implements Initializable {
         ArrayList<Circle> pAux = new ArrayList();
         puntos.stream().forEach((t) -> {
             puntos.stream().forEach((c) -> {
-                if (c != t) {
+                if (c != t || (t.getCenterX() == 291.0 && t.getCenterY() == 411.0) || (t.getCenterX() == 291.0 && t.getCenterY() == 383.0)
+                        || (t.getCenterX() == 291.0 && t.getCenterY() == 354.0) || (t.getCenterX() == 291.0 && t.getCenterY() == 325.0)
+                        || (t.getCenterX() == 291.0 && t.getCenterY() == 295.0) || (t.getCenterX() == 291.0 && t.getCenterY() == 266.0)
+                        || (t.getCenterX() == 291.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 322.0 && t.getCenterY() == 237.0)
+                        || (t.getCenterX() == 353.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 384.0 && t.getCenterY() == 237.0)
+                        || (t.getCenterX() == 415.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 447.0 && t.getCenterY() == 237.0)
+                        || (t.getCenterX() == 450.0 && t.getCenterY() == 269.0) || (t.getCenterX() == 429.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 398.0 && t.getCenterY() == 305.0) || (t.getCenterX() == 481.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 478.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 508.0 && t.getCenterY() == 237.0)
+                        || (t.getCenterX() == 541.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 572.0 && t.getCenterY() == 237.0)
+                        || (t.getCenterX() == 601.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 601.0 && t.getCenterY() == 266.0)
+                        || (t.getCenterX() == 601.0 && t.getCenterY() == 295.0) || (t.getCenterX() == 601.0 && t.getCenterY() == 322.0)
+                        || (t.getCenterX() == 447.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 367.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 450.0 && t.getCenterY() == 305.0) || (t.getCenterX() == 527.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 601.0 && t.getCenterY() == 352.0) || (t.getCenterX() == 601.0 && t.getCenterY() == 381.0)
+                        || (t.getCenterX() == 322.0 && t.getCenterY() == 411.0) || (t.getCenterX() == 353.0 && t.getCenterY() == 411.0)
+                        || (t.getCenterX() == 384.0 && t.getCenterY() == 411.0) || (t.getCenterX() == 415.0 && t.getCenterY() == 411.0)
+                        || (t.getCenterX() == 447.0 && t.getCenterY() == 411.0) || (t.getCenterX() == 479.0 && t.getCenterY() == 411.0)
+                        || (t.getCenterX() == 509.0 && t.getCenterY() == 411.0) || (t.getCenterX() == 540.0 && t.getCenterY() == 411.0)
+                        || (t.getCenterX() == 570.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 601.0 && t.getCenterY() == 411.0)
+                        || (t.getCenterX() == 291.0 && t.getCenterY() == 323.0) || (t.getCenterX() == 291.0 && t.getCenterY() == 352.0)
+                        || (t.getCenterX() == 291.0 && t.getCenterY() == 383.0) || (t.getCenterX() == 601.0 && t.getCenterY() == 325.0)
+                        || (t.getCenterX() == 601.0 && t.getCenterY() == 354.0) || (t.getCenterX() == 601.0 && t.getCenterY() == 383.0)
+                        || (t.getCenterX() == 539.0 && t.getCenterY() == 237.0) || (t.getCenterX() == 570.0 && t.getCenterY() == 411.0)
+                        || (t.getCenterX() == 478.0 && t.getCenterY() == 411.0) || (t.getCenterX() == 480.0 && t.getCenterY() == 411.0)
+                        || (t.getCenterX() == 542.0 && t.getCenterY() == 411.0) || (t.getCenterX() == 511.0 && t.getCenterY() == 411.0)
+                        || (t.getCenterX() == 449.0 && t.getCenterY() == 411.0) || (t.getCenterX() == 450.0 && t.getCenterY() == 240.0)) {
                     if (c.getCenterX() == t.getCenterX() && c.getCenterY() == t.getCenterY()) {
                         if (!pAux.contains(c)) {
                             pAux.add(t);

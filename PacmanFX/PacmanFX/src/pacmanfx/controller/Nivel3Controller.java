@@ -1251,7 +1251,11 @@ public class Nivel3Controller extends Controller implements Initializable {
                     && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
                     && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {*/
             if ((xOrigen == 822 && yOrigen == 45) || (xOrigen == 822.0 && yOrigen == 515.0)
-                    || (xOrigen == 77.0 && yOrigen == 515.0) || (xOrigen == 77.0 && yOrigen == 45.0)) {
+                    || (xOrigen == 77.0 && yOrigen == 515.0) || (xOrigen == 77.0 && yOrigen == 45.0)
+                    && ((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                    && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                    && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                    && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                 Circle origen = new Circle(xDestino, yDestino, 5, Paint.valueOf("#efb810"));
                 puntos.add(origen);
                 root.getChildren().add(origen);//
@@ -1269,59 +1273,65 @@ public class Nivel3Controller extends Controller implements Initializable {
 
             //}
             if (Objects.equals(xOrigen, xDestino) && yOrigen > yDestino) {
-                //if (((xOrigen != 512.0 && yOrigen != 240.0) || (xDestino != 512.0 && yDestino != 240.0))) {
-                yDestino += 29;
-                while (yDestino < yOrigen) {
-                    if (yDestino <= yOrigen - 13) {
-                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#efb810"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
+                if (((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                        && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                     yDestino += 29;
-                    //}
+                    while (yDestino < yOrigen) {
+                        if (yDestino <= yOrigen - 13) {
+                            circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#efb810"));
+                            puntos.add(circle);
+                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                        }
+                        yDestino += 29;
+                    }
                 }
             } else if (Objects.equals(xOrigen, xDestino) && yOrigen < yDestino) {
-                /*if (((xOrigen != 260.0 && yOrigen != 240.0) || (xDestino != 260.0 && yDestino != 240.0))
-                        && ((xOrigen != 633.0 && yOrigen != 240.0) || (xDestino != 633.0 && yDestino != 240.0))
-                        && ((xOrigen != 601.0 && yOrigen != 405.0) || (xDestino != 601.0 && yDestino != 405.0))
-                        && ((xOrigen != 323.0 && yOrigen != 405.0) || (xDestino != 323.0 && yDestino != 405.0))
-                        && ((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))) {*/
-                yOrigen += 29;
-                while (yOrigen < yDestino) {
-                    if (yOrigen <= yDestino - 13) {
-                        circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#efb810"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
+                if ((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0)
+                        && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                        && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                     yOrigen += 29;
+                    while (yOrigen < yDestino) {
+                        if (yOrigen <= yDestino - 13) {
+                            circle = new Circle(xDestino, yOrigen, 3, Paint.valueOf("#efb810"));
+                            puntos.add(circle);
+                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                        }
+                        yOrigen += 29;
+                    }
                 }
-                //}
             } else if (Objects.equals(yOrigen, yDestino) && xOrigen > xDestino) {
-                /*if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
-                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {*/
-                xDestino += 31;
-                while (xDestino < xOrigen) {
-                    if (xDestino <= xOrigen - 16) {
-                        circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#efb810"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
-                    }
+                if (((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                        && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
                     xDestino += 31;
-                }
-                //}
-            } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
-                /*if (((xOrigen != 387.0 && yOrigen != 240.0) || (xDestino != 387.0 && yDestino != 240.0))
-                        && ((xOrigen != 260.0 && yOrigen != 405.0) || (xDestino != 260.0 && yDestino != 405.0))) {*/
-                xOrigen += 31;
-                while (xOrigen <= xDestino) {
-                    if (xOrigen <= xDestino - 16) {
-                        circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#efb810"));
-                        puntos.add(circle);
-                        root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                    while (xDestino < xOrigen) {
+                        if (xDestino <= xOrigen - 16) {
+                            circle = new Circle(xDestino, yDestino, 3, Paint.valueOf("#efb810"));
+                            puntos.add(circle);
+                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                        }
+                        xDestino += 31;
                     }
-                    xOrigen += 31;
                 }
-                //}
+            } else if (Objects.equals(yOrigen, yDestino) && xOrigen < xDestino) {
+                if (((xOrigen != 367.0 && yOrigen != 305.0) || (xDestino != 367.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 305.0) || (xDestino != 450.0 && yDestino != 305.0))
+                        && ((xOrigen != 450.0 && yOrigen != 240.0) || (xDestino != 450.0 && yDestino != 240.0))
+                        && ((xOrigen != 537.0 && yOrigen != 305.0) || (xDestino != 537.0 && yDestino != 305.0))) {
+                    xOrigen += 31;
+                    while (xOrigen <= xDestino) {
+                        if (xOrigen <= xDestino - 16) {
+                            circle = new Circle(xOrigen, yDestino, 3, Paint.valueOf("#efb810"));
+                            puntos.add(circle);
+                            root.getChildren().add(circle);//tamaño y posición de la comida del pacman
+                        }
+                        xOrigen += 31;
+                    }
+                }
             }
         });
 
@@ -1329,7 +1339,23 @@ public class Nivel3Controller extends Controller implements Initializable {
         ArrayList<Circle> pAux = new ArrayList();
         puntos.stream().forEach((t) -> {
             puntos.stream().forEach((c) -> {
-                if (c != t) {
+                if (c != t || (t.getCenterX() == 367.0 && t.getCenterY() == 305.0) || (t.getCenterX() == 450.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 527.0 && t.getCenterY() == 305.0) || (t.getCenterX() == 450.0 && t.getCenterY() == 240.0)
+                        || (t.getCenterX() == 293.0 && t.getCenterY() == 236.0) || (t.getCenterX() == 293.0 && t.getCenterY() == 405.0)
+                        || (t.getCenterX() == 606.0 && t.getCenterY() == 405.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 266.0)
+                        || (t.getCenterX() == 293.0 && t.getCenterY() == 266.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 236.0)
+                        || (t.getCenterX() == 324.0 && t.getCenterY() == 236.0) || (t.getCenterX() == 355.0 && t.getCenterY() == 236.0)
+                        || (t.getCenterX() == 389.0 && t.getCenterY() == 236.0) || (t.getCenterX() == 512.0 && t.getCenterY() == 236.0)
+                        || (t.getCenterX() == 543.0 && t.getCenterY() == 236.0) || (t.getCenterX() == 574.0 && t.getCenterY() == 236.0)
+                        || (t.getCenterX() == 293.0 && t.getCenterY() == 295.0) || (t.getCenterX() == 293.0 && t.getCenterY() == 324.0)
+                        || (t.getCenterX() == 293.0 && t.getCenterY() == 353.0) || (t.getCenterX() == 293.0 && t.getCenterY() == 382.0)
+                        || (t.getCenterX() == 606.0 && t.getCenterY() == 295.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 324.0)
+                        || (t.getCenterX() == 606.0 && t.getCenterY() == 353.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 382.0)
+                        || (t.getCenterX() == 324.0 && t.getCenterY() == 405.0) || (t.getCenterX() == 355.0 && t.getCenterY() == 405.0)
+                        || (t.getCenterX() == 386.0 && t.getCenterY() == 405.0) || (t.getCenterX() == 417.0 && t.getCenterY() == 405.0)
+                        || (t.getCenterX() == 447.0 && t.getCenterY() == 405.0) || (t.getCenterX() == 418.0 && t.getCenterY() == 240.0)
+                        || (t.getCenterX() == 478.0 && t.getCenterY() == 405.0) || (t.getCenterX() == 509.0 && t.getCenterY() == 405.0)
+                        || (t.getCenterX() == 540.0 && t.getCenterY() == 405.0) || (t.getCenterX() == 571.0 && t.getCenterY() == 405.0)) {
                     if (c.getCenterX() == t.getCenterX() && c.getCenterY() == t.getCenterY()) {
                         if (!pAux.contains(c)) {
                             pAux.add(t);

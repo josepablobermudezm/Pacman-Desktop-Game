@@ -1339,7 +1339,29 @@ public class Nivel5Controller extends Controller implements Initializable {
         ArrayList<Circle> pAux = new ArrayList();
         puntos.stream().forEach((t) -> {
             puntos.stream().forEach((c) -> {
-                if (c != t) {
+                if (c != t || (t.getCenterX() == 295.0 && t.getCenterY() == 407.0) || (t.getCenterX() == 295.0 && t.getCenterY() == 380.0)
+                        || (t.getCenterX() == 295.0 && t.getCenterY() == 351.0) || (t.getCenterX() == 295.0 && t.getCenterY() == 322.0)
+                        || (t.getCenterX() == 295.0 && t.getCenterY() == 296.0) || (t.getCenterX() == 295.0 && t.getCenterY() == 267.0)
+                        || (t.getCenterX() == 295.0 && t.getCenterY() == 238.0) || (t.getCenterX() == 326.0 && t.getCenterY() == 238.0)
+                        || (t.getCenterX() == 357.0 && t.getCenterY() == 238.0) || (t.getCenterX() == 386.0 && t.getCenterY() == 238.0)
+                        || (t.getCenterX() == 417.0 && t.getCenterY() == 238.0) || (t.getCenterX() == 448.0 && t.getCenterY() == 238.0)
+                        || (t.getCenterX() == 450.0 && t.getCenterY() == 269.0) || (t.getCenterX() == 429.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 398.0 && t.getCenterY() == 305.0) || (t.getCenterX() == 481.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 479.0 && t.getCenterY() == 238.0) || (t.getCenterX() == 510.0 && t.getCenterY() == 238.0)
+                        || (t.getCenterX() == 541.0 && t.getCenterY() == 238.0) || (t.getCenterX() == 572.0 && t.getCenterY() == 238.0)
+                        || (t.getCenterX() == 606.0 && t.getCenterY() == 238.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 267.0)
+                        || (t.getCenterX() == 606.0 && t.getCenterY() == 296.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 322.0)
+                        || (t.getCenterX() == 450.0 && t.getCenterY() == 240.0) || (t.getCenterX() == 367.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 450.0 && t.getCenterY() == 305.0) || (t.getCenterX() == 527.0 && t.getCenterY() == 305.0)
+                        || (t.getCenterX() == 606.0 && t.getCenterY() == 351.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 380.0)
+                        || (t.getCenterX() == 326.0 && t.getCenterY() == 407.0) || (t.getCenterX() == 357.0 && t.getCenterY() == 407.0)
+                        || (t.getCenterX() == 386.0 && t.getCenterY() == 407.0) || (t.getCenterX() == 417.0 && t.getCenterY() == 407.0)
+                        || (t.getCenterX() == 447.0 && t.getCenterY() == 407.0) || (t.getCenterX() == 478.0 && t.getCenterY() == 407.0)
+                        || (t.getCenterX() == 510.0 && t.getCenterY() == 407.0) || (t.getCenterX() == 541.0 && t.getCenterY() == 407.0)
+                        || (t.getCenterX() == 572.0 && t.getCenterY() == 407.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 407.0)
+                        || (t.getCenterX() == 295.0 && t.getCenterY() == 325.0) || (t.getCenterX() == 295.0 && t.getCenterY() == 354.0)
+                        || (t.getCenterX() == 295.0 && t.getCenterY() == 383.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 325.0)
+                        || (t.getCenterX() == 606.0 && t.getCenterY() == 354.0) || (t.getCenterX() == 606.0 && t.getCenterY() == 383.0)) {
                     if (c.getCenterX() == t.getCenterX() && c.getCenterY() == t.getCenterY()) {
                         if (!pAux.contains(c)) {
                             pAux.add(t);
