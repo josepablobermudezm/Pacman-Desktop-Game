@@ -386,9 +386,9 @@ public class Nivel10Controller extends Controller implements Initializable {
                         auxNodo = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
                         nodosAux.remove(auxNodo);
                         destino.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(auxNodo)) {
+                            if (arista.getDestino().equals(auxNodo) && auxNodo.getPoint2D().getX() != 450.0 && auxNodo.getPoint2D().getY() != 305.0 ) {
                                 bandera = true;
-                            } else if (arista.getOrigen().equals(auxNodo)) {
+                            } else if (arista.getOrigen().equals(auxNodo) && auxNodo.getPoint2D().getX() != 450.0 && auxNodo.getPoint2D().getY() != 305.0 ) {
                                 bandera = true;
                             }
                         });
