@@ -87,12 +87,14 @@ public class Nivel1Controller extends Controller implements Initializable {
     CyanGhost cyanGhost = new CyanGhost();
     OrangeGhost orangeGhost = new OrangeGhost();
     PinkGhost pinkGhost = new PinkGhost();
+    private ImageView premio;
     private hiloTiempo Hilo;
     private int contVidas = 0, contVidas2 = 0;
     private int EncierroValor = 0;
     private int contadorEncierro = 0;
     private boolean Pelotas = false;
     private boolean Primero = true;
+    private boolean premioBand = false, primeraPremio = true;
     char Mapa[][]
             = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
@@ -1042,6 +1044,16 @@ public class Nivel1Controller extends Controller implements Initializable {
                     pacman.setNodo(new Nodo(x, y));
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerXProperty().addListener((observable) -> {
+
+                        if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 405.0 && premioBand) {
+                            premio.setVisible(false);
+                            premio.setImage(null);
+                            root.getChildren().remove(premio);
+                            contPuntos += 10;
+                            Integer puntaje = contPuntos * 10;
+                            puntosJugador.setText(puntaje.toString());
+                            premioBand = false;
+                        }
                         cont++;
                         //Cierro y abro el PacMan
                         if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
@@ -1093,10 +1105,22 @@ public class Nivel1Controller extends Controller implements Initializable {
                         /*
                          *  Audio cuando comes los puntos
                          */
-
                         if (Encierro()) {
                             lblEncierro.setVisible(true);
                             EncierroBandera = true;
+                        }
+                        if (((puntos.size()) > EncierroValor - 4) && ((puntos.size()) < EncierroValor + 4) && primeraPremio) {
+                            premio = new ImageView();
+                            premio.setLayoutX(447.0);
+                            premio.setLayoutY(390.0);
+                            premio.setId("premio");
+                            premio.setFitHeight(30);
+                            premio.setFitWidth(30);
+                            premio.setImage(new Image("/pacmanfx/resources/cherries.png"));
+                            premioBand = true;
+                            primeraPremio = false;
+                            System.out.println("entrando");
+                            root.getChildren().add(premio);
                         }
 
                         //Cuando logra comerse todos los puntos en la pantalla
@@ -1179,6 +1203,16 @@ public class Nivel1Controller extends Controller implements Initializable {
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerYProperty().addListener((observable) -> {
 
+                        if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 405.0 && premioBand) {
+                            premio.setVisible(false);
+                            premio.setImage(null);
+                            root.getChildren().remove(premio);
+                            contPuntos += 10;
+                            Integer puntaje = contPuntos * 10;
+                            puntosJugador.setText(puntaje.toString());
+                            premioBand = false;
+                        }
+
                         cont++;
                         //Cierro y abro el PacMan
                         if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
@@ -1188,6 +1222,12 @@ public class Nivel1Controller extends Controller implements Initializable {
                             pacman.getpMan().setLength(300);
                             cont = 0;
                         }
+
+                        if (Encierro()) {
+                            lblEncierro.setVisible(true);
+                            EncierroBandera = true;
+                        }
+
                         //puntaje obtenido
                         puntos.stream().forEach((punto) -> {
                             Double puntoY = pacman.getpMan().getCenterY();
@@ -1675,7 +1715,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             });
         });
     }
-    
+
     Floyd floyd;
     int index1 = 10000, index2;
 
@@ -2962,10 +3002,6 @@ public class Nivel1Controller extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        TopList.stream().forEach(c -> {
-            System.out.println(c);
-        });
     }
 
     private void OrganizarTop() {
