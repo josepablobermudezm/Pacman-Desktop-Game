@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -286,7 +288,7 @@ public class Nivel10Controller extends Controller implements Initializable {
                 Collections.sort(TopList);
                 Collections.reverse(TopList);
                 OrganizarTop();
-                
+
                 FlowController.getInstance().initialize();
                 FlowController.getInstance().goViewInStage("SeleccionNivel", Nivel10Controller.this.getStage());
             }
@@ -1258,7 +1260,7 @@ public class Nivel10Controller extends Controller implements Initializable {
         label1.setLayoutY(585);
         label1.setId("puntos");
         root1.getChildren().add(label1);
-
+        vidasPila = new Stack<>();
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
             arc.setFill(Paint.valueOf("#ffffff"));
@@ -1266,6 +1268,7 @@ public class Nivel10Controller extends Controller implements Initializable {
             arc.setStroke(Paint.valueOf("#A72910"));
             arc.setStrokeWidth(2);
             arc.setType(ArcType.ROUND);
+            vidasPila.add(arc);
             root1.getChildren().add(arc);
             cont3 += 30;
         }
@@ -2134,7 +2137,6 @@ public class Nivel10Controller extends Controller implements Initializable {
         return valorEntero;
     }
 
-            
     public void GameOver() {
         redGhost.layoutXProperty().addListener((x) -> {
             if (!muertoRed) {
@@ -2196,73 +2198,179 @@ public class Nivel10Controller extends Controller implements Initializable {
     boolean muertoCyan = false;
     //Anaranjado
     boolean muertoOrange = false;
+    int tic = 0;
 
-    private void fantasma() {
-        int x1 = (int) redGhost.getLayoutX() + 12;
-        int x2 = (int) redGhost.getLayoutX() + 16;
-        int y1 = (int) redGhost.getLayoutY() + 12;
-        int y2 = (int) redGhost.getLayoutY() + 16;
-        //Hacer para 
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root1.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
+    private Timer timer;
+    boolean reinicio = false;
+    TimerTask task;
+    Stack<Arc> vidasPila;
 
-        x1 = (int) cyanGhost.getLayoutX() + 12;
-        x2 = (int) cyanGhost.getLayoutX() + 16;
-        y1 = (int) cyanGhost.getLayoutY() + 12;
-        y2 = (int) cyanGhost.getLayoutY() + 16;
-
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root1.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
-
-        x1 = (int) orangeGhost.getLayoutX() + 12;
-        x2 = (int) orangeGhost.getLayoutX() + 16;
-        y1 = (int) orangeGhost.getLayoutY() + 12;
-        y2 = (int) orangeGhost.getLayoutY() + 16;
-
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root1.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
-
-        int x1p = (int) pinkGhost.getLayoutX() + 12;
-        int x2p = (int) pinkGhost.getLayoutX() + 16;
-        int y1p = (int) pinkGhost.getLayoutY() + 12;
-        int y2p = (int) pinkGhost.getLayoutY() + 16;
-
-        if ((x1p <= (int) pacman.getpMan().getCenterX() && x2p >= (int) pacman.getpMan().getCenterX())
-                && (y1p <= (int) pacman.getpMan().getCenterY() && y2p >= (int) pacman.getpMan().getCenterY())) {
-            root1.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
+    private void limpiarValores() {
+        nodos.clear();
+        aristas.clear();
+        cargarNodoArista();
+        floyd2.getCaminos().clear();
+        floyd.getCaminos().clear();
+        auxNodo5 = null;
+        inicial = null;
+        nodoDestino = null;
+        destinoPink = null;
+        auxNodo6 = null;
+        inicial2 = null;
+        nodosAux.clear();
+        posX = null;
+        posY = null;
+        auxNodo = null;
+        yAux2 = null;
+        xAux2 = null;
+        pila.clear();
+        movimiento = "";
+        movimientoOriginal = "";
+        movimientoPrevio = "";
+        index1 = 10000;
+        ind1 = 10000;
+        nodoOrigen = null;
+        pilaCyan.clear();
+        pilaOrange.clear();
+        pilaRed.clear();
+        pilaSuprema.clear();
+        pilaPink.clear();
     }
 
+    void hiloInicio() {
+
+        Platform.runLater(() -> {
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    if (tic == 4) {
+
+                        timer.cancel();
+                        task.cancel();
+                        tic = 0;
+                        limpiarValores();
+                        Platform.runLater(() -> {
+                            root1.getChildren().add(pacman.getpMan());
+
+                            pacman.getpMan().setFocusTraversable(true);
+                            nodos.stream().forEach((nodo) -> {
+                                if (nodo.getPoint2D().getX() == 447.0 && nodo.getPoint2D().getY() == 411.0) {
+                                    nodoOrigen = nodo;
+                                }
+                            });
+                            pacman.getpMan().setCenterX(nodoOrigen.getPoint2D().getX());
+                            pacman.getpMan().setCenterY(nodoOrigen.getPoint2D().getY());
+                            pacman.setNodo(nodoOrigen);
+                            reinicio = false;
+                            inicioJuego();
+                        });
+                        /*System.out.println("MOVE");
+                        if(!root.getChildren().contains(pacman.getpMan())){
+                            root.getChildren().add(pacman.getpMan());
+                        }*/
+
+                    }
+                    tic++;
+                }
+            };
+            timer = new Timer();
+            reinicio = true;
+            timer.schedule(task, 10, 1000);
+
+        });
+
+    }
+
+    private void fantasma() {
+        Arc arc = null;
+        int xRedI = (int) redGhost.getLayoutX() + 12;
+        int xRedS = (int) redGhost.getLayoutX() + 16;
+        int yRedI = (int) redGhost.getLayoutY() + 12;
+        int yRedS = (int) redGhost.getLayoutY() + 16;
+
+        int xPinkI = (int) pinkGhost.getLayoutX() + 12;
+        int xPinkS = (int) pinkGhost.getLayoutX() + 16;
+        int yPinkI = (int) pinkGhost.getLayoutY() + 12;
+        int yPinkS = (int) pinkGhost.getLayoutY() + 16;
+
+        int xCyanI = (int) cyanGhost.getLayoutX() + 12;
+        int xCyanS = (int) cyanGhost.getLayoutX() + 16;
+        int yCyanI = (int) cyanGhost.getLayoutY() + 12;
+        int yCyanS = (int) cyanGhost.getLayoutY() + 16;
+
+        int xOrangeI = (int) orangeGhost.getLayoutX() + 12;
+        int xOrangeS = (int) orangeGhost.getLayoutX() + 16;
+        int yOrangeI = (int) orangeGhost.getLayoutY() + 12;
+        int yOrangeS = (int) orangeGhost.getLayoutY() + 16;
+        if (!reinicio) {
+            if ((xOrangeI <= (int) pacman.getpMan().getCenterX() && xOrangeS >= (int) pacman.getpMan().getCenterX())
+                    && (yOrangeI <= (int) pacman.getpMan().getCenterY() && yOrangeS >= (int) pacman.getpMan().getCenterY())) {
+                root1.getChildren().remove(pacman.getpMan());
+                muertoPink = true;
+                muertoRed = true;
+                muertoCyan = true;
+                muertoOrange = true;
+                if (!vidasPila.isEmpty()) {
+                    arc = vidasPila.pop();
+                    arc.setOpacity(0.3);
+                    if (!vidasPila.isEmpty()) {
+                        hiloInicio();
+                    } else {
+                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                    }
+                }
+            } else if ((xRedI <= (int) pacman.getpMan().getCenterX() && xRedS >= (int) pacman.getpMan().getCenterX())
+                    && (yRedI <= (int) pacman.getpMan().getCenterY() && yRedS >= (int) pacman.getpMan().getCenterY())) {
+                root1.getChildren().remove(pacman.getpMan());
+                muertoPink = true;
+                muertoRed = true;
+                muertoCyan = true;
+                muertoOrange = true;
+                if (!vidasPila.isEmpty()) {
+                    arc = vidasPila.pop();
+                    arc.setOpacity(0.3);
+                    if (!vidasPila.isEmpty()) {
+                        hiloInicio();
+                    } else {
+                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                    }
+                }
+            } else if ((xCyanI <= (int) pacman.getpMan().getCenterX() && xCyanS >= (int) pacman.getpMan().getCenterX())
+                    && (yCyanI <= (int) pacman.getpMan().getCenterY() && yCyanS >= (int) pacman.getpMan().getCenterY())) {
+                root1.getChildren().remove(pacman.getpMan());
+                muertoPink = true;
+                muertoRed = true;
+                muertoCyan = true;
+                muertoOrange = true;
+                if (!vidasPila.isEmpty()) {
+                    arc = vidasPila.pop();
+                    arc.setOpacity(0.3);
+                    if (!vidasPila.isEmpty()) {
+                        hiloInicio();
+                    } else {
+                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                    }
+                }
+            } else if ((xPinkI <= (int) pacman.getpMan().getCenterX() && xPinkS >= (int) pacman.getpMan().getCenterX())
+                    && (yPinkI <= (int) pacman.getpMan().getCenterY() && yPinkS >= (int) pacman.getpMan().getCenterY())) {
+                root1.getChildren().remove(pacman.getpMan());
+                muertoPink = true;
+                muertoRed = true;
+                muertoCyan = true;
+                muertoOrange = true;
+                if (!vidasPila.isEmpty()) {
+                    arc = vidasPila.pop();
+                    arc.setOpacity(0.3);
+                    if (!vidasPila.isEmpty()) {
+                        hiloInicio();
+                    } else {
+                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                    }
+                }
+            }
+        }
+
+    }
     Queue<Nodo> colaRed = new LinkedList<>();
     Queue<Nodo> colaPink = new LinkedList<>();
     Queue<Nodo> colaOrange = new LinkedList<>();
@@ -2693,12 +2801,9 @@ public class Nivel10Controller extends Controller implements Initializable {
             }
         });
     }
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        contadorEncierro = 0;
-        Top10();
-        CrearMapa();
-        llenarMatPeso();
+
+    private void inicioJuego() {
+
         //Inicio el movimiento del PacMan hacia la derecha
         movimiento = "RIGHT";
         movimientoOriginal = "RIGHT";
@@ -2709,6 +2814,15 @@ public class Nivel10Controller extends Controller implements Initializable {
         moveOrangeGhost();
         moveCyanGhost();
         GameOver();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        contadorEncierro = 0;
+        Top10();
+        CrearMapa();
+        llenarMatPeso();
+        inicioJuego();
         EncierroValor = (puntos.size()) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
