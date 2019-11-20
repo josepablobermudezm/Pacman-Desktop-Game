@@ -17,7 +17,7 @@ public class CyanGhost extends ImageView {
     private Nodo nodo = new Nodo(352.0,298.0);
     //en la parte de los nodos lo que se está guardando es la posición del Layout no la del nodo
     Image imgLogo;
-
+    private boolean azul;
     public CyanGhost() {
         super();
         this.setLayoutX(352.0);
@@ -26,5 +26,15 @@ public class CyanGhost extends ImageView {
         this.setFitHeight(30);
         this.setFitWidth(30);
         this.setImage(new Image("/pacmanfx/resources/blue-ghost.png"));
+        this.azul = false;
     }
+
+    public boolean isAzul() {
+        return azul;
+    }
+
+    public void setAzul(boolean azul) {
+        this.azul = azul;
+    }
+    
 }

@@ -8,7 +8,9 @@ package pacmanfx.util;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import pacmanfx.model.CyanGhost;
 import pacmanfx.model.OrangeGhost;
 import pacmanfx.model.PinkGhost;
@@ -71,6 +73,10 @@ public class hiloTiempo {
                     timer2.cancel();
                     task2.cancel();
                     tic2 = 1;
+                    redGhost.setAzul(false);
+                    cyanGhost.setAzul(false);
+                    orangeGhost.setAzul(false);
+                    pinkGhost.setAzul(false);
                     redGhost.setImage(new Image("/pacmanfx/resources/red-ghost.png"));
                     cyanGhost.setImage(new Image("/pacmanfx/resources/blue-ghost.png"));
                     orangeGhost.setImage(new Image("/pacmanfx/resources/yellow-ghost.png"));
@@ -91,10 +97,13 @@ public class hiloTiempo {
 
     public void correrHilo(RedGhost redGhost, CyanGhost cyanGhost, OrangeGhost orangeGhost, PinkGhost pinkGhost) {
         this.redGhost = redGhost;
+        this.redGhost.setAzul(true);
         this.cyanGhost = cyanGhost;
+        this.cyanGhost.setAzul(true);
         this.pinkGhost = pinkGhost;
+        this.pinkGhost.setAzul(true);
         this.orangeGhost = orangeGhost;
-        
+        this.orangeGhost.setAzul(true);
         redGhost.setImage(new Image("/pacmanfx/resources/blue-ghost-Eatable.png"));
         cyanGhost.setImage(new Image("/pacmanfx/resources/blue-ghost-Eatable.png"));
         orangeGhost.setImage(new Image("/pacmanfx/resources/blue-ghost-Eatable.png"));

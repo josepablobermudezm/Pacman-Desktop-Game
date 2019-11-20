@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -90,8 +92,9 @@ public class Nivel7Controller extends Controller implements Initializable {
     private hiloTiempo Hilo;
     int contVidas = 0, contVidas2 = 0;
     private boolean Pelotas = false;
+    private int velocidadRedGhost = 10;
     char Mapa[][]
-            = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+         = {{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '/', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
             {'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
             {'X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
@@ -102,7 +105,7 @@ public class Nivel7Controller extends Controller implements Initializable {
             {'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X'},
             {'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X'},
             {'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X'},
-            {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '/'},
+            {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', '*', '*', '*', '*', '*', '*', '*', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
             {'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
             {'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X'},
             {'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '@', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X'},
@@ -121,6 +124,8 @@ public class Nivel7Controller extends Controller implements Initializable {
     private Label lblEncierro;
     @FXML
     private Label lblSuperVelocidad;
+    private ImageView premio;
+    private boolean premioBand = false, primeraPremio = true;
 
     @Override
     public void initialize() {
@@ -369,9 +374,9 @@ public class Nivel7Controller extends Controller implements Initializable {
                         auxNodo = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
                         nodosAux.remove(auxNodo);
                         destino.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(auxNodo)) {
+                            if (arista.getDestino().equals(auxNodo) && auxNodo.getPoint2D().getX() != 450.0 && auxNodo.getPoint2D().getY() != 305.0) {
                                 bandera = true;
-                            } else if (arista.getOrigen().equals(auxNodo)) {
+                            } else if (arista.getOrigen().equals(auxNodo) && auxNodo.getPoint2D().getX() != 450.0 && auxNodo.getPoint2D().getY() != 305.0 ) {
                                 bandera = true;
                             }
                         });
@@ -1030,6 +1035,17 @@ public class Nivel7Controller extends Controller implements Initializable {
                     pacman.setNodo(new Nodo(x, y));
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerXProperty().addListener((observable) -> {
+                        
+                        if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 407.0 && premioBand) {
+                            premio.setVisible(false);
+                            premio.setImage(null);
+                            root.getChildren().remove(premio);
+                            contPuntos += 70;
+                            Integer puntaje = contPuntos * 10;
+                            puntosJugador.setText(puntaje.toString());
+                            premioBand = false;
+                        }
+                        
                         cont++;
                         //Cierro y abro el PacMan
                         if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
@@ -1075,6 +1091,19 @@ public class Nivel7Controller extends Controller implements Initializable {
                         if (Encierro()) {
                             lblEncierro.setVisible(true);
                             EncierroBandera = true;
+                        }
+                        if (((puntos.size()) > EncierroValor - 4) && ((puntos.size()) < EncierroValor + 4) && primeraPremio) {
+                            premio = new ImageView();
+                            premio.setLayoutX(447.0);
+                            premio.setLayoutY(390.0);
+                            premio.setId("premio");
+                            premio.setFitHeight(30);
+                            premio.setFitWidth(30);
+                            premio.setImage(new Image("/pacmanfx/resources/orange.png"));
+                            premioBand = true;
+                            primeraPremio = false;
+                            System.out.println("entrando");
+                            root.getChildren().add(premio);
                         }
 
                         puntos.remove(circle);
@@ -1163,6 +1192,40 @@ public class Nivel7Controller extends Controller implements Initializable {
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerYProperty().addListener((observable) -> {
 
+                        if(pacman.getpMan().getCenterX() == 725 && pacman.getpMan().getCenterY() == 555.0 && movimiento == "DOWN"){
+                            pacman.getpMan().setCenterX(665.0);
+                            pacman.getpMan().setCenterY(0.0);
+                            nodos.stream().forEach(x->{
+                                if(x.getPoint2D().getX() == 665.0 && x.getPoint2D().getY() == 45.0){
+                                    nodoDestino = x;
+                                }
+                            });
+                        }else if(pacman.getpMan().getCenterX() == 665.0 && pacman.getpMan().getCenterY() == 0.0 && movimiento == "UP"){
+                            pacman.getpMan().setCenterX(725.0);
+                            pacman.getpMan().setCenterY(555.0);
+                            nodos.stream().forEach(x->{
+                                if(x.getPoint2D().getX() == 725.0 && x.getPoint2D().getY() == 517.0){
+                                    nodoDestino = x;
+                                }
+                            });
+                        }
+                        
+                        if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 407.0 && premioBand) {
+                            premio.setVisible(false);
+                            premio.setImage(null);
+                            root.getChildren().remove(premio);
+                            contPuntos += 70;
+                            Integer puntaje = contPuntos * 10;
+                            velocidadRedGhost = (puntaje>=3000?15:(puntaje>=2000)?14:11);
+                            puntosJugador.setText(puntaje.toString());
+                            premioBand = false;
+                        }
+                        
+                        if (Encierro()) {
+                            lblEncierro.setVisible(true);
+                            EncierroBandera = true;
+                        }
+                        
                         cont++;
                         //Cierro y abro el PacMan
                         if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
@@ -1249,13 +1312,16 @@ public class Nivel7Controller extends Controller implements Initializable {
         label1.setId("puntos");
         root.getChildren().add(label1);
 
+        vidasPila = new Stack<>();
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
-            arc.setFill(Paint.valueOf("#F22836"));
+            arc.setFill(Paint.valueOf("YELLOW"));
             arc.setStrokeType(StrokeType.INSIDE);
-            arc.setStroke(Paint.valueOf("#2D4758"));
+            arc.setStroke(Paint.valueOf("BLACK"));
             arc.setStrokeWidth(2);
             arc.setType(ArcType.ROUND);
+            // arc.setOpacity(0.3);
+            vidasPila.add(arc);
             root.getChildren().add(arc);
             cont3 += 30;
         }
@@ -1480,8 +1546,8 @@ public class Nivel7Controller extends Controller implements Initializable {
             Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
             KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
             KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
-            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
-            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / velocidadRedGhost) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / velocidadRedGhost) * 100), kv);
             timeline.getKeyFrames().addAll(kf2, kf);
 
            
@@ -1523,6 +1589,8 @@ public class Nivel7Controller extends Controller implements Initializable {
     /*
      *  Algortitmo de dijstra 
      */
+     Stack<Arc> vidasPila;
+    
     Nodo inicial2;
     Nodo auxInicial2;
     Nodo auxNodo6;
@@ -2119,6 +2187,36 @@ public class Nivel7Controller extends Controller implements Initializable {
         return valorEntero;
     }
     
+    private void limpiarValores() {
+        nodos.clear();
+        aristas.clear();
+        cargarNodoArista();
+        floyd2.getCaminos().clear();
+        floyd.getCaminos().clear();
+        auxNodo5 = null;
+        inicial = null;
+        nodoDestino = null;
+        destinoPink = null;
+        auxNodo6 = null;
+        inicial2 = null;
+        nodosAux.clear();
+        posX = null;
+        posY = null;
+        yAux2 = null;
+        xAux2 = null;
+        pila.clear();
+        movimiento = "";
+        movimientoOriginal = "";
+        movimientoPrevio = "";
+        index1 = 10000;
+        ind1 = 10000;
+        nodoOrigen = null;
+        pilaCyan.clear();
+        pilaOrange.clear();
+        pilaRed.clear();
+        pilaSuprema.clear();
+        pilaPink.clear();
+    }
     
     public void GameOver() {
         redGhost.layoutXProperty().addListener((x) -> {
@@ -2182,70 +2280,155 @@ public class Nivel7Controller extends Controller implements Initializable {
     //Anaranjado
     boolean muertoOrange = false;
 
+    int tic = 0;
+
+    private Timer timer;
+    boolean reinicio = false;
+    TimerTask task;
+
+    void hiloInicio() {
+
+        Platform.runLater(() -> {
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    if (tic == 4) {
+
+                        limpiarValores();
+                        Platform.runLater(() -> {
+                            timer.cancel();
+                            task.cancel();
+                            tic = 0;
+                            root.getChildren().add(pacman.getpMan());
+
+                            pacman.getpMan().setFocusTraversable(true);
+                            nodos.stream().forEach((nodo) -> {
+                                if (nodo.getPoint2D().getX() == 447.0 && nodo.getPoint2D().getY() == 407.0) {
+                                    nodoOrigen = nodo;
+                                }
+                            });
+                            
+                            pacman.getpMan().setCenterX(nodoOrigen.getPoint2D().getX());
+                            pacman.getpMan().setCenterY(nodoOrigen.getPoint2D().getY());
+                            pacman.setNodo(nodoOrigen);
+                            inicioJuego();
+                            reinicio = false;
+                        });
+                        /*System.out.println("MOVE");
+                        if(!root.getChildren().contains(pacman.getpMan())){
+                            root.getChildren().add(pacman.getpMan());
+                        }*/
+
+                    }
+                    tic++;
+                }
+            };
+            timer = new Timer();
+            reinicio = true;
+            timer.schedule(task, 10, 1000);
+
+        });
+
+    }
+
     private void fantasma() {
-        int x1 = (int) redGhost.getLayoutX() + 12;
-        int x2 = (int) redGhost.getLayoutX() + 16;
-        int y1 = (int) redGhost.getLayoutY() + 12;
-        int y2 = (int) redGhost.getLayoutY() + 16;
-        //Hacer para 
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
+        Arc arc = null;
+        int xRedI = (int) redGhost.getLayoutX() + 12;
+        int xRedS = (int) redGhost.getLayoutX() + 16;
+        int yRedI = (int) redGhost.getLayoutY() + 12;
+        int yRedS = (int) redGhost.getLayoutY() + 16;
+
+        int xPinkI = (int) pinkGhost.getLayoutX() + 12;
+        int xPinkS = (int) pinkGhost.getLayoutX() + 16;
+        int yPinkI = (int) pinkGhost.getLayoutY() + 12;
+        int yPinkS = (int) pinkGhost.getLayoutY() + 16;
+
+        int xCyanI = (int) cyanGhost.getLayoutX() + 12;
+        int xCyanS = (int) cyanGhost.getLayoutX() + 16;
+        int yCyanI = (int) cyanGhost.getLayoutY() + 12;
+        int yCyanS = (int) cyanGhost.getLayoutY() + 16;
+
+        int xOrangeI = (int) orangeGhost.getLayoutX() + 12;
+        int xOrangeS = (int) orangeGhost.getLayoutX() + 16;
+        int yOrangeI = (int) orangeGhost.getLayoutY() + 12;
+        int yOrangeS = (int) orangeGhost.getLayoutY() + 16;
+        if (!reinicio) {
+            if ((xOrangeI <= (int) pacman.getpMan().getCenterX() && xOrangeS >= (int) pacman.getpMan().getCenterX())
+                    && (yOrangeI <= (int) pacman.getpMan().getCenterY() && yOrangeS >= (int) pacman.getpMan().getCenterY())) {
+                root.getChildren().remove(pacman.getpMan());
+                muertoPink = true;
+                muertoRed = true;
+                muertoCyan = true;
+                muertoOrange = true;
+                if (!vidasPila.isEmpty()) {
+                    arc = vidasPila.pop();
+                    arc.setOpacity(0.3);
+                    if (!vidasPila.isEmpty()) {
+                        hiloInicio();
+                    } else {
+                        //Guardo los puntos totales de la partida
+                        GameOverController.puntajeNivel = contPuntos * 10;
+
+                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                    }
+                }
+            } else if ((xRedI <= (int) pacman.getpMan().getCenterX() && xRedS >= (int) pacman.getpMan().getCenterX())
+                    && (yRedI <= (int) pacman.getpMan().getCenterY() && yRedS >= (int) pacman.getpMan().getCenterY())) {
+                root.getChildren().remove(pacman.getpMan());
+                muertoPink = true;
+                muertoRed = true;
+                muertoCyan = true;
+                muertoOrange = true;
+                if (!vidasPila.isEmpty()) {
+                    arc = vidasPila.pop();
+                    arc.setOpacity(0.3);
+                    if (!vidasPila.isEmpty()) {
+                        hiloInicio();
+                    } else {
+                        //Guardo los puntos totales de la partida
+                        GameOverController.puntajeNivel = contPuntos * 10;
+                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                    }
+                }
+            } else if ((xCyanI <= (int) pacman.getpMan().getCenterX() && xCyanS >= (int) pacman.getpMan().getCenterX())
+                    && (yCyanI <= (int) pacman.getpMan().getCenterY() && yCyanS >= (int) pacman.getpMan().getCenterY())) {
+                root.getChildren().remove(pacman.getpMan());
+                muertoPink = true;
+                muertoRed = true;
+                muertoCyan = true;
+                muertoOrange = true;
+                if (!vidasPila.isEmpty()) {
+                    arc = vidasPila.pop();
+                    arc.setOpacity(0.3);
+                    if (!vidasPila.isEmpty()) {
+                        hiloInicio();
+                    } else {
+                        //Guardo los puntos totales de la partida
+                        GameOverController.puntajeNivel = contPuntos * 10;
+                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                    }
+                }
+            } else if ((xPinkI <= (int) pacman.getpMan().getCenterX() && xPinkS >= (int) pacman.getpMan().getCenterX())
+                    && (yPinkI <= (int) pacman.getpMan().getCenterY() && yPinkS >= (int) pacman.getpMan().getCenterY())) {
+                root.getChildren().remove(pacman.getpMan());
+                muertoPink = true;
+                muertoRed = true;
+                muertoCyan = true;
+                muertoOrange = true;
+                if (!vidasPila.isEmpty()) {
+                    arc = vidasPila.pop();
+                    arc.setOpacity(0.3);
+                    if (!vidasPila.isEmpty()) {
+                        hiloInicio();
+                    } else {
+                        //Guardo los puntos totales de la partida
+                        GameOverController.puntajeNivel = contPuntos * 10;
+                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                    }
+                }
+            }
         }
 
-        x1 = (int) cyanGhost.getLayoutX() + 12;
-        x2 = (int) cyanGhost.getLayoutX() + 16;
-        y1 = (int) cyanGhost.getLayoutY() + 12;
-        y2 = (int) cyanGhost.getLayoutY() + 16;
-
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
-
-        x1 = (int) orangeGhost.getLayoutX() + 12;
-        x2 = (int) orangeGhost.getLayoutX() + 16;
-        y1 = (int) orangeGhost.getLayoutY() + 12;
-        y2 = (int) orangeGhost.getLayoutY() + 16;
-
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
-
-        int x1p = (int) pinkGhost.getLayoutX() + 12;
-        int x2p = (int) pinkGhost.getLayoutX() + 16;
-        int y1p = (int) pinkGhost.getLayoutY() + 12;
-        int y2p = (int) pinkGhost.getLayoutY() + 16;
-
-        if ((x1p <= (int) pacman.getpMan().getCenterX() && x2p >= (int) pacman.getpMan().getCenterX())
-                && (y1p <= (int) pacman.getpMan().getCenterY() && y2p >= (int) pacman.getpMan().getCenterY())) {
-            root.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
     }
 
     Queue<Nodo> colaRed = new LinkedList<>();
@@ -2678,13 +2861,9 @@ public class Nivel7Controller extends Controller implements Initializable {
             }
         });
     }
+    
+    private void inicioJuego() {
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        contadorEncierro = 0;
-        Top10();
-        CrearMapa();
-        llenarMatPeso();
         //Inicio el movimiento del PacMan hacia la derecha
         movimiento = "RIGHT";
         movimientoOriginal = "RIGHT";
@@ -2695,6 +2874,17 @@ public class Nivel7Controller extends Controller implements Initializable {
         moveOrangeGhost();
         moveCyanGhost();
         GameOver();
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        contadorEncierro = 0;
+        Top10();
+        CrearMapa();
+        llenarMatPeso();
+        //Inicio el movimiento del PacMan hacia la derecha
+        inicioJuego();
         EncierroValor = (puntos.size() - 8) / 2;
         Hilo = new hiloTiempo();
         hiloTiempo.finalizado = false;
@@ -2914,10 +3104,6 @@ public class Nivel7Controller extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        TopList.stream().forEach(c -> {
-            System.out.println(c);
-        });
     }
 
     private void OrganizarTop() {

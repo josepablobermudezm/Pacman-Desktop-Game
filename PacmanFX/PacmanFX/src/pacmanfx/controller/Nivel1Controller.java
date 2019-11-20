@@ -24,6 +24,8 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -127,6 +129,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     private Label lblEncierro;
     @FXML
     private Label lblSuperVelocidad;
+    private int velocidadRedGhost = 10;
 
     @Override
     public void initialize() {
@@ -375,9 +378,9 @@ public class Nivel1Controller extends Controller implements Initializable {
                         auxNodo = nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux2 && (int) nodo.getPoint2D().getY() == yAux2).findAny().get();
                         nodosAux.remove(auxNodo);
                         destino.getAristas_Adyacentes().stream().forEach((arista) -> {
-                            if (arista.getDestino().equals(auxNodo)) {
+                            if (arista.getDestino().equals(auxNodo) && auxNodo.getPoint2D().getX() != 450.0 && auxNodo.getPoint2D().getY() != 305.0) {
                                 bandera = true;
-                            } else if (arista.getOrigen().equals(auxNodo)) {
+                            } else if (arista.getOrigen().equals(auxNodo) && auxNodo.getPoint2D().getX() != 450.0 && auxNodo.getPoint2D().getY() != 305.0) {
                                 bandera = true;
                             }
                         });
@@ -388,6 +391,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                     if (auxNodo != null) {
                         yAux2 = 646;
                         break;
+
                     }
                     yAux2++;
                 }
@@ -595,6 +599,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         if (!devolver) {
             xAux = (int) pacman.getpMan().getCenterX() - 14;
             yAux = (int) pacman.getpMan().getCenterY() + 13;
+
             while (xAux < (int) pacman.getpMan().getCenterX() + 14) {
                 while (yAux < 645) {
                     if (nodosAux.stream().filter(nodo -> (int) nodo.getPoint2D().getX() == xAux && (int) nodo.getPoint2D().getY() == yAux).findAny().isPresent() && !adyacente) {
@@ -624,8 +629,8 @@ public class Nivel1Controller extends Controller implements Initializable {
                 }
                 yAux = (int) pacman.getpMan().getCenterY() + 13;
                 xAux++;
-
             }
+
             if (nodoDestino != null) {
                 pacman.getpMan().setRotate(90);
                 Timeline timeline = new Timeline();
@@ -660,7 +665,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                     movimiento();
                 });
             } else {
-                //Abro la boca del pacMan cuando no encuentro ningun nodo
+                //Abro la boca del pacMan cuando no encuentro ningún nodo
                 pacman.getpMan().setLength(300);
                 movimiento = "";
                 movimientoOriginal = "";
@@ -1026,6 +1031,8 @@ public class Nivel1Controller extends Controller implements Initializable {
         });
     }
 
+    Stack<Arc> vidasPila;
+
     public void CrearMapa() {
         cargarNodoArista();
         for (int i = 0; i < 20; i++) {
@@ -1044,6 +1051,24 @@ public class Nivel1Controller extends Controller implements Initializable {
                     pacman.setNodo(new Nodo(x, y));
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerXProperty().addListener((observable) -> {
+
+                        if (pacman.getpMan().getCenterX() == 0.0 && pacman.getpMan().getCenterY() == 268.0 && movimiento == "LEFT") {
+                            pacman.getpMan().setCenterX(899.0);
+                            pacman.getpMan().setCenterY(268.0);
+                            nodos.stream().forEach(x -> {
+                                if (x.getPoint2D().getX() == 849.0 && x.getPoint2D().getY() == 268.0) {
+                                    nodoDestino = x;
+                                }
+                            });
+                        } else if (pacman.getpMan().getCenterX() == 899.0 && pacman.getpMan().getCenterY() == 268.0 && movimiento == "RIGHT") {
+                            pacman.getpMan().setCenterX(0.0);
+                            pacman.getpMan().setCenterY(268.0);
+                            nodos.stream().forEach(x -> {
+                                if (x.getPoint2D().getX() == 46.0 && x.getPoint2D().getY() == 268.0) {
+                                    nodoDestino = x;
+                                }
+                            });
+                        }
 
                         if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 405.0 && premioBand) {
                             premio.setVisible(false);
@@ -1089,7 +1114,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                         });
                         if (Pelotas) {
                             /*
-                                envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                             *   envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
                              */
                             new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
                             Pelotas = false;
@@ -1236,6 +1261,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                                     root.getChildren().remove(punto);
                                     contPuntos++;
                                     Integer puntaje = contPuntos * 10;
+                                    velocidadRedGhost = (puntaje >= 3000 ? 15 : (puntaje >= 2000) ? 14 : 11);
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
                                     /*
@@ -1310,13 +1336,16 @@ public class Nivel1Controller extends Controller implements Initializable {
         label1.setId("puntos");
         root.getChildren().add(label1);
 
+        vidasPila = new Stack<>();
         for (int i = 0; i < vidas; i++) {
             Arc arc = new Arc(725 + cont3, 605, 13.0, 15.0, 30, 300);
-            arc.setFill(Paint.valueOf("GREEN"));
+            arc.setFill(Paint.valueOf("YELLOW"));
             arc.setStrokeType(StrokeType.INSIDE);
-            arc.setStroke(Paint.valueOf("#00ab55"));
+            arc.setStroke(Paint.valueOf("BLACK"));
             arc.setStrokeWidth(2);
             arc.setType(ArcType.ROUND);
+            // arc.setOpacity(0.3);
+            vidasPila.add(arc);
             root.getChildren().add(arc);
             cont3 += 30;
         }
@@ -1536,7 +1565,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 if (listEnlazada.size() > 1) {
                     if (listEnlazada.contains(t.getDestino())) {
                         listEnlazada.add(t.getOrigen());
-                    } else /*if (listEnlazada.contains(t.getOrigen()))*/ {
+                    } else {
                         listEnlazada.add(t.getDestino());
                     }
                 } else {
@@ -1560,11 +1589,10 @@ public class Nivel1Controller extends Controller implements Initializable {
             Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
             KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
             KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
-            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
-            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / velocidadRedGhost) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / velocidadRedGhost) * 100), kv);
             timeline.getKeyFrames().addAll(kf2, kf);
 
-           
             timeline.play();
             timeline.currentTimeProperty().addListener((observable) -> {
                 Platform.runLater(() -> {
@@ -2252,6 +2280,38 @@ public class Nivel1Controller extends Controller implements Initializable {
         });
 
     }
+
+    private void limpiarValores() {
+        nodos.clear();
+        aristas.clear();
+        cargarNodoArista();
+        floyd2.getCaminos().clear();
+        floyd.getCaminos().clear();
+        auxNodo5 = null;
+        inicial = null;
+        nodoDestino = null;
+        destinoPink = null;
+        auxNodo6 = null;
+        inicial2 = null;
+        nodosAux.clear();
+        posX = null;
+        posY = null;
+        yAux2 = null;
+        xAux2 = null;
+        pila.clear();
+        movimiento = "";
+        movimientoOriginal = "";
+        movimientoPrevio = "";
+        index1 = 10000;
+        ind1 = 10000;
+        nodoOrigen = null;
+        pilaCyan.clear();
+        pilaOrange.clear();
+        pilaRed.clear();
+        pilaSuprema.clear();
+        pilaPink.clear();
+    }
+
     //Fantasma Rojo
     boolean muertoRed = false;
     //Pink
@@ -2261,69 +2321,176 @@ public class Nivel1Controller extends Controller implements Initializable {
     //Anaranjado
     boolean muertoOrange = false;
 
+    int tic = 0;
+
+    private Timer timer;
+    boolean reinicio = false;
+    TimerTask task;
+
+    void hiloInicio() {
+
+        Platform.runLater(() -> {
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    if (tic == 4) {
+
+                        limpiarValores();
+                        Platform.runLater(() -> {
+                            timer.cancel();
+                            task.cancel();
+                            tic = 0;
+                            root.getChildren().add(pacman.getpMan());
+
+                            pacman.getpMan().setFocusTraversable(true);
+                            nodos.stream().forEach((nodo) -> {
+                                if (nodo.getPoint2D().getX() == 447.0 && nodo.getPoint2D().getY() == 405.0) {
+                                    nodoOrigen = nodo;
+                                }
+                            });
+
+                            pacman.getpMan().setCenterX(nodoOrigen.getPoint2D().getX());
+                            pacman.getpMan().setCenterY(nodoOrigen.getPoint2D().getY());
+                            pacman.setNodo(nodoOrigen);
+                            inicioJuego();
+                            reinicio = false;
+                        });
+                        /*System.out.println("MOVE");
+                        if(!root.getChildren().contains(pacman.getpMan())){
+                            root.getChildren().add(pacman.getpMan());
+                        }*/
+
+                    }
+                    tic++;
+                }
+            };
+            timer = new Timer();
+            reinicio = true;
+            timer.schedule(task, 10, 1000);
+
+        });
+
+    }
+
     private void fantasma() {
-        int x1 = (int) redGhost.getLayoutX() + 12;
-        int x2 = (int) redGhost.getLayoutX() + 16;
-        int y1 = (int) redGhost.getLayoutY() + 12;
-        int y2 = (int) redGhost.getLayoutY() + 16;
-        //Hacer para 
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
+        Arc arc = null;
+        int xRedI = (int) redGhost.getLayoutX() + 12;
+        int xRedS = (int) redGhost.getLayoutX() + 16;
+        int yRedI = (int) redGhost.getLayoutY() + 12;
+        int yRedS = (int) redGhost.getLayoutY() + 16;
 
-        x1 = (int) cyanGhost.getLayoutX() + 12;
-        x2 = (int) cyanGhost.getLayoutX() + 16;
-        y1 = (int) cyanGhost.getLayoutY() + 12;
-        y2 = (int) cyanGhost.getLayoutY() + 16;
+        int xPinkI = (int) pinkGhost.getLayoutX() + 12;
+        int xPinkS = (int) pinkGhost.getLayoutX() + 16;
+        int yPinkI = (int) pinkGhost.getLayoutY() + 12;
+        int yPinkS = (int) pinkGhost.getLayoutY() + 16;
 
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
+        int xCyanI = (int) cyanGhost.getLayoutX() + 12;
+        int xCyanS = (int) cyanGhost.getLayoutX() + 16;
+        int yCyanI = (int) cyanGhost.getLayoutY() + 12;
+        int yCyanS = (int) cyanGhost.getLayoutY() + 16;
 
-        x1 = (int) orangeGhost.getLayoutX() + 12;
-        x2 = (int) orangeGhost.getLayoutX() + 16;
-        y1 = (int) orangeGhost.getLayoutY() + 12;
-        y2 = (int) orangeGhost.getLayoutY() + 16;
-
-        if ((x1 <= (int) pacman.getpMan().getCenterX() && x2 >= (int) pacman.getpMan().getCenterX())
-                && (y1 <= (int) pacman.getpMan().getCenterY() && y2 >= (int) pacman.getpMan().getCenterY())) {
-            root.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
-        }
-
-        int x1p = (int) pinkGhost.getLayoutX() + 12;
-        int x2p = (int) pinkGhost.getLayoutX() + 16;
-        int y1p = (int) pinkGhost.getLayoutY() + 12;
-        int y2p = (int) pinkGhost.getLayoutY() + 16;
-
-        if ((x1p <= (int) pacman.getpMan().getCenterX() && x2p >= (int) pacman.getpMan().getCenterX())
-                && (y1p <= (int) pacman.getpMan().getCenterY() && y2p >= (int) pacman.getpMan().getCenterY())) {
-            root.getChildren().remove(pacman.getpMan());
-            pacman.getpMan().setCenterX(447.0);
-            pacman.getpMan().setCenterY(405.0);
-            muertoPink = true;
-            muertoRed = true;
-            muertoCyan = true;
-            muertoOrange = true;
+        int xOrangeI = (int) orangeGhost.getLayoutX() + 12;
+        int xOrangeS = (int) orangeGhost.getLayoutX() + 16;
+        int yOrangeI = (int) orangeGhost.getLayoutY() + 12;
+        int yOrangeS = (int) orangeGhost.getLayoutY() + 16;
+        if (!reinicio) {
+            if ((xOrangeI <= (int) pacman.getpMan().getCenterX() && xOrangeS >= (int) pacman.getpMan().getCenterX())
+                    && (yOrangeI <= (int) pacman.getpMan().getCenterY() && yOrangeS >= (int) pacman.getpMan().getCenterY())) {
+                if (!orangeGhost.isAzul()) {
+                    root.getChildren().remove(pacman.getpMan());
+                    muertoPink = true;
+                    muertoRed = true;
+                    muertoCyan = true;
+                    muertoOrange = true;
+                    if (!vidasPila.isEmpty()) {
+                        arc = vidasPila.pop();
+                        arc.setOpacity(0.3);
+                        if (!vidasPila.isEmpty()) {
+                            hiloInicio();
+                        } else {
+                            //Guardo los puntos totales de la partida
+                            GameOverController.puntajeNivel = contPuntos * 10;
+                            FlowController.getInstance().goViewInStage("GameOver", stage);
+                        }
+                    }
+                } else {
+                    orangeGhost.setImage(new Image("/pacmanfx/resources/dead.png"));
+                    muertoOrange = true;
+                    pacman.getpMan().setFocusTraversable(true);
+                }
+            } else if ((xRedI <= (int) pacman.getpMan().getCenterX() && xRedS >= (int) pacman.getpMan().getCenterX())
+                    && (yRedI <= (int) pacman.getpMan().getCenterY() && yRedS >= (int) pacman.getpMan().getCenterY())) {
+                if (!redGhost.isAzul()) {
+                    root.getChildren().remove(pacman.getpMan());
+                    muertoPink = true;
+                    muertoRed = true;
+                    muertoCyan = true;
+                    muertoOrange = true;
+                    if (!vidasPila.isEmpty()) {
+                        arc = vidasPila.pop();
+                        arc.setOpacity(0.3);
+                        if (!vidasPila.isEmpty()) {
+                            hiloInicio();
+                        } else {
+                            //Guardo los puntos totales de la partida
+                            GameOverController.puntajeNivel = contPuntos * 10;
+                            FlowController.getInstance().goViewInStage("GameOver", stage);
+                        }
+                    }
+                } else {
+                    redGhost.setImage(new Image("/pacmanfx/resources/dead.png"));
+                    muertoRed = true;
+                    pacman.getpMan().setFocusTraversable(true);
+                }
+            } else if ((xCyanI <= (int) pacman.getpMan().getCenterX() && xCyanS >= (int) pacman.getpMan().getCenterX())
+                    && (yCyanI <= (int) pacman.getpMan().getCenterY() && yCyanS >= (int) pacman.getpMan().getCenterY())) {
+                if (!cyanGhost.isAzul()) {
+                    root.getChildren().remove(pacman.getpMan());
+                    muertoPink = true;
+                    muertoRed = true;
+                    muertoCyan = true;
+                    muertoOrange = true;
+                    if (!vidasPila.isEmpty()) {
+                        arc = vidasPila.pop();
+                        arc.setOpacity(0.3);
+                        if (!vidasPila.isEmpty()) {
+                            hiloInicio();
+                        } else {
+                            //Guardo los puntos totales de la partida
+                            GameOverController.puntajeNivel = contPuntos * 10;
+                            FlowController.getInstance().goViewInStage("GameOver", stage);
+                        }
+                    }
+                } else {
+                    cyanGhost.setImage(new Image("/pacmanfx/resources/dead.png"));
+                    muertoCyan = true;
+                    pacman.getpMan().setFocusTraversable(true);
+                }
+            } else if ((xPinkI <= (int) pacman.getpMan().getCenterX() && xPinkS >= (int) pacman.getpMan().getCenterX())
+                    && (yPinkI <= (int) pacman.getpMan().getCenterY() && yPinkS >= (int) pacman.getpMan().getCenterY())) {
+                if (!pinkGhost.isAzul()) {
+                    root.getChildren().remove(pacman.getpMan());
+                    muertoPink = true;
+                    muertoRed = true;
+                    muertoCyan = true;
+                    muertoOrange = true;
+                    if (!vidasPila.isEmpty()) {
+                        arc = vidasPila.pop();
+                        arc.setOpacity(0.3);
+                        if (!vidasPila.isEmpty()) {
+                            hiloInicio();
+                        } else {
+                            //Guardo los puntos totales de la partida
+                            GameOverController.puntajeNivel = contPuntos * 10;
+                            FlowController.getInstance().goViewInStage("GameOver", stage);
+                        }
+                    }
+                } else {
+                    pinkGhost.setImage(new Image("/pacmanfx/resources/dead.png"));
+                    muertoPink = true;
+                    pacman.getpMan().setFocusTraversable(true);
+                }
+            }
         }
     }
 
@@ -2333,16 +2500,20 @@ public class Nivel1Controller extends Controller implements Initializable {
     Queue<Nodo> colaCyan = new LinkedList<>();
     Stack<Nodo> pilaRed = new Stack<>();
 
+    Nodo auxNodo55;
+    Nodo iniciall;
+    Nodo destinoo;
+
     public void estadoInicialRojo() {
         Platform.runLater(() -> {
             if (!pilaRed.isEmpty()) {
                 //Saca el primer valor de la cola 
-                auxNodo5 = pilaRed.pop();
+                auxNodo55 = pilaRed.pop();
 
                 Timeline timeline = new Timeline();
-                Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
-                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
-                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                Double distance = iniciall.getPoint2D().distance(auxNodo55.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo55.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo55.getPoint2D().getX() - 14);
                 KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
                 timeline.getKeyFrames().addAll(kf2, kf);
@@ -2351,11 +2522,17 @@ public class Nivel1Controller extends Controller implements Initializable {
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 timeline.setOnFinished((event) -> {
                     Platform.runLater(() -> {
-                        inicial = auxNodo5;
+                        iniciall = auxNodo55;
                         //Si la pila no esta vacia, hacemos recursividad
                         if (!pilaRed.isEmpty()) {
                             estadoInicialRojo();
                         } else {
+                            if (redGhost.isAzul()) {
+                                redGhost.setImage(new Image("/pacmanfx/resources/red-ghost.png"));
+                                inicial = iniciall;
+                                moveRedGhost();
+                                pacman.getpMan().setFocusTraversable(true);
+                            }
 
                         }
                     });
@@ -2372,22 +2549,30 @@ public class Nivel1Controller extends Controller implements Initializable {
                 });
 
                 nodos.stream().forEach((t) -> {
-                    if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
-                        nodoDestino = t;
+                    if (redGhost.isAzul()) {
+                        if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 305.0) {
+                            auxNodo55 = t;
+                        }
+                    } else {
+                        if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
+                            auxNodo55 = t;
+                        }
                     }
+
                 });
 
                 Dijkstra dijkstra;
+                iniciall = inicial;
 
-                inicial.setMarca(false);
-                inicial.setNodoAntecesorDisjktra(null);
-                inicial.setLongitud(0);
+                iniciall.setMarca(false);
+                iniciall.setNodoAntecesorDisjktra(null);
+                iniciall.setLongitud(0);
                 dijkstra = new Dijkstra(new Grafo(nodos, aristas));
-                dijkstra.ejecutar(inicial);
+                dijkstra.ejecutar(iniciall);
 
                 List<Arista> aristasAux;
                 pilaRed = new Stack<>();
-                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+                aristasAux = dijkstra.marcarRutaCorta(auxNodo55);
                 aristasAux.stream().forEach((t) -> {
                     if (!pilaRed.isEmpty()) {
                         if (!contenido(t.getDestino(), pilaRed)) {
@@ -2396,7 +2581,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                             pilaRed.add(t.getOrigen());
                         }
                     } else {
-                        if (t.getDestino().getPoint2D().getX() == this.nodoDestino.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == this.nodoDestino.getPoint2D().getY()) {
+                        if (t.getDestino().getPoint2D().getX() == this.auxNodo55.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == this.auxNodo55.getPoint2D().getY()) {
                             pilaRed.add(t.getDestino());
                             pilaRed.add(t.getOrigen());
                         } else {
@@ -2407,12 +2592,12 @@ public class Nivel1Controller extends Controller implements Initializable {
                 });
 
                 //Saca el primer valor de la pila 
-                auxNodo5 = pilaRed.pop();
+                auxNodo55 = pilaRed.pop();
 
                 Timeline timeline = new Timeline();
-                Double distance = new Point2D(redGhost.getLayoutX(), redGhost.getLayoutY()).distance(auxNodo5.getPoint2D());
-                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
-                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                Double distance = new Point2D(redGhost.getLayoutX(), redGhost.getLayoutY()).distance(auxNodo55.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo55.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo55.getPoint2D().getX() - 14);
                 KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
                 timeline.getKeyFrames().addAll(kf2, kf);
@@ -2421,7 +2606,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 timeline.setOnFinished((event) -> {
                     Platform.runLater(() -> {
-                        inicial = auxNodo5;
+                        iniciall = auxNodo55;
                         //Si la cola no esta vacia, hacemos recursividad
                         if (!pilaRed.isEmpty()) {
                             estadoInicialRojo();
@@ -2435,17 +2620,20 @@ public class Nivel1Controller extends Controller implements Initializable {
     Stack<Nodo> pilaPink = new Stack<>();
     Nodo destinoPink = null;
 
+    Nodo auxNodo66;
+    Nodo inicial22;
+
     private void estadoInicialPink() {
 
         Platform.runLater(() -> {
             if (!pilaPink.isEmpty()) {
                 //Saca el primer valor de la cola 
-                auxNodo6 = pilaPink.pop();
+                destinoPink = pilaPink.pop();
 
                 Timeline timeline = new Timeline();
-                Double distance = inicial2.getPoint2D().distance(auxNodo6.getPoint2D());
-                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), auxNodo6.getPoint2D().getY() - 14);
-                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), auxNodo6.getPoint2D().getX() - 14);
+                Double distance = inicial22.getPoint2D().distance(destinoPink.getPoint2D());
+                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), destinoPink.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), destinoPink.getPoint2D().getX() - 14);
                 KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
                 timeline.getKeyFrames().addAll(kf2, kf);
@@ -2454,11 +2642,17 @@ public class Nivel1Controller extends Controller implements Initializable {
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 timeline.setOnFinished((event) -> {
                     Platform.runLater(() -> {
-                        inicial2 = auxNodo6;
+                        inicial22 = destinoPink;
                         //Si la cola no esta vacia, hacemos recursividad
                         if (!pilaPink.isEmpty()) {
                             estadoInicialPink();
                         } else {
+                            if (pinkGhost.isAzul()) {
+                                pinkGhost.setImage(new Image("/pacmanfx/resources/pink-ghost.png"));
+                                inicial2 = null;
+                                movePinkGhost();
+                                pacman.getpMan().setFocusTraversable(true);
+                            }
 
                         }
                     });
@@ -2481,12 +2675,12 @@ public class Nivel1Controller extends Controller implements Initializable {
                 });
 
                 Dijkstra dijkstra;
-
-                inicial2.setMarca(false);
-                inicial2.setNodoAntecesorDisjktra(null);
-                inicial2.setLongitud(0);
+                inicial22 = inicial2;
+                inicial22.setMarca(false);
+                inicial22.setNodoAntecesorDisjktra(null);
+                inicial22.setLongitud(0);
                 dijkstra = new Dijkstra(new Grafo(nodos, aristas));
-                dijkstra.ejecutar(inicial2);
+                dijkstra.ejecutar(inicial22);
 
                 List<Arista> aristasAux;
                 pilaPink = new Stack<>();
@@ -2511,12 +2705,12 @@ public class Nivel1Controller extends Controller implements Initializable {
                 });
 
                 //Saca el primer valor de la pila 
-                auxNodo6 = pilaPink.pop();
+                destinoPink = pilaPink.pop();
 
                 Timeline timeline = new Timeline();
-                Double distance = new Point2D(pinkGhost.getLayoutX(), pinkGhost.getLayoutY()).distance(auxNodo6.getPoint2D());
-                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), auxNodo6.getPoint2D().getY() - 14);
-                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), auxNodo6.getPoint2D().getX() - 14);
+                Double distance = new Point2D(pinkGhost.getLayoutX(), pinkGhost.getLayoutY()).distance(destinoPink.getPoint2D());
+                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), destinoPink.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), destinoPink.getPoint2D().getX() - 14);
                 KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
                 timeline.getKeyFrames().addAll(kf2, kf);
@@ -2525,7 +2719,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 timeline.setOnFinished((event) -> {
                     Platform.runLater(() -> {
-                        inicial2 = auxNodo6;
+                        inicial22 = destinoPink;
                         //Si la cola no esta vacia, hacemos recursividad
                         if (!pilaPink.isEmpty()) {
                             estadoInicialPink();
@@ -2575,7 +2769,12 @@ public class Nivel1Controller extends Controller implements Initializable {
                         if (!pilaOrange.isEmpty()) {
                             estadoInicialOrange();
                         } else {
-
+                            if (orangeGhost.isAzul()) {
+                                orangeGhost.setImage(new Image("/pacmanfx/resources/yellow-ghost.png"));
+                                index1 = 10000;
+                                moveOrangeGhost();
+                                pacman.getpMan().setFocusTraversable(true);
+                            }
                         }
                     });
                 });
@@ -2680,6 +2879,12 @@ public class Nivel1Controller extends Controller implements Initializable {
                         if (!pilaCyan.isEmpty()) {
                             estadoInicialCyan();
                         } else {
+                            if (cyanGhost.isAzul()) {
+                                cyanGhost.setImage(new Image("/pacmanfx/resources/blue-ghost.png"));
+                                ind1 = 10000;
+                                moveCyanGhost();
+                                pacman.getpMan().setFocusTraversable(true);
+                            }
 
                         }
                     });
@@ -2757,6 +2962,22 @@ public class Nivel1Controller extends Controller implements Initializable {
             }
         });
     }
+
+    private void inicioJuego() {
+
+        //Inicio el movimiento del PacMan hacia la derecha
+        movimiento = "RIGHT";
+        movimientoOriginal = "RIGHT";
+        pila.push("RIGHT");
+        right(false);
+        moveRedGhost();
+        movePinkGhost();
+        moveOrangeGhost();
+        moveCyanGhost();
+        GameOver();
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Inicio();
@@ -2768,15 +2989,7 @@ public class Nivel1Controller extends Controller implements Initializable {
         CrearMapa();
         llenarMatPeso();
         //Inicio el movimiento del PacMan hacia la derecha
-        movimiento = "RIGHT";
-        movimientoOriginal = "RIGHT";
-        pila.push("RIGHT");
-        right(false);
-        moveRedGhost();
-        movePinkGhost();
-        moveOrangeGhost();
-        moveCyanGhost();
-        GameOver();
+        inicioJuego();
         EncierroValor = (puntos.size() - 8) / 2;
 
         Hilo = new hiloTiempo();
