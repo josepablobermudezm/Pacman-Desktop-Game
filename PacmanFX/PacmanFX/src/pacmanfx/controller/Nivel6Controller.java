@@ -85,8 +85,8 @@ public class Nivel6Controller extends Controller implements Initializable {
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
             {'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X'},
             {'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X'},
-            {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-            {'X', 'X', 'X', 'X', 'X', 'X', 'X', '/', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
+            {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '/'},
+            {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
 
     double x = 447, y = 407, velx = 0, vely = 0;
     int code = 39/*por default a la derecha*/, cont = 0, gameStatus = 0, MouseX = 0, MouseY = 0,
@@ -115,7 +115,10 @@ public class Nivel6Controller extends Controller implements Initializable {
     @FXML
     private Label lblSuperVelocidad;
     private boolean Pelotas = false;
-
+    private ImageView premio;
+    private boolean premioBand = false, primeraPremio = true;
+    private int velocidadRedGhost = 10;
+    
     /**
      * Initializes the controller class.
      */
@@ -1020,6 +1023,35 @@ public class Nivel6Controller extends Controller implements Initializable {
                     pacman.setNodo(new Nodo(x, y));
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerXProperty().addListener((observable) -> {
+                        
+                        if(pacman.getpMan().getCenterX() == 0.0 && pacman.getpMan().getCenterY() == 322.0 && movimiento == "LEFT"){
+                            pacman.getpMan().setCenterX(899.0);
+                            pacman.getpMan().setCenterY(517.0);
+                            nodos.stream().forEach(x->{
+                                if(x.getPoint2D().getX() == 851.0 && x.getPoint2D().getY() == 517.0){
+                                    nodoDestino = x;
+                                }
+                            });
+                        }else if(pacman.getpMan().getCenterX() == 899.0 && pacman.getpMan().getCenterY() == 517.0 && movimiento == "RIGHT"){
+                            pacman.getpMan().setCenterX(0.0);
+                            pacman.getpMan().setCenterY(322.0);
+                            nodos.stream().forEach(x->{
+                                if(x.getPoint2D().getX() == 45 && x.getPoint2D().getY() == 322.0){
+                                    nodoDestino = x;
+                                }
+                            });
+                        }
+                        
+                        if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 407.0 && premioBand) {
+                            premio.setVisible(false);
+                            premio.setImage(null);
+                            root.getChildren().remove(premio);
+                            contPuntos += 60;
+                            Integer puntaje = contPuntos * 10;
+                            puntosJugador.setText(puntaje.toString());
+                            premioBand = false;
+                        }
+                        
                         cont++;
                         //Cierro y abro el PacMan
                         if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
@@ -1064,6 +1096,19 @@ public class Nivel6Controller extends Controller implements Initializable {
                         if (Encierro()) {
                             lblEncierro.setVisible(true);
                             EncierroBandera = true;
+                        }
+                        if (((puntos.size()) > EncierroValor - 4) && ((puntos.size()) < EncierroValor + 4) && primeraPremio) {
+                            premio = new ImageView();
+                            premio.setLayoutX(447.0);
+                            premio.setLayoutY(390.0);
+                            premio.setId("premio");
+                            premio.setFitHeight(30);
+                            premio.setFitWidth(30);
+                            premio.setImage(new Image("/pacmanfx/resources/lemon.png"));
+                            premioBand = true;
+                            primeraPremio = false;
+                            System.out.println("entrando");
+                            root.getChildren().add(premio);
                         }
 
                         puntos.remove(circle);
@@ -1150,6 +1195,21 @@ public class Nivel6Controller extends Controller implements Initializable {
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerYProperty().addListener((observable) -> {
 
+                        if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 407.0 && premioBand) {
+                            premio.setVisible(false);
+                            premio.setImage(null);
+                            root.getChildren().remove(premio);
+                            contPuntos += 60;
+                            Integer puntaje = contPuntos * 10;
+                            puntosJugador.setText(puntaje.toString());
+                            premioBand = false;
+                        }
+                        
+                        if (Encierro()) {
+                            lblEncierro.setVisible(true);
+                            EncierroBandera = true;
+                        }
+                        
                         cont++;
                         //Cierro y abro el PacMan
                         if (pacman.getpMan().getLength() == 300.0 && cont == 10) {
@@ -1167,6 +1227,7 @@ public class Nivel6Controller extends Controller implements Initializable {
                                     root.getChildren().remove(punto);
                                     contPuntos++;
                                     Integer puntaje = contPuntos * 10;
+                                    velocidadRedGhost = (puntaje>=3000?15:(puntaje>=2000)?14:11);
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
                                     circle = punto;
@@ -1469,8 +1530,8 @@ public class Nivel6Controller extends Controller implements Initializable {
             Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
             KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
             KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
-            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
-            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / velocidadRedGhost) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / velocidadRedGhost) * 100), kv);
             timeline.getKeyFrames().addAll(kf2, kf);
 
             timeline.play();
@@ -2902,10 +2963,6 @@ public class Nivel6Controller extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        TopList.stream().forEach(c -> {
-            System.out.println(c);
-        });
     }
 
     private void OrganizarTop() {

@@ -127,6 +127,7 @@ public class Nivel1Controller extends Controller implements Initializable {
     private Label lblEncierro;
     @FXML
     private Label lblSuperVelocidad;
+    private int velocidadRedGhost = 10;
 
     @Override
     public void initialize() {
@@ -1025,7 +1026,7 @@ public class Nivel1Controller extends Controller implements Initializable {
             nodosAux.add(nodo);
         });
     }
-
+    
     public void CrearMapa() {
         cargarNodoArista();
         for (int i = 0; i < 20; i++) {
@@ -1044,7 +1045,25 @@ public class Nivel1Controller extends Controller implements Initializable {
                     pacman.setNodo(new Nodo(x, y));
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerXProperty().addListener((observable) -> {
-
+                        
+                        if(pacman.getpMan().getCenterX() == 0.0 && pacman.getpMan().getCenterY() == 268.0 && movimiento == "LEFT"){
+                            pacman.getpMan().setCenterX(899.0);
+                            pacman.getpMan().setCenterY(268.0);
+                            nodos.stream().forEach(x->{
+                                if(x.getPoint2D().getX() == 849.0 && x.getPoint2D().getY() == 268.0){
+                                    nodoDestino = x;
+                                }
+                            });
+                        }else if(pacman.getpMan().getCenterX() == 899.0 && pacman.getpMan().getCenterY() == 268.0 && movimiento == "RIGHT"){
+                            pacman.getpMan().setCenterX(0.0);
+                            pacman.getpMan().setCenterY(268.0);
+                            nodos.stream().forEach(x->{
+                                if(x.getPoint2D().getX() == 46 && x.getPoint2D().getY() == 268.0){
+                                    nodoDestino = x;
+                                }
+                            });
+                        }
+                        
                         if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 405.0 && premioBand) {
                             premio.setVisible(false);
                             premio.setImage(null);
@@ -1089,7 +1108,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                         });
                         if (Pelotas) {
                             /*
-                                envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
+                             *   envíamos por parametros los fantasmas y en el hilo le cambiamos el color a azul
                              */
                             new hiloTiempo().correrHilo(redGhost, cyanGhost, orangeGhost, pinkGhost);
                             Pelotas = false;
@@ -1202,7 +1221,7 @@ public class Nivel1Controller extends Controller implements Initializable {
 
                     //Actualiza el nodo, y el point2D conforme se esta moviendo
                     pacman.getpMan().centerYProperty().addListener((observable) -> {
-
+                        
                         if ((int) pacman.getpMan().getCenterX() == 447.0 && (int) pacman.getpMan().getCenterY() == 405.0 && premioBand) {
                             premio.setVisible(false);
                             premio.setImage(null);
@@ -1236,6 +1255,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                                     root.getChildren().remove(punto);
                                     contPuntos++;
                                     Integer puntaje = contPuntos * 10;
+                                    velocidadRedGhost = (puntaje>=3000?15:(puntaje>=2000)?14:11);
                                     puntosJugador.setText(puntaje.toString());
                                     circle = punto;
                                     /*
@@ -1536,7 +1556,7 @@ public class Nivel1Controller extends Controller implements Initializable {
                 if (listEnlazada.size() > 1) {
                     if (listEnlazada.contains(t.getDestino())) {
                         listEnlazada.add(t.getOrigen());
-                    } else /*if (listEnlazada.contains(t.getOrigen()))*/ {
+                    } else{
                         listEnlazada.add(t.getDestino());
                     }
                 } else {
@@ -1560,8 +1580,8 @@ public class Nivel1Controller extends Controller implements Initializable {
             Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
             KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
             KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
-            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 10) * 100), kv2);
-            KeyFrame kf = new KeyFrame(Duration.millis((distance / 10) * 100), kv);
+            KeyFrame kf2 = new KeyFrame(Duration.millis((distance / velocidadRedGhost) * 100), kv2);
+            KeyFrame kf = new KeyFrame(Duration.millis((distance / velocidadRedGhost) * 100), kv);
             timeline.getKeyFrames().addAll(kf2, kf);
 
            
