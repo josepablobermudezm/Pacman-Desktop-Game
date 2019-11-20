@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 public class RedGhost extends ImageView {
 
     private Nodo nodo = new Nodo(449.0,240.0);
+    private boolean Azul = false;
     Image imgLogo;
         
     //en la parte de los nodos lo que se está guardando es la posición del Layout no la del nodo
@@ -28,6 +29,15 @@ public class RedGhost extends ImageView {
         this.setImage(new Image("/pacmanfx/resources/red-ghost.png"));
     }
 
+    public boolean isAzul() {
+        return Azul;
+    }
+
+    public void setAzul(boolean Azul) {
+        this.Azul = Azul;
+    }
+
+    
     public void GenerarRuta(Nodo ini, Nodo fin) {
     }
 }

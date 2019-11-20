@@ -2339,97 +2339,124 @@ int ind1 = 10000, ind2;
         if (!reinicio) {
             if ((xOrangeI <= (int) pacman.getpMan().getCenterX() && xOrangeS >= (int) pacman.getpMan().getCenterX())
                     && (yOrangeI <= (int) pacman.getpMan().getCenterY() && yOrangeS >= (int) pacman.getpMan().getCenterY())) {
-                root.getChildren().remove(pacman.getpMan());
-                muertoPink = true;
-                muertoRed = true;
-                muertoCyan = true;
-                muertoOrange = true;
-                if (!vidasPila.isEmpty()) {
-                    arc = vidasPila.pop();
-                    arc.setOpacity(0.3);
+                if (!orangeGhost.isAzul()) {
+                    root.getChildren().remove(pacman.getpMan());
+                    muertoPink = true;
+                    muertoRed = true;
+                    muertoCyan = true;
+                    muertoOrange = true;
                     if (!vidasPila.isEmpty()) {
-                        hiloInicio();
-                    } else {
-                        //Guardo los puntos totales de la partida
-                        GameOverController.puntajeNivel = contPuntos * 10;
-
-                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                        arc = vidasPila.pop();
+                        arc.setOpacity(0.3);
+                        if (!vidasPila.isEmpty()) {
+                            hiloInicio();
+                        } else {
+                            //Guardo los puntos totales de la partida
+                            GameOverController.puntajeNivel = contPuntos * 10;
+                            FlowController.getInstance().goViewInStage("GameOver", stage);
+                        }
                     }
+                } else {
+                    orangeGhost.setImage(new Image("/pacmanfx/resources/dead.png"));
+                    muertoOrange = true;
+                    pacman.getpMan().setFocusTraversable(true);
                 }
             } else if ((xRedI <= (int) pacman.getpMan().getCenterX() && xRedS >= (int) pacman.getpMan().getCenterX())
                     && (yRedI <= (int) pacman.getpMan().getCenterY() && yRedS >= (int) pacman.getpMan().getCenterY())) {
-                root.getChildren().remove(pacman.getpMan());
-                muertoPink = true;
-                muertoRed = true;
-                muertoCyan = true;
-                muertoOrange = true;
-                if (!vidasPila.isEmpty()) {
-                    arc = vidasPila.pop();
-                    arc.setOpacity(0.3);
+                if (!redGhost.isAzul()) {
+                    root.getChildren().remove(pacman.getpMan());
+                    muertoPink = true;
+                    muertoRed = true;
+                    muertoCyan = true;
+                    muertoOrange = true;
                     if (!vidasPila.isEmpty()) {
-                        hiloInicio();
-                    } else {
-                        //Guardo los puntos totales de la partida
-                        GameOverController.puntajeNivel = contPuntos * 10;
-                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                        arc = vidasPila.pop();
+                        arc.setOpacity(0.3);
+                        if (!vidasPila.isEmpty()) {
+                            hiloInicio();
+                        } else {
+                            //Guardo los puntos totales de la partida
+                            GameOverController.puntajeNivel = contPuntos * 10;
+                            FlowController.getInstance().goViewInStage("GameOver", stage);
+                        }
                     }
+                } else {
+                    redGhost.setImage(new Image("/pacmanfx/resources/dead.png"));
+                    muertoRed = true;
+                    pacman.getpMan().setFocusTraversable(true);
                 }
             } else if ((xCyanI <= (int) pacman.getpMan().getCenterX() && xCyanS >= (int) pacman.getpMan().getCenterX())
                     && (yCyanI <= (int) pacman.getpMan().getCenterY() && yCyanS >= (int) pacman.getpMan().getCenterY())) {
-                root.getChildren().remove(pacman.getpMan());
-                muertoPink = true;
-                muertoRed = true;
-                muertoCyan = true;
-                muertoOrange = true;
-                if (!vidasPila.isEmpty()) {
-                    arc = vidasPila.pop();
-                    arc.setOpacity(0.3);
+                if (!cyanGhost.isAzul()) {
+                    root.getChildren().remove(pacman.getpMan());
+                    muertoPink = true;
+                    muertoRed = true;
+                    muertoCyan = true;
+                    muertoOrange = true;
                     if (!vidasPila.isEmpty()) {
-                        hiloInicio();
-                    } else {
-                        //Guardo los puntos totales de la partida
-                        GameOverController.puntajeNivel = contPuntos * 10;
-                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                        arc = vidasPila.pop();
+                        arc.setOpacity(0.3);
+                        if (!vidasPila.isEmpty()) {
+                            hiloInicio();
+                        } else {
+                            //Guardo los puntos totales de la partida
+                            GameOverController.puntajeNivel = contPuntos * 10;
+                            FlowController.getInstance().goViewInStage("GameOver", stage);
+                        }
                     }
+                } else {
+                    cyanGhost.setImage(new Image("/pacmanfx/resources/dead.png"));
+                    muertoCyan = true;
+                    pacman.getpMan().setFocusTraversable(true);
                 }
             } else if ((xPinkI <= (int) pacman.getpMan().getCenterX() && xPinkS >= (int) pacman.getpMan().getCenterX())
                     && (yPinkI <= (int) pacman.getpMan().getCenterY() && yPinkS >= (int) pacman.getpMan().getCenterY())) {
-                root.getChildren().remove(pacman.getpMan());
-                muertoPink = true;
-                muertoRed = true;
-                muertoCyan = true;
-                muertoOrange = true;
-                if (!vidasPila.isEmpty()) {
-                    arc = vidasPila.pop();
-                    arc.setOpacity(0.3);
+                if (!pinkGhost.isAzul()) {
+                    root.getChildren().remove(pacman.getpMan());
+                    muertoPink = true;
+                    muertoRed = true;
+                    muertoCyan = true;
+                    muertoOrange = true;
                     if (!vidasPila.isEmpty()) {
-                        hiloInicio();
-                    } else {
-                        //Guardo los puntos totales de la partida
-                        GameOverController.puntajeNivel = contPuntos * 10;
-                        FlowController.getInstance().goViewInStage("GameOver", stage);
+                        arc = vidasPila.pop();
+                        arc.setOpacity(0.3);
+                        if (!vidasPila.isEmpty()) {
+                            hiloInicio();
+                        } else {
+                            //Guardo los puntos totales de la partida
+                            GameOverController.puntajeNivel = contPuntos * 10;
+                            FlowController.getInstance().goViewInStage("GameOver", stage);
+                        }
                     }
+                } else {
+                    pinkGhost.setImage(new Image("/pacmanfx/resources/dead.png"));
+                    muertoPink = true;
+                    pacman.getpMan().setFocusTraversable(true);
                 }
             }
         }
-
     }
+    
     Queue<Nodo> colaRed = new LinkedList<>();
     Queue<Nodo> colaPink = new LinkedList<>();
     Queue<Nodo> colaOrange = new LinkedList<>();
     Queue<Nodo> colaCyan = new LinkedList<>();
     Stack<Nodo> pilaRed = new Stack<>();
 
+    Nodo auxNodo55;
+    Nodo iniciall;
+    Nodo destinoo;
+
     public void estadoInicialRojo() {
         Platform.runLater(() -> {
             if (!pilaRed.isEmpty()) {
                 //Saca el primer valor de la cola 
-                auxNodo5 = pilaRed.pop();
+                auxNodo55 = pilaRed.pop();
 
                 Timeline timeline = new Timeline();
-                Double distance = inicial.getPoint2D().distance(auxNodo5.getPoint2D());
-                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
-                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                Double distance = iniciall.getPoint2D().distance(auxNodo55.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo55.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo55.getPoint2D().getX() - 14);
                 KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
                 timeline.getKeyFrames().addAll(kf2, kf);
@@ -2438,11 +2465,17 @@ int ind1 = 10000, ind2;
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 timeline.setOnFinished((event) -> {
                     Platform.runLater(() -> {
-                        inicial = auxNodo5;
+                        iniciall = auxNodo55;
                         //Si la pila no esta vacia, hacemos recursividad
                         if (!pilaRed.isEmpty()) {
                             estadoInicialRojo();
                         } else {
+                            if (redGhost.isAzul()) {
+                                redGhost.setImage(new Image("/pacmanfx/resources/red-ghost.png"));
+                                inicial = iniciall;
+                                moveRedGhost();
+                                pacman.getpMan().setFocusTraversable(true);
+                            }
 
                         }
                     });
@@ -2459,22 +2492,30 @@ int ind1 = 10000, ind2;
                 });
 
                 nodos.stream().forEach((t) -> {
-                    if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
-                        nodoDestino = t;
+                    if (redGhost.isAzul()) {
+                        if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 305.0) {
+                            auxNodo55 = t;
+                        }
+                    } else {
+                        if (t.getPoint2D().getX() == 450.0 && t.getPoint2D().getY() == 240.0) {
+                            auxNodo55 = t;
+                        }
                     }
+
                 });
 
                 Dijkstra dijkstra;
+                iniciall = inicial;
 
-                inicial.setMarca(false);
-                inicial.setNodoAntecesorDisjktra(null);
-                inicial.setLongitud(0);
+                iniciall.setMarca(false);
+                iniciall.setNodoAntecesorDisjktra(null);
+                iniciall.setLongitud(0);
                 dijkstra = new Dijkstra(new Grafo(nodos, aristas));
-                dijkstra.ejecutar(inicial);
+                dijkstra.ejecutar(iniciall);
 
                 List<Arista> aristasAux;
                 pilaRed = new Stack<>();
-                aristasAux = dijkstra.marcarRutaCorta(nodoDestino);
+                aristasAux = dijkstra.marcarRutaCorta(auxNodo55);
                 aristasAux.stream().forEach((t) -> {
                     if (!pilaRed.isEmpty()) {
                         if (!contenido(t.getDestino(), pilaRed)) {
@@ -2483,7 +2524,7 @@ int ind1 = 10000, ind2;
                             pilaRed.add(t.getOrigen());
                         }
                     } else {
-                        if (t.getDestino().getPoint2D().getX() == this.nodoDestino.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == this.nodoDestino.getPoint2D().getY()) {
+                        if (t.getDestino().getPoint2D().getX() == this.auxNodo55.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == this.auxNodo55.getPoint2D().getY()) {
                             pilaRed.add(t.getDestino());
                             pilaRed.add(t.getOrigen());
                         } else {
@@ -2494,12 +2535,12 @@ int ind1 = 10000, ind2;
                 });
 
                 //Saca el primer valor de la pila 
-                auxNodo5 = pilaRed.pop();
+                auxNodo55 = pilaRed.pop();
 
                 Timeline timeline = new Timeline();
-                Double distance = new Point2D(redGhost.getLayoutX(), redGhost.getLayoutY()).distance(auxNodo5.getPoint2D());
-                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo5.getPoint2D().getY() - 14);
-                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo5.getPoint2D().getX() - 14);
+                Double distance = new Point2D(redGhost.getLayoutX(), redGhost.getLayoutY()).distance(auxNodo55.getPoint2D());
+                KeyValue kv2 = new KeyValue(redGhost.layoutYProperty(), auxNodo55.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(redGhost.layoutXProperty(), auxNodo55.getPoint2D().getX() - 14);
                 KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
                 timeline.getKeyFrames().addAll(kf2, kf);
@@ -2508,7 +2549,7 @@ int ind1 = 10000, ind2;
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 timeline.setOnFinished((event) -> {
                     Platform.runLater(() -> {
-                        inicial = auxNodo5;
+                        iniciall = auxNodo55;
                         //Si la cola no esta vacia, hacemos recursividad
                         if (!pilaRed.isEmpty()) {
                             estadoInicialRojo();
@@ -2522,17 +2563,20 @@ int ind1 = 10000, ind2;
     Stack<Nodo> pilaPink = new Stack<>();
     Nodo destinoPink = null;
 
+    Nodo auxNodo66;
+    Nodo inicial22;
+
     private void estadoInicialPink() {
 
         Platform.runLater(() -> {
             if (!pilaPink.isEmpty()) {
                 //Saca el primer valor de la cola 
-                auxNodo6 = pilaPink.pop();
+                destinoPink = pilaPink.pop();
 
                 Timeline timeline = new Timeline();
-                Double distance = inicial2.getPoint2D().distance(auxNodo6.getPoint2D());
-                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), auxNodo6.getPoint2D().getY() - 14);
-                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), auxNodo6.getPoint2D().getX() - 14);
+                Double distance = inicial22.getPoint2D().distance(destinoPink.getPoint2D());
+                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), destinoPink.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), destinoPink.getPoint2D().getX() - 14);
                 KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
                 timeline.getKeyFrames().addAll(kf2, kf);
@@ -2541,11 +2585,17 @@ int ind1 = 10000, ind2;
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 timeline.setOnFinished((event) -> {
                     Platform.runLater(() -> {
-                        inicial2 = auxNodo6;
+                        inicial22 = destinoPink;
                         //Si la cola no esta vacia, hacemos recursividad
                         if (!pilaPink.isEmpty()) {
                             estadoInicialPink();
                         } else {
+                            if (pinkGhost.isAzul()) {
+                                pinkGhost.setImage(new Image("/pacmanfx/resources/pink-ghost.png"));
+                                inicial2 = null;
+                                movePinkGhost();
+                                pacman.getpMan().setFocusTraversable(true);
+                            }
 
                         }
                     });
@@ -2568,12 +2618,12 @@ int ind1 = 10000, ind2;
                 });
 
                 Dijkstra dijkstra;
-
-                inicial2.setMarca(false);
-                inicial2.setNodoAntecesorDisjktra(null);
-                inicial2.setLongitud(0);
+                inicial22 = inicial2;
+                inicial22.setMarca(false);
+                inicial22.setNodoAntecesorDisjktra(null);
+                inicial22.setLongitud(0);
                 dijkstra = new Dijkstra(new Grafo(nodos, aristas));
-                dijkstra.ejecutar(inicial2);
+                dijkstra.ejecutar(inicial22);
 
                 List<Arista> aristasAux;
                 pilaPink = new Stack<>();
@@ -2598,12 +2648,12 @@ int ind1 = 10000, ind2;
                 });
 
                 //Saca el primer valor de la pila 
-                auxNodo6 = pilaPink.pop();
+                destinoPink = pilaPink.pop();
 
                 Timeline timeline = new Timeline();
-                Double distance = new Point2D(pinkGhost.getLayoutX(), pinkGhost.getLayoutY()).distance(auxNodo6.getPoint2D());
-                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), auxNodo6.getPoint2D().getY() - 14);
-                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), auxNodo6.getPoint2D().getX() - 14);
+                Double distance = new Point2D(pinkGhost.getLayoutX(), pinkGhost.getLayoutY()).distance(destinoPink.getPoint2D());
+                KeyValue kv2 = new KeyValue(pinkGhost.layoutYProperty(), destinoPink.getPoint2D().getY() - 14);
+                KeyValue kv = new KeyValue(pinkGhost.layoutXProperty(), destinoPink.getPoint2D().getX() - 14);
                 KeyFrame kf2 = new KeyFrame(Duration.millis((distance / 50) * 100), kv2);
                 KeyFrame kf = new KeyFrame(Duration.millis((distance / 50) * 100), kv);
                 timeline.getKeyFrames().addAll(kf2, kf);
@@ -2612,7 +2662,7 @@ int ind1 = 10000, ind2;
                 //Formula para sacar el tiempo necesario para que se vea fluido distancia/velocidad  multiplicado por 100 ya que es en milisegundos
                 timeline.setOnFinished((event) -> {
                     Platform.runLater(() -> {
-                        inicial2 = auxNodo6;
+                        inicial22 = destinoPink;
                         //Si la cola no esta vacia, hacemos recursividad
                         if (!pilaPink.isEmpty()) {
                             estadoInicialPink();
@@ -2662,7 +2712,12 @@ int ind1 = 10000, ind2;
                         if (!pilaOrange.isEmpty()) {
                             estadoInicialOrange();
                         } else {
-
+                            if (orangeGhost.isAzul()) {
+                                orangeGhost.setImage(new Image("/pacmanfx/resources/yellow-ghost.png"));
+                                index1 = 10000;
+                                moveOrangeGhost();
+                                pacman.getpMan().setFocusTraversable(true);
+                            }
                         }
                     });
                 });
@@ -2767,6 +2822,12 @@ int ind1 = 10000, ind2;
                         if (!pilaCyan.isEmpty()) {
                             estadoInicialCyan();
                         } else {
+                            if (cyanGhost.isAzul()) {
+                                cyanGhost.setImage(new Image("/pacmanfx/resources/blue-ghost.png"));
+                                ind1 = 10000;
+                                moveCyanGhost();
+                                pacman.getpMan().setFocusTraversable(true);
+                            }
 
                         }
                     });
