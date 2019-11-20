@@ -2342,7 +2342,6 @@ public class Nivel1Controller extends Controller implements Initializable {
             timer.schedule(task, 10, 1000);
 
         });
-
     }
 
     private void fantasma() {
