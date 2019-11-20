@@ -760,6 +760,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                 xAux = (int) pacman.getpMan().getCenterX() - 13;
 
             }
+
             if (nodoDestino != null) {
                 pacman.getpMan().setRotate(-180);
                 Timeline timeline = new Timeline();
@@ -1051,7 +1052,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                     rec.setFill(Paint.valueOf("#bd0d2b"));
                     root.getChildren().add(rec);//tamaño y posición del cada uno de los rectangulos
                 } else if (Mapa[i][j] == '@') {//pacman
-                    System.out.println((Double) x + " " + (Double) y);
+                    // System.out.println((Double) x + " " + (Double) y);
                     pacman = new pacMan2D((Double) x, (Double) y, 11.0, 11.0, 30.0, 300.0);
                     pacman.getpMan().setFocusTraversable(true);
                     pacman.getpMan().setOnKeyReleased(moverPacman);
@@ -2011,11 +2012,11 @@ public class Nivel2Controller extends Controller implements Initializable {
             }
 
             //Doy vuelta a la lista 
-            Collections.reverse(aristasAux);
             /*
              *  Bloqueamos a la primera arista del fantasma
              */
             if (aristasAux != null && !aristasAux.isEmpty()) {
+                Collections.reverse(aristasAux);
                 aristasAux.get(0).setBloqueado(true);
             }
             LinkedList<Nodo> listEnlazada = new LinkedList();
@@ -2086,6 +2087,7 @@ public class Nivel2Controller extends Controller implements Initializable {
                     }
                 });
             });
+
         });
     }
 
@@ -2127,33 +2129,35 @@ public class Nivel2Controller extends Controller implements Initializable {
                 aristasAux = dijkstra.marcarRutaCorta(nodoOrigen);
             }
 
-            //Doy vuelta a la lista 
-            Collections.reverse(aristasAux);
+
             /*
              *  Bloqueamos a la primera arista del fantasma
              */
-            if (aristasAux != null && !aristasAux.isEmpty()) {
-                aristasAux.get(0).setBloqueado(true);
-            }
             LinkedList<Nodo> listEnlazada = new LinkedList();
-            aristasAux.stream().forEach((t) -> {
-                /*
+            if (aristasAux != null && !aristasAux.isEmpty()) {
+                //Doy vuelta a la lista 
+                Collections.reverse(aristasAux);
+                aristasAux.get(0).setBloqueado(true);
+                aristasAux.stream().forEach((t) -> {
+                    /*
                  *   Si contiene origen guardamos destino, de lo contrario guardamos destino
-                 */
-                if (listEnlazada.size() > 1) {
-                    if (listEnlazada.contains(t.getDestino())) {
-                        listEnlazada.add(t.getOrigen());
-                    } else /*if (listEnlazada.contains(t.getOrigen()))*/ {
-                        listEnlazada.add(t.getDestino());
-                    }
-                } else {
-                    if (t.getDestino().getPoint2D().getX() == inicial2.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial2.getPoint2D().getY()) {
-                        listEnlazada.add(t.getOrigen());
+                     */
+                    if (listEnlazada.size() > 1) {
+                        if (listEnlazada.contains(t.getDestino())) {
+                            listEnlazada.add(t.getOrigen());
+                        } else /*if (listEnlazada.contains(t.getOrigen()))*/ {
+                            listEnlazada.add(t.getDestino());
+                        }
                     } else {
-                        listEnlazada.add(t.getDestino());
+                        if (t.getDestino().getPoint2D().getX() == inicial2.getPoint2D().getX() && t.getDestino().getPoint2D().getY() == inicial2.getPoint2D().getY()) {
+                            listEnlazada.add(t.getOrigen());
+                        } else {
+                            listEnlazada.add(t.getDestino());
+                        }
                     }
-                }
-            });
+                });
+            }
+            
 
             Queue<Nodo> cola = new LinkedList(listEnlazada);
 
@@ -2219,7 +2223,6 @@ public class Nivel2Controller extends Controller implements Initializable {
         nodosAux.clear();
         posX = null;
         posY = null;
-        auxNodo = null;
         yAux2 = null;
         xAux2 = null;
         pila.clear();
@@ -2331,8 +2334,8 @@ public class Nivel2Controller extends Controller implements Initializable {
                             pacman.getpMan().setCenterX(nodoOrigen.getPoint2D().getX());
                             pacman.getpMan().setCenterY(nodoOrigen.getPoint2D().getY());
                             pacman.setNodo(nodoOrigen);
-                            reinicio = false;
                             inicioJuego();
+                            reinicio = false;
                         });
                         /*System.out.println("MOVE");
                         if(!root.getChildren().contains(pacman.getpMan())){
@@ -2386,6 +2389,9 @@ public class Nivel2Controller extends Controller implements Initializable {
                     if (!vidasPila.isEmpty()) {
                         hiloInicio();
                     } else {
+                        //Guardo los puntos totales de la partida
+                        GameOverController.puntajeNivel = contPuntos * 10;
+
                         FlowController.getInstance().goViewInStage("GameOver", stage);
                     }
                 }
@@ -2402,6 +2408,8 @@ public class Nivel2Controller extends Controller implements Initializable {
                     if (!vidasPila.isEmpty()) {
                         hiloInicio();
                     } else {
+                        //Guardo los puntos totales de la partida
+                        GameOverController.puntajeNivel = contPuntos * 10;
                         FlowController.getInstance().goViewInStage("GameOver", stage);
                     }
                 }
@@ -2418,6 +2426,8 @@ public class Nivel2Controller extends Controller implements Initializable {
                     if (!vidasPila.isEmpty()) {
                         hiloInicio();
                     } else {
+                        //Guardo los puntos totales de la partida
+                        GameOverController.puntajeNivel = contPuntos * 10;
                         FlowController.getInstance().goViewInStage("GameOver", stage);
                     }
                 }
@@ -2434,6 +2444,8 @@ public class Nivel2Controller extends Controller implements Initializable {
                     if (!vidasPila.isEmpty()) {
                         hiloInicio();
                     } else {
+                        //Guardo los puntos totales de la partida
+                        GameOverController.puntajeNivel = contPuntos * 10;
                         FlowController.getInstance().goViewInStage("GameOver", stage);
                     }
                 }

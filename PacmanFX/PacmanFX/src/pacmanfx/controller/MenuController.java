@@ -86,8 +86,6 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void Salir(MouseEvent event) {
-        //FlowController.getMainStage().close();
-
         /*
             Puntos totales ganador en el juego
          */
@@ -108,6 +106,7 @@ public class MenuController extends Controller implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(JugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         try {
             String content = String.valueOf(PuntosTotales);
             File f = new File(".");
