@@ -8,9 +8,7 @@ package pacmanfx.util;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.stage.Stage;
 import pacmanfx.model.CyanGhost;
 import pacmanfx.model.OrangeGhost;
 import pacmanfx.model.PinkGhost;
@@ -96,6 +94,7 @@ public class hiloTiempo {
         this.cyanGhost = cyanGhost;
         this.pinkGhost = pinkGhost;
         this.orangeGhost = orangeGhost;
+        
         redGhost.setImage(new Image("/pacmanfx/resources/blue-ghost-Eatable.png"));
         cyanGhost.setImage(new Image("/pacmanfx/resources/blue-ghost-Eatable.png"));
         orangeGhost.setImage(new Image("/pacmanfx/resources/blue-ghost-Eatable.png"));
